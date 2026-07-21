@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: trainingsraum
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: ADMIN_NAMES
+        value: "Käthe,Katharina,Katharina Krüger"
