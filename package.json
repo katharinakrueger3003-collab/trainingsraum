@@ -1,0 +1,19 @@
+{
+  "name": "trainingsraum",
+  "version": "1.0.0",
+  "description": "November Sales-Trainingsraum: DISC/Tier-Persönlichkeitstests, KI-Rollenspiel, Einwand-Quiz, Leitfaden",
+  "main": "server/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.106.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  }
+}

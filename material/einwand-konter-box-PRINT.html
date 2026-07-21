@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Die Einwand-Konter-Box — salesrevenuelab.bykaethe</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+
+  body{
+    font-family:'Lora',Georgia,serif;
+    font-size:11pt;
+    line-height:1.75;
+    color:#1a1a2e;
+    background:#fff;
+  }
+
+  @media print {
+    @page { size: A4; margin: 18mm 20mm; }
+    .no-print { display:none; }
+    .page-break { page-break-before: always; }
+    body { font-size: 10.5pt; }
+  }
+
+  /* ── Cover ── */
+  .cover {
+    min-height: 100vh;
+    background: #0A0A16;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px 70px;
+    position: relative;
+    page-break-after: always;
+  }
+  .cover::before {
+    content:'';
+    position:absolute;
+    left:0;top:0;bottom:0;
+    width:4px;
+    background:#6C3FC5;
+  }
+  .cover-label {
+    font-family:'Lora',serif;
+    font-style:italic;
+    font-size:9pt;
+    color:rgba(108,63,197,0.85);
+    letter-spacing:1px;
+    margin-bottom:40px;
+  }
+  .cover-die {
+    font-family:'Lora',serif;
+    font-size:16pt;
+    color:rgba(255,255,255,0.4);
+    margin-bottom:8px;
+  }
+  .cover-title {
+    font-family:'Outfit',sans-serif;
+    font-weight:900;
+    font-size:58pt;
+    line-height:1.0;
+    color:#fff;
+    margin-bottom:0;
+  }
+  .cover-title span { color:#9B6FE8; }
+  .cover-rule {
+    width:80px;
+    height:1px;
+    background:rgba(108,63,197,0.5);
+    margin:28px 0;
+  }
+  .cover-sub {
+    font-family:'Lora',serif;
+    font-size:13pt;
+    color:rgba(255,255,255,0.55);
+    margin-bottom:60px;
+  }
+  .cover-props {
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:60px;
+  }
+  .cover-prop {
+    font-family:'Lora',serif;
+    font-style:italic;
+    font-size:9.5pt;
+    color:rgba(155,111,232,0.8);
+  }
+  .cover-brand {
+    margin-top:auto;
+    padding-top:30px;
+    border-top:1px solid rgba(108,63,197,0.2);
+    font-family:'Lora',serif;
+    font-style:italic;
+    font-size:9pt;
+    color:rgba(108,63,197,0.6);
+  }
+
+  /* ── Inhaltsseiten ── */
+  .content { max-width:680px; margin:0 auto; padding:50px 40px; }
+
+  h1 {
+    font-family:'Outfit',sans-serif;
+    font-weight:900;
+    font-size:22pt;
+    color:#0A0A16;
+    margin-bottom:6px;
+    margin-top:40px;
+  }
+  h2 {
+    font-family:'Outfit',sans-serif;
+    font-weight:700;
+    font-size:15pt;
+    color:#0A0A16;
+    margin-top:36px;
+    margin-bottom:10px;
+    padding-bottom:6px;
+    border-bottom:2px solid #6C3FC5;
+  }
+  h3 {
+    font-family:'Lora',serif;
+    font-weight:600;
+    font-size:11.5pt;
+    color:#3d2b7a;
+    margin-top:24px;
+    margin-bottom:8px;
+  }
+  h4 {
+    font-family:'Lora',serif;
+    font-style:italic;
+    font-size:10pt;
+    color:#6C3FC5;
+    margin-top:16px;
+    margin-bottom:4px;
+  }
+  p { margin-bottom:10px; }
+
+  /* Einwand-Block */
+  .einwand-header {
+    background:#0A0A16;
+    color:#fff;
+    padding:16px 24px;
+    margin:30px 0 20px;
+    border-left:4px solid #6C3FC5;
+    page-break-after:avoid;
+  }
+  .einwand-header h2 {
+    color:#fff;
+    border-bottom:none;
+    margin:0 0 4px;
+    font-size:14pt;
+  }
+  .einwand-header p {
+    color:rgba(255,255,255,0.6);
+    font-style:italic;
+    font-size:9.5pt;
+    margin:0;
+  }
+
+  /* Skript-Karte */
+  .skript {
+    border:1px solid #e0d8f5;
+    border-radius:4px;
+    margin:20px 0;
+    page-break-inside:avoid;
+    overflow:hidden;
+  }
+  .skript-title {
+    background:#f4f0ff;
+    padding:10px 18px;
+    font-family:'Outfit',sans-serif;
+    font-weight:700;
+    font-size:10pt;
+    color:#3d2b7a;
+    letter-spacing:0.5px;
+  }
+  .skript-body { padding:16px 18px; }
+
+  .skript-label {
+    font-family:'Lora',serif;
+    font-size:8.5pt;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+    color:#9B6FE8;
+    margin-bottom:4px;
+    margin-top:12px;
+  }
+  .skript-label:first-child { margin-top:0; }
+
+  .kunde {
+    background:#fafafa;
+    border-left:3px solid #ddd;
+    padding:8px 14px;
+    font-style:italic;
+    color:#444;
+    font-size:10.5pt;
+    margin:4px 0 10px;
+  }
+
+  .du {
+    background:#f4f0ff;
+    border-left:3px solid #6C3FC5;
+    padding:10px 14px;
+    font-size:10.5pt;
+    color:#1a1a2e;
+    line-height:1.9;
+    margin:4px 0 10px;
+  }
+  .du .pause {
+    font-family:'Outfit',sans-serif;
+    font-weight:700;
+    font-size:8pt;
+    color:#6C3FC5;
+    letter-spacing:0.5px;
+  }
+  .du em { color:#555; }
+
+  .psycho {
+    background:#fffbf0;
+    border-left:3px solid #f0c040;
+    padding:8px 14px;
+    font-size:9.5pt;
+    font-style:italic;
+    color:#555;
+    margin:4px 0 0;
+  }
+
+  /* Tabellen */
+  table {
+    width:100%;
+    border-collapse:collapse;
+    margin:16px 0;
+    font-size:10pt;
+  }
+  th {
+    background:#0A0A16;
+    color:#fff;
+    padding:8px 12px;
+    text-align:left;
+    font-family:'Outfit',sans-serif;
+    font-weight:700;
+    font-size:9pt;
+    letter-spacing:0.5px;
+  }
+  td { padding:7px 12px; border-bottom:1px solid #eee; }
+  tr:nth-child(even) td { background:#f9f9ff; }
+
+  /* Legende */
+  .legende { background:#f4f0ff; padding:16px 20px; border-radius:4px; margin:16px 0; }
+
+  /* Methode */
+  .methode {
+    border:1px solid #e0d8f5;
+    border-radius:4px;
+    padding:20px 24px;
+    margin:16px 0;
+  }
+  .methode-step {
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+    margin-bottom:14px;
+  }
+  .step-num {
+    background:#6C3FC5;
+    color:#fff;
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Outfit',sans-serif;
+    font-weight:700;
+    font-size:9pt;
+    flex-shrink:0;
+    margin-top:2px;
+  }
+
+  /* Fehler */
+  .fehler {
+    border-left:4px solid #e24b4a;
+    padding:10px 16px;
+    margin:12px 0;
+    background:#fff8f8;
+  }
+  .fehler strong { color:#a32d2d; }
+
+  /* Cheatsheet */
+  .cheat { background:#0A0A16; color:#fff; padding:30px 40px; margin-top:40px; }
+  .cheat h2 { color:#9B6FE8; border-bottom:1px solid rgba(108,63,197,0.3); font-size:13pt; }
+  .cheat table th { background:rgba(108,63,197,0.3); }
+  .cheat table td { color:#fff; border-bottom:1px solid rgba(255,255,255,0.1); }
+  .cheat table tr:nth-child(even) td { background:rgba(255,255,255,0.04); }
+
+  /* Footer */
+  .footer {
+    text-align:center;
+    padding:30px;
+    font-style:italic;
+    font-size:9pt;
+    color:#aaa;
+    border-top:1px solid #eee;
+    margin-top:40px;
+  }
+
+  /* Print-Button */
+  .print-bar {
+    position:fixed;
+    bottom:24px;
+    right:24px;
+    display:flex;
+    gap:12px;
+    z-index:999;
+  }
+  .print-btn {
+    background:#6C3FC5;
+    color:#fff;
+    border:none;
+    padding:12px 24px;
+    font-family:'Lora',serif;
+    font-size:12pt;
+    cursor:pointer;
+    border-radius:3px;
+    box-shadow:0 4px 20px rgba(108,63,197,0.4);
+  }
+  .print-btn:hover { background:#8B5FE8; }
+
+  hr { border:none; border-top:1px solid #eee; margin:24px 0; }
+</style>
+</head>
+<body>
+
+<!-- PRINT BUTTON -->
+<div class="print-bar no-print">
+  <button class="print-btn" onclick="window.print()">Als PDF speichern (Strg+P)</button>
+</div>
+
+<!-- ══════════════ COVER ══════════════ -->
+<div class="cover">
+  <div class="cover-label">Sales · Telefonvertrieb · Einwandbehandlung</div>
+  <div class="cover-die">Die</div>
+  <div class="cover-title">EINWAND-<br>KONTER-<br><span>BOX</span></div>
+  <div class="cover-rule"></div>
+  <div class="cover-sub">30 wortwörtliche Skripte · 6 Einwände · Ein System</div>
+  <div class="cover-props">
+    <div class="cover-prop">◆ &nbsp;Sofort einsetzbar — für jede Branche</div>
+    <div class="cover-prop">◆ &nbsp;Psychologisch fundiert — Pause, Spiegel, Bumerang</div>
+    <div class="cover-prop">◆ &nbsp;Wort für Wort ausgeschrieben</div>
+  </div>
+  <div class="cover-brand">salesrevenuelab.bykaethe</div>
+</div>
+
+<!-- ══════════════ INHALT ══════════════ -->
+<div class="content">
+
+<!-- Personalisierung -->
+<h1>Bevor du anfängst</h1>
+<p>Diese Skripte sind bewusst als Templates gebaut — für Versicherung, Software, Dienstleistung, B2B, B2C. Die Psychologie dahinter ist universell.</p>
+<p>Überall wo du <strong>[...]</strong> siehst, füllst du einmalig deine eigene Version ein:</p>
+
+<table>
+  <tr><th>Platzhalter</th><th>Was du einträgst</th></tr>
+  <tr><td><strong>[konkretes Ergebnis]</strong></td><td>Was dein Angebot dem Kunden bringt</td></tr>
+  <tr><td><strong>[Referenzkunde]</strong></td><td>Kundenname oder Branche (z. B. „ein Maschinenbauer")</td></tr>
+  <tr><td><strong>[Problemfeld]</strong></td><td>Das konkrete Problem das du löst</td></tr>
+  <tr><td><strong>[Thema nennen]</strong></td><td>Dein Angebot in einem Wort</td></tr>
+  <tr><td><strong>[Zeitraum]</strong></td><td>Wie schnell ihr Ergebnisse liefert</td></tr>
+</table>
+
+<p><strong>Tipp:</strong> 10 Minuten, alle Lücken ausfüllen. Danach läuft jedes Skript auf Autopilot.</p>
+
+<!-- Methode -->
+<h1 style="margin-top:36px">Die 3-Schritt-Methode</h1>
+<div class="methode">
+  <div class="methode-step">
+    <div class="step-num">1</div>
+    <div><strong>Die 2-Sekunden-Pause</strong><br>Nach jedem Einwand. Immer. Die Pause signalisiert Ruhe — nicht Ratlosigkeit.</div>
+  </div>
+  <div class="methode-step">
+    <div class="step-num">2</div>
+    <div><strong>Die Isolationsfrage</strong><br>Ist das der einzige Grund? Trennt echten Einwand von Vorwand.</div>
+  </div>
+  <div class="methode-step">
+    <div class="step-num">3</div>
+    <div><strong>Der Bumerang-Konter</strong><br>Du drehst den Einwand um — so wird er selbst zum Argument für dein Angebot.</div>
+  </div>
+</div>
+
+<div class="legende">
+  <table style="margin:0">
+    <tr><th>Symbol</th><th>Bedeutung</th></tr>
+    <tr><td><strong>[PAUSE 2]</strong></td><td>2 Sekunden Stille — kein Wort, kein Räuspern</td></tr>
+    <tr><td><strong>[PAUSE 1]</strong></td><td>1 Sekunde, kurzer Atemzug</td></tr>
+    <tr><td><strong>GROSSBUCHSTABEN</strong></td><td>Dieses Wort betonen</td></tr>
+    <tr><td><em>kursiv</em></td><td>Weicherer, ruhigerer Tonfall</td></tr>
+  </table>
+</div>
+
+<!-- ── EINWAND 1 ── -->
+<div class="page-break"></div>
+<div class="einwand-header">
+  <h2>Einwand 1 — „Kein Interesse"</h2>
+  <p>Der Reflex-Einwand. Kommt in den ersten 20 Sekunden. Bedeutet fast nie echtes Desinteresse — sondern: Ich bin beschäftigt.</p>
+</div>
+
+<div class="skript">
+  <div class="skript-title">Skript 1.1 — Der Neugier-Öffner</div>
+  <div class="skript-body">
+    <div class="skript-label">Kunde sagt</div>
+    <div class="kunde">„Kein Interesse."</div>
+    <div class="skript-label">Du sagst</div>
+    <div class="du"><span class="pause">[PAUSE 2]</span><br><em>„Das verstehe ich."</em><br><span class="pause">[PAUSE 1]</span><br>„Darf ich fragen — woran liegt das KONKRET?<br><span class="pause">[PAUSE 1]</span><br>Ich frage, weil die meisten, die das sagen, nachher froh waren, dass sie kurz zugehört haben.<br><span class="pause">[PAUSE 1]</span><br>Was wäre denn nötig, damit es FÜR SIE relevant wird?"</div>
+    <div class="psycho">Widerstand spiegeln statt bekämpfen. Die letzte Frage gibt dem Kunden die Kontrolle — und dir seine Kaufkriterien.</div>
+  </div>
+</div>
+
+<div class="skript">
+  <div class="skript-title">Skript 1.2 — Der Respekt-Konter</div>
+  <div class="skript-body">
+    <div class="skript-label">Kunde sagt</div>
+    <div class="kunde">„Nein danke, kein Interesse."</div>
+    <div class="skript-label">Du sagst</div>
+    <div class="du"><span class="pause">[PAUSE 2]</span><br>„Okay. <span class="pause">[PAUSE 1]</span> Ich respektiere das.<br><span class="pause">[PAUSE 1]</span><br><em>Nur eine kurze Frage noch, dann lege ich auf:</em><br><span class="pause">[PAUSE 1]</span><br>Wenn ich Ihnen zeigen könnte, wie Unternehmen wie Ihres [konkretes Ergebnis] erzielen —<br>wäre das dann AUCH kein Thema für Sie?"</div>
+    <div class="psycho">„Ich lege dann auf" senkt den Druck sofort. Die hypothetische Frage umgeht den gesetzten Widerstand.</div>
+  </div>
+</div>
+
+<div class="skript">
+  <div class="skript-title">Skript 1.3 — Der Branchen-Anker</div>
+  <div class="skript-body">
+    <div class="skript-label">Kunde sagt</div>
+    <div class="kunde">„Wir brauchen das nicht, kein Interesse."</div>
+    <div class="skript-label">Du sagst</div>
+    <div class="du"><span class="pause">[PAUSE 2]</span><br>„Das sage ich Ihnen gleich weiter.<br><span class="pause">[PAUSE 1]</span><br>BEVOR ich das tue — darf ich in einem Satz sagen, warum ich genau SIE angerufen habe?<br><span class="pause">[PAUSE 1]</span><br>[Konkreter Grund: Branche, Anlass, aktuelle Situation]<br><span class="pause">[PAUSE 1]</span><br>Macht das einen Unterschied?"</div>
+    <div class="psycho">„Das sage ich weiter" entspannt. Der Kontrast zwischen erwartetem Auflegen und personalisierten Grund erzeugt Aufmerksamkeit.</div>
+  </div>
+</div>
+
+<div class="skript">
+  <div class="skript-title">Skript 1.4 — Der Normalisierer</div>
+  <div class="skript-body">
+    <div class="skript-label">Kunde sagt</div>
+    <div class="kunde">„Ich hab gerade wirklich kein Interesse."</div>
+    <div class="skript-label">Du sagst</div>
+    <div class="du"><span class="pause">[PAUSE 2]</span><br><em>„Das höre ich öfter."</em><br><span class="pause">[PAUSE 1]</span><br>„Meistens liegt es daran, dass der erste Anruf zur falschen Zeit kommt.<br><span class="pause">[PAUSE 1]</span><br>Deshalb direkt: Gibt es GRUNDSÄTZLICH einen Bereich, bei dem Sie sich wünschen, [Problemfeld] wäre einfacher?<br><span class="pause">[PAUSE 1]</span><br>Nur damit ich weiß, ob wir überhaupt die Richtigen füreinander sind."</div>
+    <div class="psycho">Die Qualifizierungsfrage signalisiert, dass du nicht jeden um jeden Preis willst — das erhöht Glaubwürdigkeit.</div>
+  </div>
+</div>
+
+<div class="skript">
+  <div class="skript-title">Skript 1.5 — Der Timing-Reframe</div>
+  <div class="skript-body">
+    <div class="skript-label">Kunde sagt</div>
+    <div class="kunde">„Nein, kein Interesse, auf Wiederhören."</div>
+    <div class="skript-label">Du sagst</div>
+    <div class="du">„Einen Moment noch —<br><span class="pause">[PAUSE 1]</span><br>Ich rufe NICHT an, um Sie zu überreden.<br><span class="pause">[PAUSE 1]</span><br>Ich rufe an, weil [Referenzkunde] genau das gleiche gesagt hat — und [Zeitraum] später haben wir gemeinsam [Ergebnis] erreicht.<br><span class="pause">[PAUSE 1]</span><br>Ich möchte nur WISSEN: Wäre das Thema in sechs Monaten relevanter für Sie?<br><span class="pause">[PAUSE 1]</span><br>Dann rufe ich dann an. Versprochen."</div>
+    <div class="psycho">Social Proof + konkretes Ergebnis. Die Frage nach sechs Monaten gibt einen Ausweg, ohne das Gespräch zu beenden.</div>
+  </div>
+</div>
+
+<!-- ── EINWAND 2 ── -->
+<div class="page-break"></div>
+<div class="einwand-header">
+  <h2>Einwand 2 — „Kein Geld / Zu teuer"</h2>
+  <p>In 80 % der Fälle kein Budget-Problem — ein Wert-Problem. Solange du den Preis verteidigst, verlierst du.</p>
+</div>
+
+<div class="skript">
+  <div class="skript-title">Skript 2.1 — Die Isolationsfrage</div>
+  <div class="skript-body">
+    <div class="skript-label">Kunde sagt</div>
+    <div class="kunde">„Das ist zu teuer für uns."</div>
+    <div class="skript-label">Du sagst</div>
+    <div class="du"><span class="pause">[PAUSE 2]</span><br>„Zu teuer — das höre ich.<br><span class="pause">[PAUSE 1]</span><br>Darf ich kurz fragen: Ist der Preis der EINZIGE Grund, oder gibt es noch etwas, das Sie zögern lässt?<br><span class="pause">[PAUSE 1]</span><br>Ich frage, weil ich verstehen möchte, ob wir überhaupt über das Richtige reden."</div>
+    <div class="psycho">Deckt versteckte Einwände auf. Oft ist „zu teuer" nur der vorgeschobene Grund.</div>
+  </div>
+</div>
+
+<div class="skript">
+  <div class="skript-title">Skript 2.2 — Der Bumerang</div>
+  <div class="skript-body">
+    <div class="skript-label">Kunde sagt</div>
+    <div class="kunde">„Das liegt über unserem Budget."</div>
+    <div class="skript-label">Du sagst</div>
+    <div class="du"><span class="pause">[PAUSE 2]</span><br><em>„Verstehe."</em><br><span class="pause">[PAUSE 1]</span><br>„Darf ich fragen, was es Sie kostet, wenn sich das Problem noch zwölf Monate so weiterzieht?<br><span class="pause">[PAUSE 1]</span><br>Ich frage deshalb, weil unsere Kunden im Schnitt [konkretes Ergebnis] berichten —<br><span class="pause">[PAUSE 1]</span><br>und dann schauen wir, ob der Preis noch genauso groß wirkt."</div>
+    <div class="psycho">Fokus von Kosten auf Opportunitätskosten verschieben. Der Status quo wird teurer als die Investition.</div>
+  </div>
+</div>
+
+<div class="skript">
+  <div class="skript-title">Skript 2.3 — Die Kosten-des-Problems-Frage</div>
+  <div class="skript-body">
+    <div class="skript-label">Kunde sagt</div>
+    <div class="kunde">„Wir haben gerade kein Budget dafür."</div>
+    <div class="skript-label">Du sagst</div>
+    <div class="du"><span class="pause">[PAUSE 2]</span><br>„Das nehme ich ernst.<br><span class="pause">[PAUSE 1]</span><br>Nur eine Frage: Wie viel Geld, Zeit oder Nerven kostet es Sie MONATLICH, dass das Problem ungelöst bleibt?<br><span class="pause">[PAUSE 2] — Stille lassen, Kunde rechnet</span><br>Ich frage, weil viele merken, dass das Problem teurer ist als die Lösung."</div>
+    <div class="psycho">Den Kunden selbst rechnen lassen ist mächtiger als jede Zahl, die du nennst.</div>
+  </div>
+</div>
+
+<div class="skript">
+  <div class="skript-title">Skript 2.4 — Das Investment-Reframing</div>
+  <div class="skript-body">
+    <div class="skript-label">Kunde sagt</div>
+    <div class="kunde">„Der Preis ist einfach zu hoch."</div>
+    <div class="skript-label">Du sagst</div>
+    <div class="du"><span class="pause">[PAUSE 2]</span><br>„Ich verstehe das — auf den ersten Blick.<br><span class="pause">[PAUSE 1]</span><br>Darf ich kurz umrahmen, was Sie hier kaufen?<br><span class="pause">[PAUSE 1]</span><br>Sie kaufen kein Produkt — Sie kaufen [konkretes Ergebnis].<br><span class="pause">[PAUSE 1]</span><br>Wenn das stimmt — ist [Preis] dann noch zu hoch?"</div>
+    <div class="psycho">Vom Preis weg, zum Ergebnis hin. Der Kunde kauft nie das Produkt — er kauft die Veränderung.</div>
+  </div>
+</div>
+
+<div class="skript">
+  <div class="skript-title">Skript 2.5 — Der Vergleichs-Anker</div>
+  <div class="skript-body">
+    <div class="skript-label">Kunde sagt</div>
+    <div class="kunde">„Das ist mehr, als wir normalerweise ausgeben."</div>
+    <div class="skript-label">Du sagst</div>
+    <div class="du"><span class="pause">[PAUSE 2]</span><br><em>„Verständlich."</em><br><span class="pause">[PAUSE 1]</span><br>„Darf ich fragen, womit Sie vergleichen?<br><span class="pause">[PAUSE 1]</span><br>Der Vergleich ist entscheidend — nicht der absolute Preis.<br><span class="pause">[PAUSE 1]</span><br>Was wäre die GÜNSTIGSTE Alternative, die dasselbe Problem löst?<br><span class="pause">[PAUSE 1]</span><br>Dann können wir fair vergleichen."</div>
+    <div class="psycho">Den Anker setzen — durch den richtigen Vergleich, nicht durch Rabatt.</div>
+  </div>
+</div>
+
+<!-- ── EINWAND 3 ── -->
+<div class="page-break"></div>
+<div class="einwand-header">
+  <h2>Einwand 3 — „Kein Bedarf / Läuft gut"</h2>
+  <p>Der gefährlichste Einwand. Deine Aufgabe: die Lücke sichtbar machen, die der Kunde noch nicht sieht.</p>
+</div>
+
+<div class="skript"><div class="skript-title">Skript 3.1 — Die Status-quo-Frage</div><div class="skript-body"><div class="skript-label">Kunde sagt</div><div class="kunde">„Bei uns läuft das gerade gut, kein Bedarf."</div><div class="skript-label">Du sagst</div><div class="du"><span class="pause">[PAUSE 2]</span><br>„Das freut mich zu hören — ehrlich.<br><span class="pause">[PAUSE 1]</span><br>Darf ich trotzdem eine Frage stellen?<br><span class="pause">[PAUSE 1]</span><br>Was wäre das Eine, das noch BESSER laufen könnte?<br><span class="pause">[PAUSE 1]</span><br>Nicht weil es schlecht ist — sondern weil gut und optimal oft weit auseinanderliegen."</div><div class="psycho">Den Status quo respektieren, dann die Lücke öffnen.</div></div></div>
+
+<div class="skript"><div class="skript-title">Skript 3.2 — Der Neugier-Öffner</div><div class="skript-body"><div class="skript-label">Kunde sagt</div><div class="kunde">„Wir brauchen das nicht, wir sind gut aufgestellt."</div><div class="skript-label">Du sagst</div><div class="du"><span class="pause">[PAUSE 2]</span><br><em>„Gut aufgestellt — das klingt stark."</em><br><span class="pause">[PAUSE 1]</span><br>„Wenn ein Wettbewerber in den nächsten sechs Monaten [Bereich] deutlich verbessert —<br><span class="pause">[PAUSE 1]</span><br>wie schnell könnten Sie nachziehen?"</div><div class="psycho">Wettbewerbsdruck aktiviert Verlustangst — ohne den Kunden direkt zu kritisieren.</div></div></div>
+
+<div class="skript"><div class="skript-title">Skript 3.3 — Das Benchmark-Bild</div><div class="skript-body"><div class="skript-label">Kunde sagt</div><div class="kunde">„Das brauchen wir nicht, läuft alles."</div><div class="skript-label">Du sagst</div><div class="du"><span class="pause">[PAUSE 2]</span><br>„Woran messen Sie, ob es WIRKLICH gut läuft?<br><span class="pause">[PAUSE 1]</span><br>Ich frage, weil viele unserer besten Kunden dasselbe gesagt haben — und erst durch einen konkreten Vergleich ungenutztes Potenzial sahen."</div><div class="psycho">Die eigene Messgröße des Kunden hinterfragen — nicht um zu demontieren, sondern um Perspektive zu öffnen.</div></div></div>
+
+<div class="skript"><div class="skript-title">Skript 3.4 — Der Schmerz-Finder</div><div class="skript-body"><div class="skript-label">Kunde sagt</div><div class="kunde">„Nein danke, wir haben da keinen Bedarf."</div><div class="skript-label">Du sagst</div><div class="du"><span class="pause">[PAUSE 2]</span><br><em>„Verstanden."</em><br><span class="pause">[PAUSE 1]</span><br>„Rein hypothetisch: Wenn Sie KÖNNTEN — was wäre das Eine, das Sie sofort ändern würden?<br><span class="pause">[PAUSE 1]</span><br>Nicht weil es brennt — sondern weil es schon länger auf der Liste steht."</div><div class="psycho">„Rein hypothetisch" signalisiert: kein Verkaufsdruck.</div></div></div>
+
+<div class="skript"><div class="skript-title">Skript 3.5 — Die Zukunfts-Brücke</div><div class="skript-body"><div class="skript-label">Kunde sagt</div><div class="kunde">„Im Moment haben wir da keinen Bedarf."</div><div class="skript-label">Du sagst</div><div class="du"><span class="pause">[PAUSE 2]</span><br>„Im Moment — das verstehe ich.<br><span class="pause">[PAUSE 1]</span><br>Wann könnte sich das ändern?<br><span class="pause">[PAUSE 1]</span><br>Viele unserer Kunden sagen, sie hätten früher anfangen sollen — BEVOR der Druck kam."</div><div class="psycho">Vom „jetzt nicht" zum „wann dann". Öffnet die Tür für ein konkretes Datum.</div></div></div>
+
+<!-- ── EINWAND 4 ── -->
+<div class="page-break"></div>
+<div class="einwand-header">
+  <h2>Einwand 4 — „Kein Vertrauen / Kenn euch nicht"</h2>
+  <p>Der ehrlichste Einwand. Vertrauen nicht fordern — verdienen. Durch Konkretheit, Beweise, risikofreien ersten Schritt.</p>
+</div>
+
+<div class="skript"><div class="skript-title">Skript 4.1 — Das Beweis-Sofort-Skript</div><div class="skript-body"><div class="skript-label">Kunde sagt</div><div class="kunde">„Ich kenn euch nicht, kein Interesse."</div><div class="skript-label">Du sagst</div><div class="du"><span class="pause">[PAUSE 2]</span><br>„Das ist völlig berechtigt — ich würde genauso denken.<br><span class="pause">[PAUSE 1]</span><br>Darf ich EINE Sache tun?<br><span class="pause">[PAUSE 1]</span><br>[Referenz nennen] — die kennen Sie vielleicht.<br><span class="pause">[PAUSE 1]</span><br>Wenn das passt, erkläre ich in zwei Minuten was wir gemacht haben. Dann entscheiden SIE."</div><div class="psycho">Skepsis validieren statt abwehren. Eine konkrete Referenz ist mächtiger als zehn allgemeine Aussagen.</div></div></div>
+
+<div class="skript"><div class="skript-title">Skript 4.2 — Der Risiko-Nehmer</div><div class="skript-body"><div class="skript-label">Kunde sagt</div><div class="kunde">„Wir arbeiten nur mit Lieferanten, die wir kennen."</div><div class="skript-label">Du sagst</div><div class="du"><span class="pause">[PAUSE 2]</span><br><em>„Das ist klug."</em><br><span class="pause">[PAUSE 1]</span><br>„Deshalb mache ich Ihnen einen Vorschlag:<br><span class="pause">[PAUSE 1]</span><br>Wir fangen KLEIN an — [risikofreier erster Schritt].<br><span class="pause">[PAUSE 1]</span><br>Das Risiko liegt komplett bei uns. Sie testen — und entscheiden danach."</div><div class="psycho">Den ersten Schritt risikofrei machen. Wer nichts riskiert, kann JA sagen ohne sich zu committen.</div></div></div>
+
+<div class="skript"><div class="skript-title">Skript 4.3 — Die Referenz-Brücke</div><div class="skript-body"><div class="skript-label">Kunde sagt</div><div class="kunde">„Keine Ahnung wer ihr seid."</div><div class="skript-label">Du sagst</div><div class="du"><span class="pause">[PAUSE 2]</span><br>„Kennen Sie [bekanntes Unternehmen in Ihrer Branche]?<br><span class="pause">[PAUSE — Kunde antwortet]</span><br>Die arbeiten seit [Zeitraum] mit uns — und haben [Ergebnis] erreicht.<br><span class="pause">[PAUSE 1]</span><br>Ich kann den Kontakt herstellen, wenn Sie hören möchten, was die sagen."</div><div class="psycho">Eine gemeinsame Referenz schlägt jede Eigenwerbung.</div></div></div>
+
+<div class="skript"><div class="skript-title">Skript 4.4 — Das Transparenz-Bekenntnis</div><div class="skript-body"><div class="skript-label">Kunde sagt</div><div class="kunde">„Wir kennen euch nicht, das ist uns zu unsicher."</div><div class="skript-label">Du sagst</div><div class="du"><span class="pause">[PAUSE 2]</span><br>„Ich schätze, dass Sie das direkt sagen.<br><span class="pause">[PAUSE 1]</span><br>Deshalb: Ich schicke Ihnen HEUTE noch drei konkrete Referenzen aus Ihrer Branche — mit Namen, Ansprechpartner, Ergebnis.<br><span class="pause">[PAUSE 1]</span><br>Nicht als PDF. Als echte Kontakte, die Sie anrufen können."</div><div class="psycho">Radikale Transparenz entwaffnet. Wer echte Referenzen anbietet, hat Vertrauen bereits aufgebaut.</div></div></div>
+
+<div class="skript"><div class="skript-title">Skript 4.5 — Der Micro-Commitment</div><div class="skript-body"><div class="skript-label">Kunde sagt</div><div class="kunde">„Wir kaufen nicht bei Anbietern, die wir nicht kennen."</div><div class="skript-label">Du sagst</div><div class="du"><span class="pause">[PAUSE 2]</span><br><em>„Das ist eine gute Regel."</em><br><span class="pause">[PAUSE 1]</span><br>„Was bräuchten SIE konkret, um uns kennenzulernen?<br><span class="pause">[PAUSE 1]</span><br>Nicht kaufen — KENNENLERNEN.<br><span class="pause">[PAUSE 1]</span><br>Wäre ein 20-Minuten-Gespräch nächste Woche ein realistischer erster Schritt?"</div><div class="psycho">Vom Kauf zum Kennenlernen. Das Commitment ist so klein, dass es kaum abgelehnt werden kann.</div></div></div>
+
+<!-- ── EINWAND 5 ── -->
+<div class="page-break"></div>
+<div class="einwand-header">
+  <h2>Einwand 5 — „Schon versorgt / Haben Lieferant"</h2>
+  <p>Der Einwand der am häufigsten zum Aufgeben führt. Dabei: der Kunde KAUFT bereits — er ist kein Nein-Käufer.</p>
+</div>
+
+<div class="skript"><div class="skript-title">Skript 5.1 — Das Vergleichs-Einladen</div><div class="skript-body"><div class="skript-label">Kunde sagt</div><div class="kunde">„Wir haben da schon jemanden."</div><div class="skript-label">Du sagst</div><div class="du"><span class="pause">[PAUSE 2]</span><br><em>„Sehr gut."</em><br><span class="pause">[PAUSE 1]</span><br>„Sind Sie mit dem, was Sie bekommen, zu 100 % zufrieden?<br><span class="pause">[PAUSE 1]</span><br>Ich frage, weil ZUFRIEDEN und OPTIMAL zwei sehr verschiedene Dinge sind.<br><span class="pause">[PAUSE 1]</span><br>Was wäre das Eine, das Ihr aktueller Anbieter noch nicht liefert?"</div><div class="psycho">Nie den Wettbewerber attackieren. Der Kunde nennt selbst den Schwachpunkt.</div></div></div>
+
+<div class="skript"><div class="skript-title">Skript 5.2 — Der Lücken-Finder</div><div class="skript-body"><div class="skript-label">Kunde sagt</div><div class="kunde">„Kein Bedarf, wir haben da schon einen Anbieter."</div><div class="skript-label">Du sagst</div><div class="du"><span class="pause">[PAUSE 2]</span><br>„Das ist ein gutes Zeichen, dass das Thema für Sie relevant ist.<br><span class="pause">[PAUSE 1]</span><br>Wenn Ihr aktueller Anbieter in einem Bereich noch nicht ganz perfekt ist — welcher Bereich wäre das?<br><span class="pause">[PAUSE 1]</span><br>Viele Kunden arbeiten parallel — für sehr unterschiedliche Bereiche."</div><div class="psycho">Koexistenz statt Verdrängung. Die Frage nach dem ungelösten Bereich macht den Weg frei.</div></div></div>
+
+<div class="skript"><div class="skript-title">Skript 5.3 — Die zweite Meinung</div><div class="skript-body"><div class="skript-label">Kunde sagt</div><div class="kunde">„Wir haben bereits einen Lieferanten, mit dem wir zufrieden sind."</div><div class="skript-label">Du sagst</div><div class="du"><span class="pause">[PAUSE 2]</span><br><em>„Gut."</em><br><span class="pause">[PAUSE 1]</span><br>„Ich möchte den auch gar nicht ersetzen.<br><span class="pause">[PAUSE 1]</span><br>Ich möchte Ihnen nur eine zweite Perspektive anbieten — wie eine Zweitmeinung beim Arzt.<br><span class="pause">[PAUSE 1]</span><br>Oft bestätigt das, was der erste sagt. Manchmal nicht."</div><div class="psycho">Die Zweitmeinungs-Metapher ist disruptionsfrei.</div></div></div>
+
+<div class="skript"><div class="skript-title">Skript 5.4 — Der Loyalitäts-Respekt</div><div class="skript-body"><div class="skript-label">Kunde sagt</div><div class="kunde">„Wir arbeiten schon seit Jahren mit denen zusammen."</div><div class="skript-label">Du sagst</div><div class="du"><span class="pause">[PAUSE 2]</span><br>„Langfristige Partnerschaften sind wertvoll — das respektiere ich.<br><span class="pause">[PAUSE 1]</span><br>Wenn Sie in fünf Jahren zurückschauen — was hätten Sie gern früher optimiert?"</div><div class="psycho">Loyalität respektieren, dann Zukunftsperspektive öffnen.</div></div></div>
+
+<div class="skript"><div class="skript-title">Skript 5.5 — Der Wechselkosten-Neutralisierer</div><div class="skript-body"><div class="skript-label">Kunde sagt</div><div class="kunde">„Ein Wechsel ist uns zu aufwendig."</div><div class="skript-label">Du sagst</div><div class="du"><span class="pause">[PAUSE 2]</span><br>„Was wäre der größte Aufwand für Sie?<br><span class="pause">[PAUSE — Kunde antwortet]</span><br>In genau diesem Punkt haben wir für [Referenzkunde] die Migration komplett übernommen — innerhalb von [Zeitraum], ohne Unterbrechung.<br><span class="pause">[PAUSE 1]</span><br>Wäre das für Sie ein Unterschied?"</div><div class="psycho">Den konkreten Schmerzpunkt adressieren, nicht theoretisch entkräften.</div></div></div>
+
+<!-- ── EINWAND 6 ── -->
+<div class="page-break"></div>
+<div class="einwand-header">
+  <h2>Einwand 6 — „Keine Zeit / Ruf später an"</h2>
+  <p>Oft echter Zeitmangel — genauso oft eine höfliche Absage. Deine Aufgabe: den Unterschied herausfinden.</p>
+</div>
+
+<div class="skript"><div class="skript-title">Skript 6.1 — Die 90-Sekunden-Erlaubnis</div><div class="skript-body"><div class="skript-label">Kunde sagt</div><div class="kunde">„Ich hab gerade keine Zeit."</div><div class="skript-label">Du sagst</div><div class="du"><span class="pause">[PAUSE 2]</span><br>„Verstehe — ich bin kurz.<br><span class="pause">[PAUSE 1]</span><br>Darf ich Ihnen in 90 Sekunden sagen, worum es geht?<br><span class="pause">[PAUSE 1]</span><br>Wenn es nicht passt, lege ich danach sofort auf — versprochen.<br><span class="pause">[PAUSE 1]</span><br>Einverstanden?"</div><div class="psycho">90 Sekunden ist konkret. Das Versprechen aufzulegen senkt den Widerstand auf nahezu null.</div></div></div>
+
+<div class="skript"><div class="skript-title">Skript 6.2 — Das konkrete Datum</div><div class="skript-body"><div class="skript-label">Kunde sagt</div><div class="kunde">„Ruf mich nächste Woche nochmal an."</div><div class="skript-label">Du sagst</div><div class="du"><span class="pause">[PAUSE 1]</span><br>„Gerne — dann buchen wir das jetzt FEST.<br><span class="pause">[PAUSE 1]</span><br>Wann genau passt besser: Dienstag Vormittag oder Donnerstag nach dem Mittagessen?<br><span class="pause">[PAUSE — Kunde wählt]</span><br>Perfekt. Ich schicke direkt eine Kalendereinladung — geht das an [E-Mail]?"</div><div class="psycho">„Nächste Woche" in ein konkretes Datum umwandeln. Zwei Optionen sind leichter als ein freier Termin.</div></div></div>
+
+<div class="skript"><div class="skript-title">Skript 6.3 — Der Neugier-Haken</div><div class="skript-body"><div class="skript-label">Kunde sagt</div><div class="kunde">„Keine Zeit, ich muss jetzt auflegen."</div><div class="skript-label">Du sagst</div><div class="du">„Verstanden — nur EINEN Satz noch:<br><span class="pause">[PAUSE 1]</span><br>[Referenzkunde] hat letzten Monat mit uns [konkretes Ergebnis] erreicht — in [Zeitraum].<br><span class="pause">[PAUSE 1]</span><br>Wenn das für Sie interessant wäre: Wann hätten Sie fünf Minuten?"</div><div class="psycho">Ein konkretes Ergebnis in einem Satz ist der kompakteste Hook, den es gibt.</div></div></div>
+
+<div class="skript"><div class="skript-title">Skript 6.4 — Die Respekt-Antwort</div><div class="skript-body"><div class="skript-label">Kunde sagt</div><div class="kunde">„Gerade ist wirklich kein guter Zeitpunkt."</div><div class="skript-label">Du sagst</div><div class="du"><span class="pause">[PAUSE 2]</span><br><em>„Das nehme ich ernst."</em><br><span class="pause">[PAUSE 1]</span><br>„Wann wäre ein GUTER Zeitpunkt — in den nächsten vier Wochen?<br><span class="pause">[PAUSE 1]</span><br>Und wenn es grundsätzlich kein Thema ist — sagen Sie das direkt. Das respektiere ich genauso."</div><div class="psycho">Die Erlaubnis zum Nein entwaffnet. Wer Nein sagen darf, sagt es seltener.</div></div></div>
+
+<div class="skript"><div class="skript-title">Skript 6.5 — Das Mini-Commitment</div><div class="skript-body"><div class="skript-label">Kunde sagt</div><div class="kunde">„Ich kann das gerade nicht entscheiden, ruf später an."</div><div class="skript-label">Du sagst</div><div class="du"><span class="pause">[PAUSE 2]</span><br>„Bevor ich anrufe — damit ich gezielt vorbereitet komme:<br><span class="pause">[PAUSE 1]</span><br>Was wäre für Sie das WICHTIGSTE Thema, das wir dann besprechen?<br><span class="pause">[PAUSE — Kunde antwortet]</span><br>Perfekt. Dann rufe ich Sie am [Datum] um [Uhrzeit] an — passt das?"</div><div class="psycho">Das Mini-Commitment erhöht die Verbindlichkeit des Folgetermins. Er hat jetzt Haut im Spiel.</div></div></div>
+
+<!-- ── ABSCHLUSS ── -->
+<div class="page-break"></div>
+<h1>Die 3 häufigsten Fehler nach dem Konter</h1>
+
+<div class="fehler"><strong>Fehler 1: Zu früh weiterreden</strong><br>Du hast den Konter gesagt — dann warte. Die Stille gehört dir. Wer zuerst redet, verliert.</div>
+<div class="fehler"><strong>Fehler 2: Den Deal zu früh erzwingen</strong><br>Einwand bekämpft ≠ Kaufbereitschaft. Nach dem Konter kommt Qualifizierung — nicht Closing.</div>
+<div class="fehler"><strong>Fehler 3: Zu viel auf einmal</strong><br>Ein Einwand. Ein Konter. Nicht drei Argumente gleichzeitig. Weniger ist mehr — und immer: Pause danach.</div>
+
+<!-- ── CHEATSHEET ── -->
+<div class="cheat">
+  <h2 style="margin-top:0;padding-bottom:10px">Schnell-Referenz-Karte</h2>
+  <p style="color:rgba(255,255,255,0.5);font-size:9pt;margin-bottom:16px;font-style:italic">Ausdrucken · Neben den Bildschirm legen · Sofort benutzen</p>
+  <table>
+    <tr><th>Einwand</th><th>Kern-Konter</th></tr>
+    <tr><td>Kein Interesse</td><td>„Was wäre nötig, damit es für SIE relevant wird?"</td></tr>
+    <tr><td>Zu teuer</td><td>„Was kostet es Sie, wenn das Problem noch 12 Monate bleibt?"</td></tr>
+    <tr><td>Kein Bedarf</td><td>„Was wäre das Eine, das Sie sofort ändern würden — wenn Sie könnten?"</td></tr>
+    <tr><td>Kein Vertrauen</td><td>„Was bräuchten Sie konkret, um uns kennenzulernen?"</td></tr>
+    <tr><td>Haben Lieferant</td><td>„Sind Sie zu 100 % zufrieden mit dem, was Sie bekommen?"</td></tr>
+    <tr><td>Keine Zeit</td><td>„Darf ich Ihnen in 90 Sekunden sagen, worum es geht?"</td></tr>
+  </table>
+</div>
+
+<div class="footer">
+  © salesrevenuelab.bykaethe — Die Einwand-Konter-Box<br>
+  Alle Skripte sind Gerüst, nicht Käfig. Passe Sprache und Ton an deine Stimme an.
+</div>
+
+</div>
+</body>
+</html>

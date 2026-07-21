@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Trainingsraum · November</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+:root{
+  --bg:#ffffff;
+  --bg2:#f5f5f7;
+  --ink:#1d1d1f;
+  --ink2:#6e6e73;
+  --line:#d2d2d7;
+  --blue:#0071e3;
+  --blue-d:#0060c0;
+  --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+
+  /* Typ-Farbverläufe (Apple-Stil) */
+  --grad-D: linear-gradient(135deg,#ff7a45 0%,#ff2d55 55%,#ff375f 100%);
+  --grad-I: linear-gradient(135deg,#ffd60a 0%,#ff9f0a 45%,#ff375f 100%);
+  --grad-S: linear-gradient(135deg,#34e89e 0%,#30d158 45%,#0abfbc 100%);
+  --grad-C: linear-gradient(135deg,#40c8ff 0%,#5e5ce6 55%,#bf5af2 100%);
+  --grad-hero: linear-gradient(115deg,#ff5e3a 0%,#ff2d55 22%,#bf5af2 48%,#5e5ce6 72%,#0a84ff 100%);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  letter-spacing:-0.01em;
+}
+button{font-family:inherit;cursor:pointer}
+::selection{background:rgba(94,92,230,.22)}
+
+/* ══════════ PARALLAX-BLOBS (global, hinter allem) ══════════ */
+.blobs{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.5;will-change:transform}
+.blob.b1{width:520px;height:520px;background:radial-gradient(circle at 30% 30%,#ff5e3a,transparent 70%);top:-120px;left:-100px}
+.blob.b2{width:600px;height:600px;background:radial-gradient(circle at 30% 30%,#5e5ce6,transparent 70%);top:8%;right:-160px}
+.blob.b3{width:460px;height:460px;background:radial-gradient(circle at 30% 30%,#0a84ff,transparent 70%);top:52%;left:-120px}
+.blob.b4{width:500px;height:500px;background:radial-gradient(circle at 30% 30%,#bf5af2,transparent 70%);top:70%;right:-120px}
+
+/* ══════════ LOGIN ══════════ */
+#login{
+  position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;
+  background:#000;overflow:hidden;
+}
+#login .lg-grad{
+  position:absolute;inset:-20%;
+  background:
+    radial-gradient(45% 45% at 20% 25%,rgba(255,45,85,.55),transparent 60%),
+    radial-gradient(45% 45% at 80% 20%,rgba(94,92,230,.55),transparent 60%),
+    radial-gradient(50% 50% at 60% 85%,rgba(10,132,255,.5),transparent 60%),
+    radial-gradient(40% 40% at 15% 80%,rgba(191,90,242,.5),transparent 60%);
+  filter:blur(30px);animation:drift 18s ease-in-out infinite alternate;
+}
+@keyframes drift{from{transform:translate3d(-2%,-1%,0) scale(1)}to{transform:translate3d(3%,2%,0) scale(1.08)}}
+#login .lg-card{
+  position:relative;z-index:2;width:min(92vw,440px);
+  background:rgba(20,20,22,.62);backdrop-filter:blur(30px) saturate(160%);
+  -webkit-backdrop-filter:blur(30px) saturate(160%);
+  border:1px solid rgba(255,255,255,.14);border-radius:28px;
+  padding:44px 38px;text-align:center;color:#fff;
+  box-shadow:0 40px 100px rgba(0,0,0,.6);
+}
+#login .lg-eyebrow{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  background:var(--grad-hero);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:14px}
+#login h1{font-size:34px;font-weight:800;letter-spacing:-.03em;line-height:1.1;margin-bottom:10px}
+#login p{color:rgba(255,255,255,.62);font-size:15px;line-height:1.5;margin-bottom:26px}
+#login input{
+  width:100%;padding:15px 18px;border-radius:14px;border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.06);color:#fff;font-size:16px;font-family:inherit;outline:none;margin-bottom:14px;
+  transition:border-color .2s,background .2s;
+}
+#login input::placeholder{color:rgba(255,255,255,.4)}
+#login input:focus{border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.1)}
+#login .lg-btn{
+  width:100%;padding:15px;border:none;border-radius:14px;color:#fff;font-size:16px;font-weight:600;
+  background:var(--grad-hero);background-size:180% 180%;transition:transform .15s,filter .2s;animation:sheen 6s ease infinite;
+}
+@keyframes sheen{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+#login .lg-btn:hover{filter:brightness(1.08)}
+#login .lg-btn:active{transform:scale(.98)}
+#login .lg-note{margin-top:16px;font-size:12px;color:rgba(255,255,255,.4)}
+
+/* ══════════ TOP-NAV (Apple-Stil) ══════════ */
+#nav{
+  position:sticky;top:0;z-index:50;height:52px;display:flex;align-items:center;
+  background:rgba(255,255,255,.72);backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid rgba(0,0,0,.08);
+}
+#nav .nav-in{max-width:1020px;margin:0 auto;width:100%;padding:0 22px;display:flex;align-items:center;gap:8px}
+#nav .brand{font-weight:700;font-size:15px;letter-spacing:-.02em;margin-right:auto;display:flex;align-items:center;gap:8px}
+#nav .brand .dot{width:16px;height:16px;border-radius:5px;background:var(--grad-hero)}
+#nav .nav-links{display:flex;gap:2px}
+#nav .nav-links button{
+  background:none;border:none;color:var(--ink2);font-size:12.5px;font-weight:500;padding:7px 12px;border-radius:8px;
+  transition:color .15s,background .15s;letter-spacing:-.01em;
+}
+#nav .nav-links button:hover{color:var(--ink)}
+#nav .nav-links button.on{color:var(--ink);background:rgba(0,0,0,.06)}
+#nav .nav-user{display:flex;align-items:center;gap:10px;margin-left:8px}
+#nav .nav-user .who{font-size:12.5px;color:var(--ink2);font-weight:500;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#nav .nav-user .out{background:none;border:none;color:var(--blue);font-size:12.5px;font-weight:500}
+#nav .nav-user .out:hover{text-decoration:underline}
+@media(max-width:700px){
+  #nav .nav-links button{padding:7px 8px;font-size:11.5px}
+  #nav .brand span{display:none}
+  #nav .nav-user .who{display:none}
+}
+
+/* ══════════ LAYOUT ══════════ */
+main{position:relative;z-index:1}
+.view{display:none}
+.view.active{display:block;animation:viewIn .5s cubic-bezier(.16,1,.3,1)}
+@keyframes viewIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.wrap{max-width:1020px;margin:0 auto;padding:0 22px}
+.narrow{max-width:760px;margin:0 auto;padding:0 22px}
+
+/* ══════════ REVEAL ══════════ */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}
+.reveal.d4{transition-delay:.32s}.reveal.d5{transition-delay:.40s}
+
+/* ══════════ HERO ══════════ */
+.hero{position:relative;min-height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 22px 40px}
+.hero .eyebrow{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2);margin-bottom:18px}
+.hero h1{font-size:clamp(48px,9vw,104px);font-weight:900;letter-spacing:-.045em;line-height:.98;margin-bottom:24px}
+.hero h1 .g{background:var(--grad-hero);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .sub{font-size:clamp(19px,2.5vw,26px);color:var(--ink2);font-weight:500;max-width:640px;line-height:1.42;margin-bottom:36px;letter-spacing:-.02em}
+.hero .cta{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.hero .scrollhint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);color:var(--ink2);font-size:12px;display:flex;flex-direction:column;align-items:center;gap:8px;opacity:.7}
+.hero .scrollhint .mouse{width:22px;height:34px;border:2px solid var(--ink2);border-radius:12px;position:relative}
+.hero .scrollhint .mouse::after{content:"";position:absolute;top:6px;left:50%;transform:translateX(-50%);width:3px;height:6px;border-radius:2px;background:var(--ink2);animation:wheel 1.5s infinite}
+@keyframes wheel{0%{opacity:1;top:6px}70%{opacity:0;top:16px}100%{opacity:0}}
+
+/* Apple-Pill-Buttons */
+.pill{border:none;border-radius:980px;padding:13px 26px;font-size:16px;font-weight:600;letter-spacing:-.01em;transition:transform .15s,filter .2s,background .2s}
+.pill:active{transform:scale(.97)}
+.pill.primary{background:var(--blue);color:#fff}
+.pill.primary:hover{background:var(--blue-d)}
+.pill.grad{background:var(--grad-hero);background-size:180% 180%;color:#fff;animation:sheen 7s ease infinite}
+.pill.grad:hover{filter:brightness(1.08)}
+.pill.ghost{background:rgba(0,0,0,.05);color:var(--ink)}
+.pill.ghost:hover{background:rgba(0,0,0,.09)}
+.pill.light{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.22)}
+.pill.light:hover{background:rgba(255,255,255,.22)}
+.pill.sm{padding:9px 18px;font-size:14px}
+
+/* ══════════ STAT-BAND ══════════ */
+.stats{padding:60px 0}
+.stats .row{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;text-align:center}
+.stats .stat .n{font-size:clamp(40px,6vw,64px);font-weight:800;letter-spacing:-.04em;background:var(--grad-hero);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.stats .stat .l{color:var(--ink2);font-size:15px;font-weight:500;margin-top:8px;line-height:1.4}
+@media(max-width:640px){.stats .row{grid-template-columns:1fr;gap:34px}}
+
+/* ══════════ SECTION-HEAD ══════════ */
+.sec{padding:70px 0}
+.sec-head{text-align:center;max-width:680px;margin:0 auto 46px}
+.sec-head .kick{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:14px}
+.sec-head h2{font-size:clamp(32px,5vw,52px);font-weight:800;letter-spacing:-.035em;line-height:1.05;margin-bottom:16px}
+.sec-head p{font-size:clamp(17px,2vw,21px);color:var(--ink2);line-height:1.45;font-weight:450}
+
+/* ══════════ FEATURE-CARDS ══════════ */
+.features{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.fcard{
+  position:relative;border-radius:26px;padding:34px;overflow:hidden;color:#fff;min-height:300px;
+  display:flex;flex-direction:column;justify-content:flex-end;cursor:pointer;
+  transition:transform .5s cubic-bezier(.16,1,.3,1),box-shadow .5s;box-shadow:0 12px 40px rgba(0,0,0,.12);
+}
+.fcard:hover{transform:translateY(-6px);box-shadow:0 30px 70px rgba(0,0,0,.22)}
+.fcard::before{content:"";position:absolute;inset:0;z-index:0;transition:transform .6s cubic-bezier(.16,1,.3,1)}
+.fcard:hover::before{transform:scale(1.06)}
+.fcard>*{position:relative;z-index:1}
+.fcard.c1::before{background:var(--grad-C)}
+.fcard.c2::before{background:var(--grad-D)}
+.fcard.c3::before{background:var(--grad-I)}
+.fcard.c4::before{background:var(--grad-S)}
+.fcard .ic{font-size:34px;margin-bottom:auto}
+.fcard h3{font-size:26px;font-weight:800;letter-spacing:-.03em;margin-bottom:8px}
+.fcard p{font-size:15px;line-height:1.5;color:rgba(255,255,255,.9);max-width:90%}
+.fcard .go{margin-top:16px;font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:6px}
+.fcard .go .arw{transition:transform .3s}
+.fcard:hover .go .arw{transform:translateX(4px)}
+@media(max-width:720px){.features{grid-template-columns:1fr}}
+
+/* ══════════ DARK SECTION ══════════ */
+.dark{position:relative;background:#000;color:#fff;padding:120px 0;overflow:hidden;border-radius:40px;margin:40px 0}
+.dark .glow{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(40% 50% at 25% 30%,rgba(191,90,242,.4),transparent 65%),
+    radial-gradient(45% 55% at 80% 40%,rgba(10,132,255,.38),transparent 65%),
+    radial-gradient(50% 50% at 55% 95%,rgba(255,45,85,.3),transparent 65%);
+}
+.dark .dk-in{position:relative;z-index:1;text-align:center;max-width:820px;margin:0 auto;padding:0 22px}
+.dark .kick{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  background:var(--grad-hero);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:20px}
+.dark h2{font-size:clamp(32px,5.5vw,60px);font-weight:800;letter-spacing:-.035em;line-height:1.08;margin-bottom:22px}
+.dark h2 .g{background:linear-gradient(120deg,#ff9f0a,#ff375f,#bf5af2);-webkit-background-clip:text;background-clip:text;color:transparent}
+.dark .lead{font-size:clamp(18px,2.2vw,22px);color:rgba(255,255,255,.66);line-height:1.5;max-width:640px;margin:0 auto 56px}
+.method-flow{display:flex;align-items:stretch;gap:0;justify-content:center;flex-wrap:wrap}
+.mstep{flex:1;min-width:180px;max-width:220px;padding:26px 18px;position:relative}
+.mstep .mn{width:44px;height:44px;border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:18px;background:var(--grad-hero);color:#fff}
+.mstep h4{font-size:19px;font-weight:700;letter-spacing:-.02em;margin-bottom:8px}
+.mstep p{font-size:13.5px;color:rgba(255,255,255,.55);line-height:1.5}
+.mstep:not(:last-child)::after{content:"→";position:absolute;right:-10px;top:44px;color:rgba(255,255,255,.3);font-size:22px}
+@media(max-width:760px){.mstep:not(:last-child)::after{display:none}.method-flow{gap:14px}}
+
+/* ══════════ TYP-TEASER ══════════ */
+.typeteaser{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.tt{border-radius:24px;padding:28px 22px;color:#fff;position:relative;overflow:hidden;min-height:220px;display:flex;flex-direction:column}
+.tt.D{background:var(--grad-D)}.tt.I{background:var(--grad-I)}.tt.S{background:var(--grad-S)}.tt.C{background:var(--grad-C)}
+.tt .emo{font-size:40px;margin-bottom:12px}
+.tt .disc{font-size:12px;font-weight:700;letter-spacing:.12em;opacity:.85}
+.tt h4{font-size:24px;font-weight:800;letter-spacing:-.02em;margin:2px 0 8px}
+.tt p{font-size:13.5px;line-height:1.45;color:rgba(255,255,255,.92);margin-top:auto}
+@media(max-width:820px){.typeteaser{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:440px){.typeteaser{grid-template-columns:1fr}}
+
+/* ══════════ CTA-BAND ══════════ */
+.ctaband{position:relative;border-radius:36px;padding:90px 30px;text-align:center;overflow:hidden;color:#fff;margin:20px 0}
+.ctaband::before{content:"";position:absolute;inset:0;background:var(--grad-hero);background-size:220% 220%;animation:sheen 9s ease infinite;z-index:0}
+.ctaband>*{position:relative;z-index:1}
+.ctaband h2{font-size:clamp(30px,5vw,52px);font-weight:800;letter-spacing:-.035em;line-height:1.08;margin-bottom:14px;text-shadow:0 2px 30px rgba(0,0,0,.15)}
+.ctaband p{font-size:clamp(17px,2vw,20px);color:rgba(255,255,255,.9);margin-bottom:30px;max-width:560px;margin-left:auto;margin-right:auto}
+
+/* ══════════ FOOTER ══════════ */
+footer{padding:44px 0;text-align:center;color:var(--ink2);font-size:13px;line-height:1.7;border-top:1px solid var(--line);margin-top:40px}
+footer strong{color:var(--ink)}
+
+/* ══════════ GENERISCHE CARD / PANEL ══════════ */
+.panel{background:rgba(255,255,255,.75);backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:24px;padding:26px}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;transition:border-color .2s,transform .3s,box-shadow .3s}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:980px;font-size:11.5px;font-weight:700;letter-spacing:.02em;color:#fff}
+.badge.D{background:var(--grad-D)}.badge.I{background:var(--grad-I)}.badge.S{background:var(--grad-S)}.badge.C{background:var(--grad-C)}
+
+/* modul-intro innerhalb tabs */
+.mod-hero{padding:64px 0 20px;text-align:center}
+.mod-hero .kick{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:14px}
+.mod-hero h2{font-size:clamp(34px,6vw,60px);font-weight:900;letter-spacing:-.04em;line-height:1;margin-bottom:18px}
+.mod-hero h2 .g{background:var(--grad-hero);-webkit-background-clip:text;background-clip:text;color:transparent}
+.mod-hero p{font-size:clamp(17px,2vw,20px);color:var(--ink2);max-width:600px;margin:0 auto;line-height:1.5}
+
+/* ══════════ PERSÖNLICHKEIT ══════════ */
+.test-picker{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:36px 0}
+.tp-card{border-radius:26px;padding:34px;color:#fff;position:relative;overflow:hidden;cursor:pointer;
+  transition:transform .5s cubic-bezier(.16,1,.3,1),box-shadow .5s;box-shadow:0 12px 40px rgba(0,0,0,.1)}
+.tp-card:hover{transform:translateY(-6px);box-shadow:0 30px 70px rgba(0,0,0,.2)}
+.tp-card.disc{background:linear-gradient(135deg,#0a84ff,#5e5ce6,#bf5af2)}
+.tp-card.tier{background:linear-gradient(135deg,#ff9f0a,#ff375f,#bf5af2)}
+.tp-card .lab{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85}
+.tp-card h3{font-size:28px;font-weight:800;letter-spacing:-.02em;margin:6px 0 10px}
+.tp-card p{font-size:14.5px;line-height:1.5;color:rgba(255,255,255,.92);margin-bottom:18px}
+.tp-card .meta{font-size:13px;color:rgba(255,255,255,.8);display:flex;gap:14px;margin-bottom:20px}
+.tp-card .done-tag{position:absolute;top:20px;right:20px;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.3);
+  padding:4px 12px;border-radius:980px;font-size:11.5px;font-weight:600}
+@media(max-width:700px){.test-picker{grid-template-columns:1fr}}
+
+/* Test-Runner */
+.runner{max-width:680px;margin:0 auto}
+.run-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.run-count{font-size:13px;color:var(--ink2);font-weight:600}
+.run-quit{background:none;border:none;color:var(--blue);font-size:13px;font-weight:500}
+.run-bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-bottom:34px}
+.run-bar>div{height:100%;border-radius:3px;transition:width .4s cubic-bezier(.16,1,.3,1)}
+.run-bar.disc>div{background:linear-gradient(90deg,#0a84ff,#bf5af2)}
+.run-bar.tier>div{background:linear-gradient(90deg,#ff9f0a,#ff375f)}
+.run-q{font-size:clamp(22px,3.5vw,30px);font-weight:800;letter-spacing:-.02em;line-height:1.2;margin-bottom:26px;text-align:center}
+.run-opts{display:grid;gap:12px}
+.run-opt{display:flex;gap:14px;align-items:center;text-align:left;background:#fff;border:1.5px solid var(--line);
+  border-radius:16px;padding:17px 20px;font-size:15.5px;line-height:1.4;color:var(--ink);transition:all .18s;font-family:inherit}
+.run-opt:hover{border-color:var(--blue);background:#f5f9ff;transform:translateY(-1px)}
+.run-opt .rdot{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);flex-shrink:0;transition:all .18s}
+.run-opt:hover .rdot{border-color:var(--blue)}
+
+/* Auswertung */
+.result-hero{border-radius:30px;padding:52px 40px;color:#fff;text-align:center;position:relative;overflow:hidden;margin-bottom:26px}
+.result-hero .emo{font-size:76px;line-height:1;margin-bottom:12px}
+.result-hero .lab{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;opacity:.9}
+.result-hero h2{font-size:clamp(38px,7vw,62px);font-weight:900;letter-spacing:-.03em;line-height:1;margin:6px 0 12px}
+.result-hero .ess{font-size:clamp(17px,2.2vw,21px);color:rgba(255,255,255,.94);max-width:540px;margin:0 auto;line-height:1.45}
+.result-hero .discmix{display:inline-flex;gap:8px;margin-top:22px;flex-wrap:wrap;justify-content:center}
+.result-hero .discmix .chip{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25);padding:6px 14px;border-radius:980px;font-size:13px;font-weight:600}
+
+.bars{background:#fff;border:1px solid var(--line);border-radius:22px;padding:26px;margin-bottom:26px}
+.bars h4{font-size:15px;font-weight:700;margin-bottom:18px;color:var(--ink2);letter-spacing:.02em}
+.barrow{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.barrow .bn{width:130px;font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.barrow .bt{flex:1;height:14px;background:var(--bg2);border-radius:7px;overflow:hidden}
+.barrow .bt>div{height:100%;border-radius:7px;transition:width 1s cubic-bezier(.16,1,.3,1)}
+.barrow .bt.D>div{background:var(--grad-D)}.barrow .bt.I>div{background:var(--grad-I)}
+.barrow .bt.S>div{background:var(--grad-S)}.barrow .bt.C>div{background:var(--grad-C)}
+.barrow .bv{width:38px;text-align:right;font-size:13px;font-weight:700;color:var(--ink2);flex-shrink:0}
+
+.res-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.res-box{background:#fff;border:1px solid var(--line);border-radius:20px;padding:24px}
+.res-box h4{font-size:16px;font-weight:800;letter-spacing:-.01em;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.res-box ul{list-style:none;display:grid;gap:10px}
+.res-box li{font-size:14.5px;line-height:1.5;padding-left:24px;position:relative;color:var(--ink)}
+.res-box li::before{position:absolute;left:0;top:1px;font-size:14px}
+.res-box.good li::before{content:"✓";color:#30a14e;font-weight:700}
+.res-box.warn li::before{content:"!";color:#d97706;font-weight:800;left:4px}
+.res-box.tip li::before{content:"→";color:var(--blue);font-weight:700}
+@media(max-width:700px){.res-cols{grid-template-columns:1fr}}
+
+.kunden-matrix{margin-top:26px}
+.kunden-matrix>h3{font-size:24px;font-weight:800;letter-spacing:-.02em;text-align:center;margin-bottom:8px}
+.kunden-matrix>.sm{text-align:center;color:var(--ink2);font-size:15px;margin-bottom:24px;max-width:560px;margin-left:auto;margin-right:auto;line-height:1.5}
+.km-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.km-card{border:1px solid var(--line);border-radius:20px;overflow:hidden;background:#fff}
+.km-top{padding:18px 22px;color:#fff;display:flex;align-items:center;gap:12px}
+.km-top.D{background:var(--grad-D)}.km-top.I{background:var(--grad-I)}.km-top.S{background:var(--grad-S)}.km-top.C{background:var(--grad-C)}
+.km-top .e{font-size:30px}
+.km-top .nm{font-size:19px;font-weight:800;letter-spacing:-.01em}
+.km-top .dt{font-size:12px;opacity:.9;font-weight:600}
+.km-body{padding:20px 22px}
+.km-body .lbl{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin:0 0 8px}
+.km-body .lbl:not(:first-child){margin-top:16px}
+.km-body ul{list-style:none;display:grid;gap:7px}
+.km-body li{font-size:14px;line-height:1.45;padding-left:18px;position:relative}
+.km-body li::before{content:"•";position:absolute;left:2px;color:var(--ink2)}
+.km-body .ex{font-size:13px;color:var(--ink2);margin-top:14px;padding-top:14px;border-top:1px solid var(--bg2);line-height:1.5}
+@media(max-width:760px){.km-grid{grid-template-columns:1fr}}
+
+/* ══════════ ROLLENSPIEL ══════════ */
+.diff-row{display:flex;gap:12px;margin:0 0 24px;flex-wrap:wrap}
+.diff-btn{flex:1;min-width:150px;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:16px 18px;transition:all .18s}
+.diff-btn:hover{border-color:var(--blue)}
+.diff-btn strong{display:block;font-size:15px;margin-bottom:3px}
+.diff-btn span{font-size:12.5px;color:var(--ink2);line-height:1.4}
+.diff-btn.active{border-color:var(--blue);background:#f0f7ff;box-shadow:0 0 0 3px rgba(0,113,227,.12)}
+
+.your-type-hint{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#f5f5f7,#eef1f8);
+  border:1px solid var(--line);border-radius:18px;padding:16px 20px;margin-bottom:24px}
+.your-type-hint .e{font-size:32px}
+.your-type-hint .txt{font-size:14px;line-height:1.5}
+.your-type-hint .txt b{font-weight:700}
+.your-type-hint.empty{background:#fff}
+
+.persona-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.persona-card{text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:22px;padding:22px;
+  transition:all .3s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden}
+.persona-card:hover{border-color:transparent;transform:translateY(-5px);box-shadow:0 24px 50px rgba(0,0,0,.14)}
+.persona-card::after{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;opacity:0;transition:opacity .3s}
+.persona-card.D::after{background:var(--grad-D)}.persona-card.I::after{background:var(--grad-I)}
+.persona-card.S::after{background:var(--grad-S)}.persona-card.C::after{background:var(--grad-C)}
+.persona-card:hover::after{opacity:1}
+.pc-badges{display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap}
+.pc-label{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}
+.pc-name{font-size:21px;font-weight:800;letter-spacing:-.02em;margin:2px 0 8px}
+.pc-desc{font-size:13.5px;color:var(--ink2);line-height:1.5;margin-bottom:12px}
+.pc-quote{font-size:13.5px;font-style:italic;color:var(--ink);background:var(--bg2);border-radius:12px;padding:11px 14px;line-height:1.45}
+.pc-typ{font-size:12.5px;color:var(--ink2);margin-top:12px;line-height:1.5;padding-top:12px;border-top:1px solid var(--bg2)}
+.pc-typ b{color:var(--ink)}
+
+/* Chat */
+.chat-wrap{max-width:720px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:26px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.1)}
+.chat-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,#fafafa,#fff)}
+.chat-head .who{display:flex;align-items:center;gap:12px}
+.chat-head .av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff}
+.chat-head .av.D{background:var(--grad-D)}.chat-head .av.I{background:var(--grad-I)}
+.chat-head .av.S{background:var(--grad-S)}.chat-head .av.C{background:var(--grad-C)}
+.chat-head .nm{font-size:16px;font-weight:800;letter-spacing:-.01em}
+.chat-head .st{font-size:12px;color:var(--ink2);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.chat-box{padding:22px;height:440px;overflow-y:auto;display:flex;flex-direction:column;gap:14px;background:var(--bg2)}
+.brow{display:flex}
+.brow.kb{justify-content:flex-end}
+.bubble{max-width:80%;padding:12px 16px;border-radius:20px;font-size:15px;line-height:1.5;white-space:pre-wrap}
+.brow.kunde .bubble{background:#fff;border:1px solid var(--line);border-bottom-left-radius:6px}
+.brow.kb .bubble{background:var(--blue);color:#fff;border-bottom-right-radius:6px}
+.bwho{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;opacity:.6;margin-bottom:4px}
+.typing{display:flex;gap:5px;align-items:center;padding:14px 16px}
+.typing span{width:8px;height:8px;border-radius:50%;background:var(--ink2);animation:blink 1.3s infinite}
+.typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.25}40%{opacity:1}}
+.chat-input{border-top:1px solid var(--line);padding:14px 16px;background:#fff}
+.chat-input textarea{width:100%;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;font-family:inherit;
+  font-size:15px;resize:none;outline:none;transition:border-color .2s}
+.chat-input textarea:focus{border-color:var(--blue)}
+.chat-actions{display:flex;gap:10px;margin-top:10px;justify-content:flex-end}
+.chat-err{color:#c0392b;font-size:13px;padding:8px 22px;background:#fdecea}
+
+/* Feedback */
+.fb{max-width:720px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:26px;padding:30px;box-shadow:0 20px 60px rgba(0,0,0,.08)}
+.fb-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:24px}
+.fb-head .t{font-size:26px;font-weight:800;letter-spacing:-.02em}
+.fb-head .s{font-size:13.5px;color:var(--ink2);margin-top:4px}
+.fb-score{text-align:center;flex-shrink:0}
+.fb-score .n{font-size:54px;font-weight:900;letter-spacing:-.03em;background:var(--grad-hero);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.fb-score .o{font-size:13px;color:var(--ink2)}
+.fb-cats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.fb-cat{background:var(--bg2);border-radius:16px;padding:16px}
+.fb-cat .ct{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:13.5px;margin-bottom:8px}
+.fb-dots{display:flex;gap:4px}
+.fb-dots i{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.fb-dots i.on{background:var(--grad-hero) fixed;background:linear-gradient(135deg,#ff9f0a,#ff375f)}
+.fb-cat p{font-size:12.5px;color:var(--ink2);line-height:1.45}
+.fb-two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.fb-box{border-radius:16px;padding:18px}
+.fb-box.good{background:#e9f7ef}.fb-box.imp{background:#fdf0e6}
+.fb-box h5{font-size:13.5px;margin-bottom:10px}
+.fb-box.good h5{color:#1e7e45}.fb-box.imp h5{color:#c2681a}
+.fb-box ul{padding-left:18px;font-size:14px;line-height:1.5;display:grid;gap:7px}
+.fb-moment{background:var(--bg2);border-radius:16px;padding:18px;margin-bottom:12px}
+.fb-moment h5,.fb-alt h5{font-size:13px;color:var(--blue);margin-bottom:7px;letter-spacing:.02em}
+.fb-moment p{font-size:14px;line-height:1.55}
+.fb-alt{background:linear-gradient(135deg,#f5f5f7,#eef1f8);border-radius:16px;padding:18px}
+.fb-alt .sit{font-size:12.5px;color:var(--ink2);margin-bottom:8px}
+.fb-alt .bet{font-size:15.5px;font-weight:600;line-height:1.5;letter-spacing:-.01em}
+@media(max-width:640px){.fb-cats,.fb-two{grid-template-columns:1fr}}
+
+/* ══════════ QUIZ ══════════ */
+.quiz{max-width:680px;margin:0 auto}
+.quiz-voice{background:#000;color:#fff;border-radius:22px;padding:26px 26px 26px 22px;display:flex;gap:12px;margin-bottom:22px;position:relative;overflow:hidden}
+.quiz-voice .qglow{position:absolute;inset:0;background:radial-gradient(60% 80% at 15% 30%,rgba(191,90,242,.35),transparent 60%),radial-gradient(50% 70% at 90% 60%,rgba(10,132,255,.3),transparent 60%)}
+.quiz-voice .mk{font-size:56px;line-height:.7;background:var(--grad-hero);-webkit-background-clip:text;background-clip:text;color:transparent;position:relative;font-weight:900}
+.quiz-voice .qt{font-size:19px;font-weight:600;line-height:1.4;padding-top:8px;position:relative;letter-spacing:-.01em}
+.quiz-frage{font-weight:700;font-size:17px;margin-bottom:16px;letter-spacing:-.01em}
+.quiz-opts{display:grid;gap:11px}
+.quiz-opt{display:flex;gap:14px;align-items:flex-start;text-align:left;background:#fff;border:1.5px solid var(--line);
+  border-radius:16px;padding:15px 17px;font-size:14.5px;line-height:1.5;transition:all .18s;font-family:inherit;color:var(--ink)}
+.quiz-opt:hover{border-color:var(--blue);transform:translateY(-1px)}
+.opt-l{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px}
+.quiz-opt.right{border-color:#30a14e;background:#e9f7ef}.quiz-opt.right .opt-l{background:#30a14e;color:#fff}
+.quiz-opt.wrong{border-color:#c0392b;background:#fdecea}.quiz-opt.wrong .opt-l{background:#c0392b;color:#fff}
+.quiz-opt.muted{opacity:.5}
+.quiz-explain{margin-top:16px;border-radius:16px;padding:18px;font-size:14.5px;line-height:1.6}
+.quiz-explain.good{background:#e9f7ef}.quiz-explain.bad{background:#fdf0e6}
+.quiz-explain .typtag{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:12.5px;color:var(--ink2)}
+.quiz-done{text-align:center;padding:50px 0}
+.quiz-done .big{font-size:80px;font-weight:900;letter-spacing:-.04em;background:var(--grad-hero);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.quiz-done .big span{font-size:34px;color:var(--ink2);-webkit-text-fill-color:var(--ink2)}
+.quiz-done p{margin-top:12px;color:var(--ink2);font-size:17px}
+
+/* ══════════ LEITFADEN ══════════ */
+.lf-sec-title{font-size:26px;font-weight:800;letter-spacing:-.025em;margin:44px 0 8px;text-align:center}
+.lf-sec-sub{text-align:center;color:var(--ink2);font-size:15.5px;margin-bottom:26px;max-width:580px;margin-left:auto;margin-right:auto;line-height:1.5}
+.methode-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.methode-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;transition:transform .3s,box-shadow .3s}
+.methode-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(0,0,0,.1)}
+.methode-nr{width:40px;height:40px;border-radius:50%;background:var(--grad-hero);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px;margin-bottom:14px}
+.methode-name{font-weight:800;font-size:17px;letter-spacing:-.01em;margin-bottom:3px}
+.methode-kurz{font-size:12.5px;color:var(--blue);font-weight:600;margin-bottom:10px}
+.methode-detail{font-size:13px;color:var(--ink2);line-height:1.5}
+@media(max-width:820px){.methode-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:460px){.methode-grid{grid-template-columns:1fr}}
+
+.acc{display:grid;gap:10px;max-width:820px;margin:0 auto}
+.acc-item{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;transition:border-color .2s}
+.acc-item.open{border-color:var(--blue)}
+.acc-item.pb.open{border-color:#ff9f0a}
+.acc-head{width:100%;display:flex;align-items:center;gap:14px;background:none;border:none;padding:18px 20px;text-align:left;font-family:inherit}
+.acc-step{width:30px;height:30px;flex-shrink:0;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px}
+.acc-item.pb .acc-step{background:linear-gradient(135deg,#ff9f0a,#ff375f)}
+.acc-title{flex:1;font-weight:700;font-size:16px;letter-spacing:-.01em}
+.acc-item.pb .acc-title{font-size:15.5px}
+.acc-chev{font-size:24px;color:var(--ink2);transition:transform .3s;line-height:1}
+.acc-item.open .acc-chev{transform:rotate(45deg)}
+.acc-body{padding:0 20px 20px}
+.acc-goal{font-size:14.5px;color:var(--ink2);line-height:1.55;margin-bottom:16px}
+.acc-cols{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:16px}
+.acc-cols h6{font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+.acc-cols ul{list-style:none;display:grid;gap:6px;font-size:14px;line-height:1.5}
+.acc-cols li{padding-left:18px;position:relative}
+.acc-cols li::before{content:"→";position:absolute;left:0;color:var(--ink2)}
+.acc-cols .fehler li::before{content:"✕";color:#c0392b}
+.acc-body h6.forms{font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+.formul{background:var(--bg2);border-radius:12px;padding:12px 15px;font-size:14px;font-style:italic;margin-top:8px;line-height:1.5}
+@media(max-width:640px){.acc-cols{grid-template-columns:1fr}}
+
+.pb-body{padding:0 20px 20px;display:grid;gap:12px}
+.pb-step{display:flex;gap:14px}
+.pb-nr{width:26px;height:26px;flex-shrink:0;border-radius:50%;background:#fff2e0;color:#e07b00;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.pb-step-name{font-size:11px;letter-spacing:.07em;text-transform:uppercase;font-weight:800;color:#e07b00;margin-bottom:3px}
+.pb-step-txt{font-size:14.5px;line-height:1.5}
+.pb-typtag{margin-top:14px;padding-top:14px;border-top:1px solid var(--bg2);font-size:13px;color:var(--ink2);line-height:1.55}
+.pb-typtag b{color:var(--ink)}
+
+.lf-hinweis{margin:34px auto 0;max-width:820px;font-size:13px;color:var(--ink2);text-align:center;line-height:1.6;
+  background:var(--bg2);border-radius:16px;padding:18px 22px}
+
+/* Typ-Matrix im Leitfaden */
+.matrix-note{max-width:820px;margin:0 auto}
+</style>
+</head>
+<body>
+
+<!-- Parallax-Blobs -->
+<div class="blobs" aria-hidden="true">
+  <div class="blob b1" data-speed="0.10"></div>
+  <div class="blob b2" data-speed="0.18"></div>
+  <div class="blob b3" data-speed="0.14"></div>
+  <div class="blob b4" data-speed="0.20"></div>
+</div>
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="lg-grad"></div>
+  <div class="lg-card">
+    <div class="lg-eyebrow">Sales Training · Bestattungsvorsorge</div>
+    <h1>Trainingsraum</h1>
+    <p>Dein persönlicher Übungsraum für Gesprächsführung, Einwandbehandlung und Menschenkenntnis am Telefon.</p>
+    <input id="nameInput" type="text" placeholder="Wie heißt du?" autocomplete="given-name" />
+    <button class="lg-btn" id="loginBtn">Trainingsraum betreten</button>
+    <div class="lg-note">Kein Passwort nötig · dein Name bleibt nur auf diesem Gerät.</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="nav" style="display:none">
+  <div class="nav-in">
+    <div class="brand"><span class="dot"></span><span>Trainingsraum</span></div>
+    <div class="nav-links" id="navLinks">
+      <button data-tab="home" class="on">Start</button>
+      <button data-tab="typ">Persönlichkeit</button>
+      <button data-tab="rollenspiel">Rollenspiel</button>
+      <button data-tab="quiz">Quiz</button>
+      <button data-tab="leitfaden">Leitfaden</button>
+    </div>
+    <div class="nav-user">
+      <span class="who" id="navWho"></span>
+      <button class="out" id="logoutBtn">Abmelden</button>
+    </div>
+  </div>
+</nav>
+
+<main id="app" style="display:none">
+
+  <!-- ══════════ HOME ══════════ -->
+  <section class="view active" id="view-home">
+    <div class="hero">
+      <div class="eyebrow reveal">November · Bestattungsvorsorge</div>
+      <h1 class="reveal d1" id="heroTitle">Verkaufen ist<br><span class="g">Menschen verstehen.</span></h1>
+      <p class="sub reveal d2">Trainiere Gesprächsführung und Einwandbehandlung mit KI-Rollenspielen — und lerne, jeden Kundentyp in Sekunden zu lesen.</p>
+      <div class="cta reveal d3">
+        <button class="pill grad" data-goto="typ">Persönlichkeit entdecken</button>
+        <button class="pill ghost" data-goto="rollenspiel">Direkt üben →</button>
+      </div>
+      <div class="scrollhint"><div class="mouse"></div><span>Scrollen</span></div>
+    </div>
+
+    <div class="stats wrap">
+      <div class="row">
+        <div class="stat reveal"><div class="n">4</div><div class="l">Persönlichkeitstypen, die jeden Kunden erklären</div></div>
+        <div class="stat reveal d1"><div class="n">6</div><div class="l">KI-Kunden, die auf jedes deiner Worte reagieren</div></div>
+        <div class="stat reveal d2"><div class="n">14</div><div class="l">Einwände, die du im Schlaf beherrschen wirst</div></div>
+      </div>
+    </div>
+
+    <div class="sec wrap">
+      <div class="sec-head">
+        <div class="kick reveal">Dein Trainingsraum</div>
+        <h2 class="reveal d1">Vier Werkzeuge.<br>Ein besseres Gespräch.</h2>
+        <p class="reveal d2">Alles greift ineinander — vom Selbstbild bis zum Abschluss.</p>
+      </div>
+      <div class="features">
+        <div class="fcard c1 reveal" data-goto="typ">
+          <div class="ic">🧭</div>
+          <h3>Persönlichkeit</h3>
+          <p>DISC- & Tier-Test: Wer bist du im Verkauf — und wie erkennst du dein Gegenüber?</p>
+          <span class="go">Test starten <span class="arw">→</span></span>
+        </div>
+        <div class="fcard c2 reveal d1" data-goto="rollenspiel">
+          <div class="ic">🎭</div>
+          <h3>KI-Rollenspiel</h3>
+          <p>Sechs echte Kundentypen am Telefon. Führe das Gespräch, kassiere ehrliches Coaching-Feedback.</p>
+          <span class="go">Gespräch führen <span class="arw">→</span></span>
+        </div>
+        <div class="fcard c3 reveal d2" data-goto="quiz">
+          <div class="ic">⚡</div>
+          <h3>Einwand-Quiz</h3>
+          <p>14 knifflige Situationen. Finde in Sekunden die stärkste Reaktion — mit Begründung.</p>
+          <span class="go">Quiz spielen <span class="arw">→</span></span>
+        </div>
+        <div class="fcard c4 reveal d3" data-goto="leitfaden">
+          <div class="ic">📖</div>
+          <h3>Leitfaden</h3>
+          <p>Die 4-Schritte-Methode, der Gesprächsaufbau und Playbooks für jeden Einwand.</p>
+          <span class="go">Nachschlagen <span class="arw">→</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- DARK SECTION -->
+    <div class="wrap">
+      <div class="dark reveal">
+        <div class="glow"></div>
+        <div class="dk-in">
+          <div class="kick">Die Methode</div>
+          <h2>Jeder Einwand ist<br><span class="g">Kaufinteresse in Verkleidung.</span></h2>
+          <p class="lead">„Zu teuer“, „muss ich überlegen“, „kein Interesse“ — dahinter steckt fast nie der echte Grund. Wer fragt, beschäftigt sich. Behandle jeden Einwand mit derselben ruhigen Struktur.</p>
+          <div class="method-flow">
+            <div class="mstep"><div class="mn">1</div><h4>Annehmen</h4><p>Verständnis zeigen, nie widersprechen.</p></div>
+            <div class="mstep"><div class="mn">2</div><h4>Hinterfragen</h4><p>Den echten Grund hinter dem Einwand finden.</p></div>
+            <div class="mstep"><div class="mn">3</div><h4>Argumentieren</h4><p>Ein starkes Argument, passend zum Motiv.</p></div>
+            <div class="mstep"><div class="mn">4</div><h4>Abschließen</h4><p>Den Loop schließen, nächster Schritt terminiert.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Typ-Teaser -->
+    <div class="sec wrap">
+      <div class="sec-head">
+        <div class="kick reveal">Menschenkenntnis</div>
+        <h2 class="reveal d1">Vier Typen am Hörer.</h2>
+        <p class="reveal d2">Löwe, Affe, Hase, Eule — jeder Kunde tickt anders. Erkenne den Typ, und du weißt, wie du führen musst.</p>
+      </div>
+      <div class="typeteaser">
+        <div class="tt D reveal"><div class="emo">🦁</div><div class="disc">DISC · D</div><h4>Löwe</h4><p>Direkt, ergebnisorientiert, will Kontrolle. Komm schnell zum Punkt.</p></div>
+        <div class="tt I reveal d1"><div class="emo">🐵</div><div class="disc">DISC · I</div><h4>Affe</h4><p>Kommunikativ, spontan, emotional. Bau eine echte Beziehung auf.</p></div>
+        <div class="tt S reveal d2"><div class="emo">🐰</div><div class="disc">DISC · S</div><h4>Hase</h4><p>Harmoniebedürftig, vorsichtig, treu. Gib Sicherheit und Zeit.</p></div>
+        <div class="tt C reveal d3"><div class="emo">🦉</div><div class="disc">DISC · C</div><h4>Eule</h4><p>Analytisch, kritisch, gründlich. Liefere Fakten und Transparenz.</p></div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="wrap">
+      <div class="ctaband reveal">
+        <h2>Bereit für dein erstes Gespräch?</h2>
+        <p>Starte mit dem Persönlichkeitstest — er macht jedes Rollenspiel danach doppelt wertvoll.</p>
+        <button class="pill light" data-goto="typ">Jetzt herausfinden, wer du bist</button>
+      </div>
+    </div>
+
+    <footer class="wrap">
+      <strong>Trainingsraum</strong> · Intern für Kundenberater bei November.de<br>
+      Bestattungsvorsorge · CR2 (Erstgespräch) → CR3 (Abschluss-Callback)<br>
+      Produktdetails vor dem Live-Einsatz an aktuelle Angebotstexte anpassen.
+    </footer>
+  </section>
+
+  <!-- ══════════ PERSÖNLICHKEIT ══════════ -->
+  <section class="view" id="view-typ">
+    <div class="wrap" id="typContent"></div>
+  </section>
+
+  <!-- ══════════ ROLLENSPIEL ══════════ -->
+  <section class="view" id="view-rollenspiel">
+    <div class="wrap" id="rsContent"></div>
+  </section>
+
+  <!-- ══════════ QUIZ ══════════ -->
+  <section class="view" id="view-quiz">
+    <div class="wrap" id="quizContent"></div>
+  </section>
+
+  <!-- ══════════ LEITFADEN ══════════ -->
+  <section class="view" id="view-leitfaden">
+    <div class="wrap" id="lfContent"></div>
+  </section>
+
+</main>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   DATEN
+   ═══════════════════════════════════════════════════════════ */
+
+const TYPES = {
+  D: {
+    disc:"D", tier:"Löwe", emo:"🦁", grad:"D",
+    name:"Der Löwe", essenz:"Dominant, direkt, ergebnisorientiert. Du willst gewinnen und bringst Dinge voran.",
+    staerken:["Abschlussstark: du steuerst mutig auf die Entscheidung zu","Klar und effizient — kein Herumreden","Belastbar unter Druck und bei Widerstand","Übernimmst Führung im Gespräch"],
+    blindspots:["Wirkst schnell zu fordernd oder ungeduldig","Überhörst leise Signale und Emotionen","Neigst zu Monologen statt Fragen","Drückst, wo du behutsam sein solltest"],
+    vertrieb:["Bremse dein Tempo bewusst — der Kunde braucht länger als du","Stelle eine offene Frage, bevor du präsentierst","Halte Schweigen nach der Preisnennung aus, statt nachzuschieben"],
+    signale:["Kommt schnell zum Punkt, wenig Small Talk","Fragt nach Zahlen, Rabatt, Bottom Line","Ungeduldig, unterbricht, will Kontrolle","Redet in Ergebnissen, nicht in Gefühlen"],
+    strategie:["Fasse dich kurz, komm sofort zum Nutzen","Gib ihm die Entscheidung — biete Optionen statt Vorträge","Zeige Effizienz: „Aus einer Hand, alles geregelt“","Kein Druck von deiner Seite — das prallt ab"],
+    persona:"Herr Brandt & Frau Vogel"
+  },
+  I: {
+    disc:"I", tier:"Affe", emo:"🐵", grad:"I",
+    name:"Der Affe", essenz:"Initiativ, begeisternd, gesellig. Du gewinnst Menschen über Sympathie und Energie.",
+    staerken:["Baust in Sekunden Rapport und Nähe auf","Ansteckende Begeisterung, positive Stimmung","Redegewandt, findest immer einen Draht","Machst schwere Themen leichter"],
+    blindspots:["Redest mehr als du zuhörst","Verlierst dich im Plaudern statt zu strukturieren","Weichst unangenehmen Momenten (Preis, Abschluss) aus","Vergisst den konkreten nächsten Schritt"],
+    vertrieb:["Zügele den Redefluss — stelle Fragen und halte inne","Bring nach dem Rapport bewusst Struktur rein","Trau dich an den Abschluss, auch wenn es unbequem wird"],
+    signale:["Viel Small Talk, erzählt persönliche Geschichten","Emotional, lacht, macht Witze — auch zum Ausweichen","Sucht Sympathie und Bestätigung","Springt zwischen Themen"],
+    strategie:["Geh auf die persönliche Ebene, sei ein Mensch","Spiegle seine Energie, aber führe zurück zum Thema","Male das positive Bild: Entlastung, gutes Gefühl","Halte den Abschluss leicht und konkret fest"],
+    persona:"Herr Krause"
+  },
+  S: {
+    disc:"S", tier:"Hase", emo:"🐰", grad:"S",
+    name:"Der Hase", essenz:"Stetig, geduldig, harmoniebedürftig. Du baust Vertrauen und bleibst verlässlich.",
+    staerken:["Echtes Zuhören — Kunden fühlen sich verstanden","Geduldig, ruhig, kein Druck","Aufrichtiges Interesse am Menschen","Verlässlich, baust langfristiges Vertrauen"],
+    blindspots:["Scheust den Abschluss, um niemanden zu drängen","Gibst bei Widerstand zu schnell nach","Vermeidest Konflikte, auch nötige","Bleibst zu vage statt klar zu führen"],
+    vertrieb:["Trau dich, den Testabschluss aktiv zu setzen","Ein Einwand ist kein Angriff — bleib dran statt nachzugeben","Führe das Gespräch, gib die Initiative nicht ab"],
+    signale:["Freundlich, ruhig, entscheidet ungern allein","„Ich muss erst mit meiner Familie sprechen“","Sucht Sicherheit, meidet Risiko und Druck","Zögert, will nichts falsch machen"],
+    strategie:["Gib Sicherheit und Zeit, kein Drängen","Beziehe die Familie aktiv ein statt dagegen zu reden","Betone Entlastung und Verlässlichkeit","Führe mit ruhigen, kleinen nächsten Schritten"],
+    persona:"Frau Sommer & Herr Lehmann"
+  },
+  C: {
+    disc:"C", tier:"Eule", emo:"🦉", grad:"C",
+    name:"Die Eule", essenz:"Gewissenhaft, analytisch, präzise. Du überzeugst mit Fakten und Gründlichkeit.",
+    staerken:["Kompetent und glaubwürdig durch Sachwissen","Gründlich — nichts bleibt offen","Sachlich souverän, auch bei kritischen Fragen","Baust Vertrauen über Transparenz"],
+    blindspots:["Verlierst dich in Details statt zu entscheiden","Wirkst kühl, vergisst die emotionale Ebene","Zu viele Fakten erschlagen den Kunden","Perfektionismus bremst den Abschluss"],
+    vertrieb:["Übersetze Fakten in Nutzen und Gefühl","Zwei starke Argumente schlagen zehn Details","Erlaube dir, ohne 100% Sicherheit abzuschließen"],
+    signale:["Stellt kritische Detailfragen","„Was passiert mit meinem Geld?“ · Sicherheit","Reagiert allergisch auf Floskeln und Schwammiges","Vergleicht genau, will Belege"],
+    strategie:["Wertschätze kritische Fragen, wiegle nie ab","Antworte konkret, transparent, überprüfbar","Nenne Zahlen, Treuhandkonto, klare Fakten","Kein Verkaufsdruck — er entscheidet über Logik"],
+    persona:"Frau Albrecht"
+  }
+};
+const TYPE_ORDER = ["D","I","S","C"];
+
+/* DISC-Test — 16 Fragen (Forced Choice) */
+const DISC_Q = [
+  {q:"Wenn ein neues Projekt startet, …", o:[
+    {t:"D",x:"packe ich sofort an und will schnell Ergebnisse sehen."},
+    {t:"I",x:"begeistere ich andere und male das große Bild."},
+    {t:"S",x:"sorge ich dafür, dass alle an Bord sind."},
+    {t:"C",x:"plane ich erst gründlich, bevor ich loslege."}]},
+  {q:"Im Kundengespräch bin ich am stärksten, wenn ich …", o:[
+    {t:"C",x:"mit Fakten und klaren Argumenten überzeuge."},
+    {t:"D",x:"zielstrebig auf den Abschluss zusteuere."},
+    {t:"I",x:"eine lockere, persönliche Verbindung aufbaue."},
+    {t:"S",x:"geduldig zuhöre und Vertrauen aufbaue."}]},
+  {q:"Was mich am meisten motiviert:", o:[
+    {t:"S",x:"ein harmonisches, stabiles Miteinander."},
+    {t:"C",x:"Qualität und alles richtig zu machen."},
+    {t:"D",x:"gewinnen und Ziele erreichen."},
+    {t:"I",x:"Anerkennung und Kontakt mit Menschen."}]},
+  {q:"Unter Druck neige ich dazu, …", o:[
+    {t:"I",x:"viel zu reden und zu improvisieren."},
+    {t:"S",x:"nachzugeben und Konflikte zu meiden."},
+    {t:"D",x:"ungeduldig und fordernd zu werden."},
+    {t:"C",x:"mich in Details zu verlieren."}]},
+  {q:"Andere beschreiben mich als …", o:[
+    {t:"D",x:"direkt und durchsetzungsstark."},
+    {t:"C",x:"gründlich und präzise."},
+    {t:"I",x:"begeisternd und gesellig."},
+    {t:"S",x:"geduldig und verlässlich."}]},
+  {q:"Entscheidungen treffe ich …", o:[
+    {t:"C",x:"erst nach sorgfältiger Analyse."},
+    {t:"D",x:"schnell und aus dem Bauch."},
+    {t:"S",x:"lieber gemeinsam und ohne Eile."},
+    {t:"I",x:"spontan, wenn es sich gut anfühlt."}]},
+  {q:"In einem Meeting …", o:[
+    {t:"I",x:"bringe ich Energie und Ideen rein."},
+    {t:"D",x:"komme ich schnell auf den Punkt."},
+    {t:"C",x:"achte ich auf Fakten und Genauigkeit."},
+    {t:"S",x:"höre ich zu und vermittle."}]},
+  {q:"Ein Einwand vom Kunden ist für mich …", o:[
+    {t:"D",x:"eine Herausforderung, die ich knacken will."},
+    {t:"S",x:"ein Signal, behutsam zu sein."},
+    {t:"C",x:"eine Frage, die eine präzise Antwort verdient."},
+    {t:"I",x:"eine Chance, ins Gespräch zu kommen."}]},
+  {q:"Meine Arbeitsweise ist eher …", o:[
+    {t:"S",x:"geordnet und beständig."},
+    {t:"C",x:"systematisch und sehr strukturiert."},
+    {t:"D",x:"ergebnisorientiert — Hauptsache es läuft."},
+    {t:"I",x:"kreativ-chaotisch, aber lebendig."}]},
+  {q:"Der Kunde kauft bei mir am ehesten wegen …", o:[
+    {t:"C",x:"lückenloser, belegbarer Informationen."},
+    {t:"I",x:"meiner Begeisterung und Sympathie."},
+    {t:"D",x:"klarer Vorteile und Effizienz."},
+    {t:"S",x:"meines ehrlichen Interesses an ihm."}]},
+  {q:"Konflikte …", o:[
+    {t:"D",x:"gehe ich direkt an."},
+    {t:"S",x:"versuche ich zu vermeiden."},
+    {t:"I",x:"löse ich mit Charme und Humor."},
+    {t:"C",x:"analysiere ich sachlich."}]},
+  {q:"Zeitdruck finde ich …", o:[
+    {t:"D",x:"anspornend."},
+    {t:"C",x:"stressig, weil Fehler passieren."},
+    {t:"I",x:"aufregend."},
+    {t:"S",x:"unangenehm."}]},
+  {q:"Am wichtigsten in der Zusammenarbeit ist mir …", o:[
+    {t:"S",x:"Verlässlichkeit."},
+    {t:"D",x:"Ergebnisse."},
+    {t:"C",x:"Korrektheit."},
+    {t:"I",x:"Stimmung."}]},
+  {q:"Wenn ich telefoniere, …", o:[
+    {t:"I",x:"plaudere ich gern und schaffe Nähe."},
+    {t:"D",x:"fasse ich mich kurz und klar."},
+    {t:"S",x:"nehme ich mir Zeit und bleibe ruhig."},
+    {t:"C",x:"bereite ich mich gut vor, bleibe sachlich."}]},
+  {q:"Neue Regeln oder Prozesse …", o:[
+    {t:"C",x:"befolge ich genau — dafür sind sie da."},
+    {t:"D",x:"hinterfrage ich, wenn sie mich bremsen."},
+    {t:"S",x:"akzeptiere ich, wenn sie Sinn ergeben."},
+    {t:"I",x:"nehme ich locker, solange es Spaß macht."}]},
+  {q:"Mein größter Beitrag im Team ist …", o:[
+    {t:"S",x:"Ruhe und Zusammenhalt."},
+    {t:"I",x:"Energie und Netzwerk."},
+    {t:"D",x:"Tempo und Durchsetzung."},
+    {t:"C",x:"Sorgfalt und Qualität."}]}
+];
+
+/* Tier-Test — 12 Fragen */
+const TIER_Q = [
+  {q:"Ein Kunde zögert lange. Mein erster Impuls:", o:[
+    {t:"D",x:"Ich bringe es auf den Punkt und fordere eine Entscheidung."},
+    {t:"I",x:"Ich lockere die Stimmung und rede ihn warm."},
+    {t:"S",x:"Ich gebe ihm Zeit und Sicherheit."},
+    {t:"C",x:"Ich liefere ihm die fehlenden Fakten."}]},
+  {q:"Was gibt dir im Job Energie?", o:[
+    {t:"I",x:"Menschen und Austausch."},
+    {t:"D",x:"Ziele knacken."},
+    {t:"C",x:"Dinge richtig und genau machen."},
+    {t:"S",x:"ein gutes, ruhiges Miteinander."}]},
+  {q:"Dein Ton am Telefon:", o:[
+    {t:"S",x:"ruhig und warm."},
+    {t:"D",x:"schnell und bestimmt."},
+    {t:"I",x:"lebhaft und emotional."},
+    {t:"C",x:"bedacht und sachlich."}]},
+  {q:"Wenn du unsicher bist, …", o:[
+    {t:"C",x:"sammle ich mehr Informationen."},
+    {t:"D",x:"entscheide ich trotzdem und korrigiere später."},
+    {t:"I",x:"frage ich andere und rede es durch."},
+    {t:"S",x:"warte ich lieber ab."}]},
+  {q:"Dein größtes Talent im Verkauf:", o:[
+    {t:"D",x:"Abschlussstärke."},
+    {t:"S",x:"Vertrauen und Geduld."},
+    {t:"I",x:"Beziehung und Sympathie."},
+    {t:"C",x:"Kompetenz und Genauigkeit."}]},
+  {q:"Was nervt dich am meisten?", o:[
+    {t:"C",x:"Schlamperei und Ungenauigkeit."},
+    {t:"D",x:"Langsamkeit und Zögern."},
+    {t:"S",x:"Streit und Druck."},
+    {t:"I",x:"Langeweile und Steifheit."}]},
+  {q:"In der Freizeit bist du eher …", o:[
+    {t:"S",x:"entspannt, im vertrauten Kreis."},
+    {t:"D",x:"aktiv, wettbewerbsorientiert."},
+    {t:"I",x:"gesellig, unter Menschen."},
+    {t:"C",x:"für dich, mit einem Hobby in die Tiefe."}]},
+  {q:"Ein guter Arbeitstag ist, wenn …", o:[
+    {t:"D",x:"ich viel geschafft habe."},
+    {t:"C",x:"alles korrekt und sauber erledigt ist."},
+    {t:"I",x:"ich viele gute Gespräche hatte."},
+    {t:"S",x:"alles harmonisch lief."}]},
+  {q:"Andere kommen zu dir, weil …", o:[
+    {t:"I",x:"du gute Laune verbreitest."},
+    {t:"D",x:"du Dinge voranbringst."},
+    {t:"S",x:"du zuhörst und da bist."},
+    {t:"C",x:"du dich auskennst."}]},
+  {q:"Beim Präsentieren …", o:[
+    {t:"C",x:"untermauere ich alles mit Belegen."},
+    {t:"D",x:"komme ich schnell zum Punkt."},
+    {t:"I",x:"reiße ich die Leute mit."},
+    {t:"S",x:"bleibe ich nah am Menschen."}]},
+  {q:"Kritik nimmst du …", o:[
+    {t:"S",x:"dir zu Herzen."},
+    {t:"D",x:"sportlich — Hauptsache es geht weiter."},
+    {t:"I",x:"persönlich, aber du schüttelst sie ab."},
+    {t:"C",x:"sachlich, wenn sie begründet ist."}]},
+  {q:"Dein Antrieb in einem Satz:", o:[
+    {t:"D",x:"Ich will gewinnen."},
+    {t:"I",x:"Ich will begeistern."},
+    {t:"S",x:"Ich will Harmonie."},
+    {t:"C",x:"Ich will es richtig machen."}]}
+];
+
+/* Personas — mit DISC & Tier */
+const PERSONAS = [
+  {id:"brandt",name:"Herr Brandt, 68",label:"Der Preisfokussierte",disc:"D",
+   desc:"Vergleicht Preise, findet alles zu teuer, will verhandeln.",
+   typHinweis:"Klassischer Löwe: dominant, ergebnisorientiert, will die Kontrolle behalten. Verhandeln ist sein Spiel.",
+   opener:"Ja, guten Tag... Also, ich sag's gleich vorweg: Ich hab mir das mit den Preisen angeschaut, und das ist mir ehrlich gesagt alles zu teuer.",
+   prompt:"Du bist Herr Brandt, 68, Rentner, ehemaliger Handwerksmeister. Du hast eine Anfrage zur Bestattungsvorsorge gestellt, bist aber stark preisfokussiert. Du vergleichst, fragst nach Rabatten, sagst Dinge wie 'beim Bestatter um die Ecke krieg ich das günstiger'. Dein eigentliches Motiv (das du nicht sofort zeigst): Du willst deine Frau finanziell absichern und nichts dem Zufall überlassen. Du öffnest dich, wenn der Berater dein Motiv findet und Nutzen statt Preis verkauft."},
+  {id:"sommer",name:"Frau Sommer, 74",label:"Die Familienmensch",disc:"S",
+   desc:"Will erst mit den Kindern sprechen, entscheidet ungern allein.",
+   typHinweis:"Ein Hase: harmoniebedürftig, konfliktscheu, entscheidet nicht gern allein. Braucht Sicherheit.",
+   opener:"Guten Tag. Ich hatte da ja angefragt... aber wissen Sie, eigentlich wollte ich das alles erst einmal mit meinen Kindern besprechen.",
+   prompt:"Du bist Frau Sommer, 74, verwitwet, zwei erwachsene Kinder. Du bist freundlich, aber entscheidungsscheu. Dein Haupteinwand: 'Das muss ich erst mit meinen Kindern besprechen.' Dein eigentliches Motiv: Du willst deinen Kindern später nicht zur Last fallen, genau deshalb zögerst du paradoxerweise. Du öffnest dich, wenn der Berater dein Bedürfnis nach Entlastung der Familie anspricht und dir z.B. anbietet, die Kinder einzubinden."},
+  {id:"krause",name:"Herr Krause, 57",label:"Der Verdränger",disc:"I",
+   desc:"Fühlt sich zu jung, weicht mit Humor aus, schiebt das Thema weg.",
+   typHinweis:"Ein Affe: kommunikativ, humorvoll, emotional — nutzt Witze, um dem Thema auszuweichen.",
+   opener:"Tag! Also, meine Frau meinte, ich soll mich da mal informieren. Aber ganz ehrlich: Ich bin 57. Ich kauf mir doch jetzt noch keine Beerdigung.",
+   prompt:"Du bist Herr Krause, 57, berufstätig, macht gern Witze, um dem Thema auszuweichen. Haupteinwände: 'Ich bin noch viel zu jung dafür', 'Das hat doch noch Zeit', 'Schicken Sie mir mal was zu'. Dein verdecktes Motiv: Ein Kollege ist kürzlich plötzlich verstorben, das hat dich mehr beschäftigt, als du zugibst. Du öffnest dich, wenn der Berater deine Ausweichmanöver freundlich ernst nimmt, gute offene Fragen stellt und Vorsorge als Entscheidung 'in Ruhe statt unter Druck' rahmt."},
+  {id:"albrecht",name:"Frau Albrecht, 71",label:"Die Skeptikerin",disc:"C",
+   desc:"Misstraut Vorauszahlungen, fragt kritisch nach Sicherheit.",
+   typHinweis:"Eine Eule: analytisch, kritisch, ehemalige Buchhalterin. Will Fakten, keine Floskeln.",
+   opener:"Guten Tag. Ich habe da einige Fragen. Vor allem: Was passiert eigentlich mit meinem Geld, wenn ich da jetzt einzahle? Man liest ja so einiges.",
+   prompt:"Du bist Frau Albrecht, 71, ehemalige Buchhalterin, sehr genau und kritisch. Haupteinwände: 'Was passiert mit meinem Geld?', 'Was ist, wenn Ihre Firma pleitegeht?', 'Wir haben eigentlich schon alles geregelt' (bei Nachfrage stellt sich heraus: nur eine Sterbegeldversicherung, sonst nichts Schriftliches). Du stellst Detailfragen und reagierst allergisch auf schwammige Antworten und Verkaufsfloskeln. Du öffnest dich, wenn der Berater transparent, konkret und ohne Druck erklärt und deine kritischen Fragen wertschätzt statt abzuwehren."},
+  {id:"lehmann",name:"Herr Lehmann, 66",label:"Der Abgekühlte",disc:"S",
+   desc:"Hat ein Angebot erhalten, blockt jetzt ab: kein Interesse mehr.",
+   typHinweis:"Ein Hase im Rückzug: konfliktscheu, hat sich nach Preis-Schock und Gegenwind der Frau zurückgezogen.",
+   opener:"Ach, Sie sind das... Ja, hören Sie, ich hab mir das überlegt. Ich hab da eigentlich kein Interesse mehr.",
+   prompt:"Du bist Herr Lehmann, 66. Du hast vor zwei Wochen ein Angebot zur Bestattungsvorsorge erhalten, dich aber nicht mehr gemeldet. Jetzt ruft der Berater nach (Follow-up-Call) und du blockst ab: 'Kein Interesse mehr', 'Hat sich erledigt'. Der wahre Grund (zeigst du nicht sofort): Der Gesamtbetrag im Angebot hat dich erschreckt, und deine Frau meinte, das brauche man nicht. Du wirst abweisend bei Druck oder wenn der Berater das alte Angebot einfach verteidigt. Du öffnest dich, wenn er ohne Druck und ehrlich interessiert nach dem Grund fragt, dein Preis-Erschrecken ernst nimmt und Optionen aufzeigt (anderer Leistungsumfang, Ratenzahlung, Einbindung deiner Frau)."},
+  {id:"vogel",name:"Frau Vogel, 69",label:"Die Preisanfragerin",disc:"D",
+   desc:"Will nur eine Zahl hören und vergleicht mehrere Anbieter.",
+   typHinweis:"Ein Löwe: pragmatisch, direkt, ungeduldig. Will Ergebnisse (eine Zahl), keine Vorträge.",
+   opener:"Guten Tag. Also, ich will gar nicht lange reden, ich wollte eigentlich nur mal wissen, was so etwas bei Ihnen kostet.",
+   prompt:"Du bist Frau Vogel, 69, pragmatisch und direkt. Du willst am Telefon nur eine konkrete Zahl und vergleichst mehrere Anbieter. Später im Gespräch bringst du den Einwand: 'Ihr macht doch nichts anderes als ein normaler Bestatter.' Dein verdecktes Motiv: Dein Mann ist kürzlich schwer erkrankt, du willst vorbereitet sein, das erzählst du aber nicht von selbst, nur wenn der Berater einfühlsam und gut fragt. Du reagierst genervt, wenn der Berater den Preis zurückhält, ausweicht oder einen Vortrag hält. Du öffnest dich, wenn er transparent sofort einen Preisrahmen nennt UND danach gute Fragen stellt, statt nur zu präsentieren."}
+];
+
+const DIFFICULTIES = [
+  {id:"locker",label:"Aufwärmen",desc:"Kunde öffnet sich schnell, 1–2 Einwände"},
+  {id:"normal",label:"Normal",desc:"Realistisches Gespräch, mehrere Einwände"},
+  {id:"hart",label:"Hart",desc:"Kunde bleibt lange skeptisch, hakt nach"}
+];
+
+/* Quiz — 14 Fragen, jeweils mit passendem Typ-Bezug */
+const QUIZ = [
+  {einwand:"„Das ist mir ehrlich gesagt alles zu teuer.“",frage:"Was ist die stärkste erste Reaktion?",typ:"D",
+   optionen:["„Qualität hat eben ihren Preis, dafür bekommen Sie bei uns auch wirklich alles aus einer Hand.“","„Ich verstehe, dass der Betrag erstmal groß wirkt. Zu teuer im Vergleich wozu? Was hatten Sie sich denn vorgestellt?“","„Da kann ich schauen, ob wir beim Preis noch etwas machen können.“","„Andere Anbieter sind deutlich teurer als wir, das kann ich Ihnen versichern.“"],
+   korrekt:1,erklaerung:"Schritt 1 + 2 der Methode: erst annehmen (Verständnis zeigen, nicht widersprechen), dann hinterfragen. 'Zu teuer' ist fast nie der echte Einwand, dahinter steckt meist fehlender wahrgenommener Nutzen oder ein Vergleichswert. Sofort rabattieren (C) entwertet das Angebot, rechtfertigen (A/D) erzeugt Widerstand.",
+   typnote:"Preisfokus ist typisch für den Löwen (D). Bleib souverän, gib den Preis nicht sofort her — führe ihn zum Nutzen."},
+  {einwand:"„Das muss ich erst mit meinen Kindern besprechen.“",frage:"Wie reagierst du am besten?",typ:"S",
+   optionen:["„Natürlich, sprechen Sie in Ruhe mit Ihrer Familie. Ich melde mich dann nächste Woche wieder.“","„Das ist doch Ihre Entscheidung, nicht die Ihrer Kinder, schließlich geht es um Ihre Vorsorge.“","„Sehr gut, dass Sie Ihre Familie einbeziehen möchten. Was genau möchten Sie denn mit Ihren Kindern besprechen? Und wie wäre es, wenn wir das nächste Gespräch gemeinsam mit ihnen führen?“","„Die meisten Kinder sind erfahrungsgemäß sehr froh, wenn die Eltern das regeln.“"],
+   korrekt:2,erklaerung:"Den Einwand annehmen und konkretisieren: Was genau ist offen? Oft steckt dahinter Unsicherheit, keine echte Abstimmungspflicht. Die Familie aktiv einzubinden (gemeinsamer Termin) macht aus dem Vertagungs-Einwand einen konkreten nächsten Schritt, statt das Gespräch ins Leere laufen zu lassen (A).",
+   typnote:"Ein Hase (S) schiebt die Entscheidung aus Harmoniebedürfnis weg. Nimm ihm die Angst, etwas allein zu entscheiden — binde die Familie ein."},
+  {einwand:"„Ich bin doch noch viel zu jung dafür.“",frage:"Welche Antwort dreht den Einwand am besten?",typ:"I",
+   optionen:["„Man weiß nie, was passiert, es kann jeden jederzeit treffen.“","„Verstehe ich gut. Die meisten denken erst viel später darüber nach. Darf ich fragen, was Sie denn jetzt dazu gebracht hat, sich zu informieren?“","„Statistisch gesehen ist das gar nicht so unwahrscheinlich, wie Sie denken.“","„Kein Problem, dann melden Sie sich einfach in zehn Jahren nochmal.“"],
+   korrekt:1,erklaerung:"Nicht mit Angst argumentieren (A/C), das erzeugt Abwehr. Die offene Frage nach dem Anlass führt zum echten Motiv: Irgendetwas hat die Person ja zur Anfrage bewegt. Danach lässt sich Vorsorge positiv rahmen: in Ruhe selbst entscheiden statt später unter Druck, plus Preissicherheit.",
+   typnote:"Der Affe (I) weicht mit Humor aus. Nimm das Ausweichen freundlich ernst und finde mit einer offenen Frage den echten Anlass."},
+  {einwand:"„Schicken Sie mir erstmal Unterlagen zu, dann schaue ich mir das an.“",frage:"Beste Reaktion auf diesen Vertagungs-Einwand?",typ:"S",
+   optionen:["„Mache ich gern. Damit ich Ihnen die richtigen Informationen zusammenstelle: Welche Frage ist für Sie denn aktuell noch offen? ... Und lassen Sie uns direkt einen Termin vereinbaren, an dem wir die Unterlagen gemeinsam durchgehen.“","„Klar, die Unterlagen gehen heute noch raus. Schönen Tag noch!“","„Unterlagen bringen Ihnen ehrlich gesagt nichts, das erkläre ich Ihnen besser direkt am Telefon.“","„Das steht alles auf unserer Webseite, da können Sie alles nachlesen.“"],
+   korrekt:0,erklaerung:"'Unterlagen schicken' ist meist ein höflicher Ausstieg. Die Gegenstrategie: konkretisieren (welche Frage ist wirklich offen?) und einen festen Folgetermin setzen. Ohne Termin ist die Conversion-Wahrscheinlichkeit minimal, genau hier verlieren wir CR2.",
+   typnote:"Vertagen ohne Termin ist der Klassiker beim konfliktscheuen Hasen (S). Setze immer einen konkreten, terminierten nächsten Schritt."},
+  {einwand:"„Ach, das regeln dann später mal meine Kinder.“",frage:"Welche Antwort trifft das dahinterliegende Motiv?",typ:"S",
+   optionen:["„Das ist riskant. Ihre Kinder wissen doch gar nicht, was Sie sich wünschen.“","„Dann zahlen Ihre Kinder am Ende alles selbst, das sind schnell mehrere tausend Euro.“","„Genau darum geht es bei der Vorsorge: Ihre Kinder müssen sich dann eben nicht in der schwersten Zeit um Organisation, Kosten und hundert Entscheidungen kümmern. Wie wichtig ist es Ihnen, Ihre Familie an der Stelle zu entlasten?“","„Das höre ich oft, aber die wenigsten Kinder wollen das wirklich übernehmen.“"],
+   korrekt:2,erklaerung:"Der Einwand enthält das stärkste Verkaufsargument bereits selbst: Wer sagt 'das regeln meine Kinder', dem ist die Familie wichtig. Statt Druck (A/B) oder Belehrung (D) den Spieß umdrehen. Vorsorge IST die Entlastung der Kinder, und mit einer Motivfrage abschließen.",
+   typnote:"Familie zuerst — das ist das Herz des Hasen (S). Dreh den Einwand in sein stärkstes Kaufmotiv: Entlastung der Kinder."},
+  {einwand:"„Ich habe doch schon eine Sterbegeldversicherung.“",frage:"Wie grenzt du am besten ab?",typ:"C",
+   optionen:["„Sterbegeldversicherungen lohnen sich finanziell meistens nicht, das ist bekannt.“","„Das ist eine gute Basis! Die Versicherung deckt das Geld ab, aber wer legt fest, WIE Ihre Bestattung aussehen soll, und wer organisiert im Ernstfall alles? Genau das ergänzt die Vorsorge.“","„Dann brauchen Sie uns ja eigentlich nicht mehr.“","„Die können Sie ja kündigen und das Geld bei uns einzahlen.“"],
+   korrekt:1,erklaerung:"Nicht gegen das Bestehende argumentieren, es bestätigen und die Lücke zeigen: Geld ≠ Wille + Organisation. Die Versicherung zahlt aus, aber sie legt nichts fest und nimmt der Familie keine einzige Entscheidung ab. Abgrenzung über Ergänzung statt Konkurrenz.",
+   typnote:"Die Eule (C) hat sich informiert und schon etwas geregelt. Wertschätze das, argumentiere sachlich über die Lücke — nicht über Konkurrenz."},
+  {einwand:"Du nennst den Preis, und der Kunde schweigt.",frage:"Was machst du?",typ:"D",
+   optionen:["Direkt nachschieben: „Aber da lässt sich bestimmt noch was machen beim Preis.“","Die Stille füllen und nochmal alle Leistungen aufzählen.","Die Stille aushalten. Wenn der Kunde nichts sagt, ruhig fragen: „Was geht Ihnen gerade durch den Kopf?“","Schnell das Thema wechseln, um die Situation aufzulösen."],
+   korrekt:2,erklaerung:"Schweigen nach der Preisnennung ist normal, der Kunde rechnet und verarbeitet. Wer die Stille mit Rabatten (A) oder Monologen (B) füllt, signalisiert Unsicherheit und entwertet das eigene Angebot. Aushalten, dann eine offene Frage.",
+   typnote:"Gerade als Löwe (D) im eigenen Team fällt Schweigen-Aushalten schwer — du willst weiter. Genau hier ist Zurückhaltung deine Stärke."},
+  {einwand:"„Was passiert denn mit meinem Geld, wenn Ihre Firma pleitegeht?“",frage:"Wie reagierst du auf den Sicherheits-Einwand?",typ:"C",
+   optionen:["„Da brauchen Sie sich wirklich keine Sorgen zu machen, wir sind ein solides Unternehmen.“","„Eine sehr gute Frage, die sollten Sie jedem Anbieter stellen. Ihr Geld liegt nicht bei uns, sondern abgesichert und zweckgebunden [auf dem Treuhandkonto]. Soll ich Ihnen kurz erklären, wie das genau funktioniert?“","„Diese Frage stellen eigentlich nur sehr misstrauische Kunden.“","„Das steht alles im Kleingedruckten, das kann ich Ihnen zuschicken.“"],
+   korrekt:1,erklaerung:"Kritische Fragen wertschätzen statt abwiegeln, das baut Vertrauen auf. Skeptiker wollen konkrete, überprüfbare Antworten, keine Beruhigungsfloskeln (A). Die Rückfrage am Ende holt die Erlaubnis zum Erklären ein und hält den Dialog am Laufen.",
+   typnote:"Sicherheitsfragen sind das Markenzeichen der Eule (C). Nie abwiegeln — wertschätze die Frage und antworte konkret und überprüfbar."},
+  {einwand:"Gesprächseinstieg: Der Kunde hat online angefragt, du rufst an.",frage:"Welcher Einstieg ist am stärksten?",typ:"I",
+   optionen:["Direkt mit der Produktpräsentation starten, der Kunde hat ja schließlich angefragt.","„Ich rufe an wegen Ihrer Anfrage. Ich erzähle Ihnen erstmal, wer wir sind und was wir alles anbieten...“ (5 Minuten Monolog)","Bezug + Rahmen + offene Frage: „Sie hatten sich bei uns zur Bestattungsvorsorge informiert. Damit ich Ihnen genau das Passende zeigen kann: Was hat Sie denn dazu bewegt, sich jetzt mit dem Thema zu beschäftigen?“","„Haben Sie 5 Minuten Zeit? Ich will Sie nicht lange stören.“"],
+   korrekt:2,erklaerung:"Der Einstieg entscheidet über das ganze Gespräch: Bezug herstellen, Rahmen setzen, dann sofort in die Bedarfsanalyse mit einer offenen Motivfrage. Wer mit Monolog (B) oder Präsentation (A) startet, verkauft am Bedarf vorbei. Sich klein machen (D) nimmt dem Gespräch den Wert.",
+   typnote:"Als Affe (I) im Team liegt dir der warme Einstieg — achte nur darauf, nach dem Rapport zügig zur offenen Frage zu kommen."},
+  {einwand:"Der Kunde sagt: „Hm, das klingt eigentlich ganz vernünftig.“",frage:"Was ist jetzt der richtige Move?",typ:"D",
+   optionen:["Weiter präsentieren, es gibt ja noch drei Leistungspakete, die er noch nicht kennt.","Das Kaufsignal nutzen und den Testabschluss machen: „Das freut mich! Dann lassen Sie uns doch direkt schauen, welches Paket zu Ihren Wünschen passt, einverstanden?“","„Schön. Dann überlegen Sie es sich in Ruhe und melden sich bei mir.“","Vorsichtshalber nochmal alle möglichen Einwände proaktiv ansprechen."],
+   korrekt:1,erklaerung:"'Klingt vernünftig' ist ein Kaufsignal, jetzt abschließen, nicht weiterreden. Wer nach dem Kaufsignal weiter präsentiert (A) oder neue Einwände aufmacht (D), redet den Abschluss kaputt ('overselling'). Die Initiative abzugeben (C) kostet direkt CR2.",
+   typnote:"Kaufsignale zu nutzen ist die Paradedisziplin des Löwen (D). Wenn du eher Hase (S) bist: genau hier musst du dich trauen, aktiv abzuschließen."},
+  {einwand:"„Ich habe da eigentlich kein Interesse mehr.“ (Follow-up nach Angebot)",frage:"Wie holst du das Gespräch zurück?",typ:"S",
+   optionen:["„Schade. Dann nehme ich Sie aus dem System. Auf Wiederhören.“","„Aber Sie hatten doch extra angefragt, da muss doch Interesse da gewesen sein!“","„Das ist völlig in Ordnung. Damit ich es richtig einordne: Was hat sich denn seit unserem letzten Gespräch geändert, war es das Angebot, der Zeitpunkt oder etwas anderes?“","„Verstehe. Ich rufe einfach in einem Monat nochmal an.“"],
+   korrekt:2,erklaerung:"'Kein Interesse mehr' ist fast nie eine inhaltliche Aussage, sondern ein Schutzschild. Dahinter steckt fast immer ein konkreter Grund: Preis-Schock, Gegenwind aus der Familie oder Verdrängung. Die ruhige, drucklose Rückfrage öffnet das Gespräch wieder. Aufgeben (A), Vorwürfe (B) und blindes Wiedervorlegen (D) kosten CR2.",
+   typnote:"Der zurückgezogene Hase (S) blockt aus Konfliktscheu ab. Absolut kein Druck — ruhige Neugier auf den echten Grund öffnet ihn wieder."},
+  {einwand:"„Wir haben schon alles geregelt.“",frage:"Was ist die stärkste Reaktion?",typ:"C",
+   optionen:["„Oh, das wusste ich nicht. Dann will ich nicht weiter stören.“","„Wunderbar, das haben die wenigsten! Darf ich fragen, was genau Sie geregelt haben? Also die Finanzierung, der Ablauf, Ihre Wünsche schriftlich und verbindlich?“","„Das glaube ich Ihnen ehrlich gesagt nicht. Die wenigsten haben wirklich alles geregelt.“","„Gut, dann schicke ich Ihnen trotzdem mal unsere Broschüre zu.“"],
+   korrekt:1,erklaerung:"'Alles geregelt' heißt bei Nachfrage meistens: eine Sterbegeldversicherung ODER eine Grabstelle ODER 'mal mit den Kindern gesprochen'. Anerkennen + konkret hinterfragen deckt die Lücke auf. Und wenn wirklich alles geregelt ist: sauber verabschieden, das ist ein ehrliches Quali-Out.",
+   typnote:"Die Eule (C) hat Teillösungen und hält sie für vollständig. Sachlich und präzise die Lücke aufdecken — sie überzeugt Logik, kein Druck."},
+  {einwand:"„Ich wollte eigentlich nur wissen, was das kostet.“",frage:"Wie gehst du mit dem reinen Preisinteresse um?",typ:"D",
+   optionen:["„Pauschal kann ich Ihnen da leider gar nichts sagen, das ist ganz individuell.“","Den günstigsten Preis nennen und das Gespräch freundlich beenden.","Erst ausführlich das Unternehmen vorstellen, bevor du über Preise sprichst.","„Sehr gern, dafür bin ich da! Damit die Zahl für Sie auch stimmt: Je nach Wünschen liegt das ungefähr zwischen X und Y. Was schwebt Ihnen denn vor, eher eine Feuerbestattung oder eine Erdbestattung?“"],
+   korrekt:3,erklaerung:"Wer den Preis zurückhält (A) oder erst einen Vortrag hält (C), erzeugt Misstrauen und verliert den Kunden an den nächsten Anbieter mit Preisliste. Wer nur die Zahl nennt (B), wird zur Vergleichszeile. Der Move: sofort Transparenz (Preisrahmen), aber direkt mit einer Bedarfsfrage verknüpfen.",
+   typnote:"Der Löwe (D) will eine Zahl, sofort. Halte den Preis nicht zurück — gib den Rahmen transparent und häng eine Bedarfsfrage an."},
+  {einwand:"„Ihr macht doch nichts anderes als ein normaler Bestatter.“",frage:"Wie differenzierst du am besten?",typ:"D",
+   optionen:["„Nein, das stimmt überhaupt nicht, wir sind etwas völlig anderes.“","„Normale Bestatter sind meistens teurer und oft auch weniger seriös.“","„Stimmt, im Kern organisieren wir die Bestattung. Der Unterschied ist die Vorsorge: Sie legen heute alles fest, sichern sich die heutigen Preise, Ihr Geld ist abgesichert, und Ihre Familie muss später keine einzige Entscheidung treffen. Welcher dieser Punkte ist Ihnen am wichtigsten?“","„Wenn Sie das so sehen, können Sie natürlich auch zum Bestatter um die Ecke gehen.“"],
+   korrekt:2,erklaerung:"Teilweise zustimmen entwaffnet, kein Widerspruchs-Pingpong (A). Dann die Differenzierung über die eigene Vorsorge-Leistung statt über das Schlechtreden des Wettbewerbs (B). Die Abschlussfrage am Ende macht aus der Differenzierung eine Motivfrage: Du erfährst, welcher USP zieht.",
+   typnote:"Der direkte Löwe (D) provoziert gern mit Vergleichen. Nicht ins Pingpong gehen — teilweise zustimmen, souverän differenzieren, Motivfrage anhängen."}
+];
+
+const METHODE = [
+  {nr:"1",name:"Annehmen",kurz:"Verständnis zeigen, nie widersprechen",detail:"Der Einwand ist eine Einladung, kein Angriff. Erst emotional andocken: „Verstehe ich gut...“, „Gut, dass Sie das ansprechen...“. Widerspruch erzeugt nur Gegendruck."},
+  {nr:"2",name:"Hinterfragen",kurz:"Den echten Grund finden",detail:"Der genannte Einwand ist selten der echte. Offene Frage stellen: „Zu teuer im Vergleich wozu?“, „Was genau möchten Sie mit Ihren Kindern besprechen?“, erst wer das Motiv kennt, kann argumentieren."},
+  {nr:"3",name:"Argumentieren",kurz:"Nutzen passend zum Motiv",detail:"Jetzt, und erst jetzt, das Argument bringen, das zum gefundenen Motiv passt: Entlastung der Familie, Selbstbestimmung, Preissicherheit, finanzielle Absicherung. Ein starkes Argument schlägt fünf aufgezählte."},
+  {nr:"4",name:"Abschließen",kurz:"Testabschluss oder nächster Schritt",detail:"Nach der Behandlung den Loop schließen: „Konnte ich Ihre Frage damit beantworten?“ → „Dann lassen Sie uns schauen, welches Paket passt.“ Jedes Gespräch endet mit einem konkreten, terminierten nächsten Schritt."}
+];
+
+const PHASEN = [
+  {titel:"Gesprächseinstieg",ziel:"Vertrauen aufbauen und den Rahmen setzen: In den ersten 60 Sekunden entscheidet sich, ob der Kunde sich öffnet.",
+   verhalten:["Bezug zur Anfrage herstellen: Der Kunde hatte einen Grund","Rahmen setzen: kurz sagen, wie das Gespräch abläuft","Sofort in den Dialog, keine Firmenpräsentation als Einstieg"],
+   formulierungen:["„Sie hatten sich bei uns zur Bestattungsvorsorge informiert, schön, dass wir sprechen.“","„Damit ich Ihnen genau das Passende zeigen kann, würde ich Ihnen erst ein paar Fragen stellen, einverstanden?“"],
+   fehler:["Monolog über die Firma","„Ich will nicht lange stören“: das Gespräch klein machen","Ohne Rahmen direkt ins Produkt springen"]},
+  {titel:"Bedarfsanalyse",ziel:"Das echte Motiv finden. Es gibt vier Hauptmotive: Familie entlasten, selbst bestimmen, Preise sichern, finanziell absichern.",
+   verhalten:["Offene Fragen (W-Fragen) statt Ja/Nein-Fragen","Die Anlass-Frage stellen: Warum gerade jetzt?","Aktiv zuhören und Schlüsselwörter spiegeln","Das Motiv zusammenfassen, bevor du präsentierst"],
+   formulierungen:["„Was hat Sie dazu bewegt, sich jetzt mit dem Thema zu beschäftigen?“","„Was ist Ihnen bei Ihrer Vorsorge am wichtigsten?“","„Wenn ich Sie richtig verstehe, geht es Ihnen vor allem darum, Ihre Kinder zu entlasten, richtig?“"],
+   fehler:["Verhörmodus: Frage an Frage reihen ohne zuzuhören","Das erstbeste Stichwort nehmen und lospräsentieren","Motiv nicht zusammenfassen"]},
+  {titel:"Lösungspräsentation",ziel:"Nicht das Produkt präsentieren, sondern die Lösung für das Motiv des Kunden.",
+   verhalten:["Nutzen vor Merkmal: Was hat der Kunde davon?","Die Sprache des Kunden verwenden (seine Worte aus der Bedarfsanalyse)","Maximal 2 bis 3 Kernargumente statt Leistungskatalog","Zwischensignale einholen: „Wie klingt das für Sie?“"],
+   formulierungen:["„Sie sagten, Ihre Kinder sollen sich um nichts kümmern müssen, genau das legen wir hier fest: ...“","„Das heißt für Sie konkret: ...“"],
+   fehler:["Featureliste runterbeten","Fachbegriffe ohne Übersetzung","Ohne Rückkopplung 10 Minuten am Stück reden"]},
+  {titel:"Einwandbehandlung",ziel:"Einwände sind Kaufinteresse in Verkleidung, wer fragt, beschäftigt sich. Mit der 4-Schritte-Methode arbeiten.",
+   verhalten:["Ruhe bewahren: Der Einwand ist normal und erwartbar","Die 4 Schritte: Annehmen → Hinterfragen → Argumentieren → Abschließen","Pro Einwand maximal ein starkes Argument","Nach der Behandlung immer den Loop schließen"],
+   formulierungen:["„Gut, dass Sie das ansprechen, was genau meinen Sie mit ...?“","„Mal angenommen, dieser Punkt wäre geklärt, wäre es dann grundsätzlich das Richtige für Sie?“ (Isolieren)"],
+   fehler:["Sofort rechtfertigen oder rabattieren","Den Einwand überhören und weiterreden","Drei Argumente auf einmal abfeuern"]},
+  {titel:"Abschluss",ziel:"Kaufsignale erkennen und den Sack zumachen: Genau hier entsteht CR2.",
+   verhalten:["Kaufsignale hören: „klingt vernünftig“, Detailfragen, Zukunftsformulierungen","Testabschluss machen, sobald ein Signal kommt","Schweigen nach der Abschlussfrage aushalten","Kein Abschluss? Dann immer ein terminierter nächster Schritt"],
+   formulierungen:["„Dann lassen Sie uns doch direkt schauen, welches Paket zu Ihren Wünschen passt, einverstanden?“","„Was fehlt Ihnen noch, um heute eine gute Entscheidung treffen zu können?“"],
+   fehler:["Nach dem Kaufsignal weiter präsentieren","„Melden Sie sich, wenn Sie soweit sind“: Initiative abgeben","Gespräch ohne vereinbarten nächsten Schritt beenden"]}
+];
+
+const PLAYBOOKS = [
+  {einwand:"„Das ist mir zu teuer.“",typ:"D",
+   schritte:["„Verstehe ich, das ist ein Betrag, über den man nachdenkt.“","„Zu teuer im Vergleich wozu? Was hatten Sie sich vorgestellt?“","Nutzen statt Preis: Preissicherheit (heutige Preise festschreiben), alles aus einer Hand, Familie komplett entlastet. Ggf. Ratenzahlung als Option.","„Wenn wir eine Lösung finden, die in Ihr Budget passt, wäre das dann das Richtige für Sie?“"],
+   typnote:"Preisfokus = oft Löwe (D). Er will Kontrolle und einen guten Deal. Führ ihn souverän vom Preis zum Nutzen, ohne vorschnell zu rabattieren."},
+  {einwand:"„Ich muss erst mit meiner Familie sprechen.“",typ:"S",
+   schritte:["„Sehr gut, dass Sie Ihre Familie einbeziehen.“","„Was genau möchten Sie besprechen? Was glauben Sie, wird Ihre Familie sagen?“","Entlastungs-Argument: Die Vorsorge ist ein Geschenk an die Familie. Angebot: gemeinsamer Termin mit den Kindern.","„Wann sprechen Sie mit Ihren Kindern? Dann telefonieren wir direkt danach, passt Ihnen Donnerstag?“"],
+   typnote:"Typischer Hase (S): harmoniebedürftig, entscheidet ungern allein. Nimm die Angst vor der Alleinentscheidung — binde die Familie aktiv ein."},
+  {einwand:"„Ich bin noch zu jung dafür.“",typ:"I",
+   schritte:["„Das verstehe ich. Die meisten beschäftigen sich erst viel später damit.“","„Was hat Sie denn jetzt dazu gebracht, sich zu informieren?“","Positiv rahmen: In Ruhe selbst entscheiden statt später unter Druck. Plus: Je früher, desto besser die Preissicherheit.","„Gerade weil Sie noch Zeit haben, können Sie jetzt entspannt alles festlegen, sollen wir das mal durchgehen?“"],
+   typnote:"Ausweichen mit Humor = oft Affe (I). Nimm das Ausweichen freundlich ernst, finde den echten Anlass, rahme positiv statt mit Angst."},
+  {einwand:"„Schicken Sie mir Unterlagen.“",typ:"S",
+   schritte:["„Mache ich gern.“","„Damit ich das Richtige zusammenstelle: Welche Frage ist für Sie noch offen?“","Die offene Frage direkt beantworten, oft erledigt sich der Unterlagen-Wunsch dadurch.","„Ich schicke Ihnen das zu, und wir gehen es am Dienstag um 14 Uhr gemeinsam durch, einverstanden?“"],
+   typnote:"Höflicher Ausstieg = oft konfliktscheuer Hase (S). Immer einen festen Folgetermin setzen, sonst versandet der Lead."},
+  {einwand:"„Das regeln meine Kinder.“",typ:"S",
+   schritte:["„Schön, dass Sie so ein gutes Verhältnis zu Ihren Kindern haben.“","„Haben Sie mit Ihren Kindern schon einmal darüber gesprochen, was Sie sich wünschen?“","Umkehrung: Genau darum geht es, die Kinder müssen in der schwersten Zeit nicht organisieren, zahlen und raten, was gewollt war.","„Wie wichtig ist es Ihnen, Ihren Kindern genau das abzunehmen?“"],
+   typnote:"Familie zuerst = Kern des Hasen (S). Der Einwand enthält schon das stärkste Kaufmotiv: Entlastung. Dreh ihn um."},
+  {einwand:"„Ich habe schon eine Sterbegeldversicherung.“",typ:"C",
+   schritte:["„Das ist eine gute Basis, die Sie da haben.“","„Was haben Sie denn darüber hinaus schon festgelegt, also wie alles ablaufen soll?“","Lücke zeigen: Die Versicherung zahlt Geld aus, aber sie legt nichts fest und organisiert nichts. Vorsorge = Wille + Organisation + Kostensicherheit.","„Sollen wir schauen, wie die Vorsorge Ihre Versicherung sinnvoll ergänzt?“"],
+   typnote:"Wer sich schon abgesichert hat, ist oft eine Eule (C). Wertschätze die Vorarbeit, zeige die Lücke sachlich — Ergänzung statt Konkurrenz."},
+  {einwand:"„Kein Interesse mehr.“ (Follow-up)",typ:"S",
+   schritte:["„Das ist völlig in Ordnung, danke, dass Sie es offen sagen.“","„Damit ich es richtig einordne: Was hat sich seit unserem letzten Gespräch geändert, war es das Angebot, der Zeitpunkt oder etwas anderes?“","Auf den ECHTEN Grund eingehen: Preis-Schock → Optionen und Nutzen statt Verteidigung. Familie dagegen → Einbindung anbieten. Verdrängt → Entlastungs-Rahmen. Nie pauschal weiterpitchen.","„Wenn wir diesen Punkt lösen, wäre das Thema dann grundsätzlich wieder interessant für Sie?“ Wenn nein: sauber verabschieden."],
+   typnote:"Abblocken nach Angebot = oft zurückgezogener Hase (S). Der Schutzschild verbirgt einen konkreten Grund. Kein Druck, ruhige Neugier."},
+  {einwand:"„Wir haben schon alles geregelt.“",typ:"C",
+   schritte:["„Das haben die wenigsten. Respekt, dass Sie sich gekümmert haben.“","„Was genau haben Sie denn geregelt? Also die Finanzierung, der Ablauf, Ihre Wünsche schriftlich und verbindlich?“","Die Lücke benennen, die fast immer offen ist: Kosten festgeschrieben? Wünsche dokumentiert UND verbindlich? Wer organisiert im Ernstfall? Geld nur angespart ≠ alles geregelt.","„Sollen wir in fünf Minuten gemeinsam durchgehen, ob da noch etwas fehlt? Wenn wirklich alles passt, lasse ich Sie sofort in Ruhe, versprochen.“"],
+   typnote:"„Alles geregelt“ von einer gründlichen Eule (C) heißt meist: Teillösung. Sachlich, präzise die Lücke aufdecken — sie folgt der Logik."},
+  {einwand:"„Wollte nur wissen, was das kostet.“",typ:"D",
+   schritte:["„Sehr gern, genau dafür bin ich da.“","Preisrahmen sofort transparent nennen + Bedarfsfrage anhängen: „Je nach Wünschen liegt das zwischen X und Y. Was schwebt Ihnen denn vor?“","Den Preis mit Inhalt füllen: Was ist enthalten, Preissicherheit, keine versteckten Kosten, die Zahl bekommt einen Kontext.","„Soll ich Ihnen ein konkretes Angebot für genau Ihre Wünsche rechnen? Dann haben Sie eine echte Zahl statt einer Spanne.“"],
+   typnote:"Nur-die-Zahl = oft ungeduldiger Löwe (D). Halte den Preis nicht zurück, das wirkt unsouverän. Rahmen nennen und mit Bedarfsfrage verknüpfen."},
+  {einwand:"„Ihr macht nichts anderes als ein normaler Bestatter.“",typ:"D",
+   schritte:["„Verstehe ich, von außen wirkt das erstmal so.“","„Womit vergleichen Sie uns denn gerade? Und was wäre Ihnen wichtig, das ein Bestatter vor Ort bieten müsste?“","Differenzierung über die Vorsorge, nicht übers Schlechtreden: heute in Ruhe festlegen, heutige Preise sichern, Geld abgesichert, Familie entlastet, transparent vergleichbar.","„Welcher dieser Punkte ist für Sie der entscheidende?“, und genau darauf den Abschluss bauen."],
+   typnote:"Provokante Vergleiche = oft direkter Löwe (D). Kein Pingpong, teilweise zustimmen, souverän über die eigene Leistung differenzieren."}
+];
+
+/* ═══════════════════════════════════════════════════════════
+   STATE & HELPERS
+   ═══════════════════════════════════════════════════════════ */
+const LS = {
+  user:"trainingsraum_user",
+  disc:"trainingsraum_disc",
+  tier:"trainingsraum_tier"
+};
+const $ = (s,el=document)=>el.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function getUser(){ return localStorage.getItem(LS.user) || ""; }
+function getResult(kind){ try{ return JSON.parse(localStorage.getItem(LS[kind])); }catch{ return null; } }
+function dominantType(scores){
+  let best="D",bv=-1;
+  for(const t of TYPE_ORDER){ if((scores[t]||0)>bv){bv=scores[t];best=t;} }
+  return best;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LOGIN
+   ═══════════════════════════════════════════════════════════ */
+function doLogin(name){
+  localStorage.setItem(LS.user, name);
+  $("#login").style.display="none";
+  $("#nav").style.display="flex";
+  $("#app").style.display="block";
+  $("#navWho").textContent = "Hi, "+name;
+  observeReveals();
+}
+$("#loginBtn").addEventListener("click",()=>{
+  const n = $("#nameInput").value.trim();
+  if(!n){ $("#nameInput").focus(); return; }
+  doLogin(n);
+});
+$("#nameInput").addEventListener("keydown",e=>{ if(e.key==="Enter") $("#loginBtn").click(); });
+$("#logoutBtn").addEventListener("click",()=>{
+  localStorage.removeItem(LS.user);
+  location.reload();
+});
+
+/* ═══════════════════════════════════════════════════════════
+   NAVIGATION
+   ═══════════════════════════════════════════════════════════ */
+let currentTab="home";
+const RENDERERS = { typ:renderTyp, rollenspiel:renderRollenspiel, quiz:renderQuiz, leitfaden:renderLeitfaden };
+
+function goTab(tab){
+  currentTab=tab;
+  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+  $("#view-"+tab).classList.add("active");
+  document.querySelectorAll("#navLinks button").forEach(b=>b.classList.toggle("on", b.dataset.tab===tab));
+  if(RENDERERS[tab]) RENDERERS[tab]();
+  window.scrollTo({top:0,behavior:"auto"});
+  requestAnimationFrame(observeReveals);
+}
+document.querySelectorAll("#navLinks button").forEach(b=>b.addEventListener("click",()=>goTab(b.dataset.tab)));
+document.addEventListener("click",e=>{
+  const g = e.target.closest("[data-goto]");
+  if(g){ goTab(g.dataset.goto); }
+});
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLL-EFFEKTE: Reveal + Parallax
+   ═══════════════════════════════════════════════════════════ */
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); } });
+},{threshold:0.12, rootMargin:"0px 0px -8% 0px"});
+function observeReveals(){
+  document.querySelectorAll(".view.active .reveal:not(.in), #view-home.active .reveal:not(.in)").forEach(el=>io.observe(el));
+}
+
+// Parallax-Blobs (Scroll + Maus)
+let sy=0, mx=0, my=0, ticking=false;
+function applyParallax(){
+  document.querySelectorAll(".blob").forEach(b=>{
+    const sp=parseFloat(b.dataset.speed)||0.1;
+    b.style.transform=`translate3d(${mx*sp*40}px, ${sy*sp + my*sp*40}px, 0)`;
+  });
+  // Hero leicht mitbewegen/faden
+  const ht=$("#heroTitle");
+  if(ht && currentTab==="home"){
+    const f=Math.max(0,1 - sy/700);
+    const hero=ht.closest(".hero");
+    if(hero) hero.style.opacity=Math.max(.15,f);
+    ht.style.transform=`translateY(${sy*0.12}px)`;
+  }
+  ticking=false;
+}
+window.addEventListener("scroll",()=>{
+  sy=window.scrollY;
+  if(!ticking){ requestAnimationFrame(applyParallax); ticking=true; }
+},{passive:true});
+window.addEventListener("mousemove",e=>{
+  mx=(e.clientX/window.innerWidth-0.5);
+  my=(e.clientY/window.innerHeight-0.5);
+  if(!ticking){ requestAnimationFrame(applyParallax); ticking=true; }
+},{passive:true});
+
+/* ═══════════════════════════════════════════════════════════
+   PERSÖNLICHKEIT (DISC + Tier)
+   ═══════════════════════════════════════════════════════════ */
+let testState=null; // {kind, idx, scores, questions}
+
+function renderTyp(){
+  const disc=getResult("disc"), tier=getResult("tier");
+  $("#typContent").innerHTML = `
+    <div class="mod-hero">
+      <div class="kick reveal">Menschenkenntnis</div>
+      <h2 class="reveal d1">Wer bist du,<br><span class="g">wenn du verkaufst?</span></h2>
+      <p class="reveal d2">Zwei kurze Tests zeigen dir deinen Verkaufsstil — und schärfen deinen Blick für jeden Kundentyp am Telefon.</p>
+    </div>
+    <div class="test-picker">
+      <button class="tp-card disc reveal" data-test="disc">
+        ${disc?`<span class="done-tag">✓ ${TYPES[disc.dom].disc} · ${TYPES[disc.dom].tier}</span>`:""}
+        <div class="lab">Test 1</div>
+        <h3>DISC-Profil</h3>
+        <p>Dein Arbeits- und Kommunikationsstil in vier Dimensionen: Dominant, Initiativ, Stetig, Gewissenhaft.</p>
+        <div class="meta"><span>16 Fragen</span><span>· ca. 4 Min</span></div>
+        <span class="pill light sm">${disc?"Nochmal testen":"Test starten"} →</span>
+      </button>
+      <button class="tp-card tier reveal d1" data-test="tier">
+        ${tier?`<span class="done-tag">✓ ${TYPES[tier.dom].emo} ${TYPES[tier.dom].tier}</span>`:""}
+        <div class="lab">Test 2</div>
+        <h3>Tier-Modell</h3>
+        <p>Dein Grundinstinkt als Tier: Löwe, Affe, Hase oder Eule. Einprägsam und sofort im Gespräch anwendbar.</p>
+        <div class="meta"><span>12 Fragen</span><span>· ca. 3 Min</span></div>
+        <span class="pill light sm">${tier?"Nochmal testen":"Test starten"} →</span>
+      </button>
+    </div>
+    ${(disc||tier)?renderCombined(disc,tier):`
+      <div class="panel reveal" style="text-align:center;margin-top:8px">
+        <p style="color:var(--ink2);font-size:15px;line-height:1.6">Mach beide Tests, um dein vollständiges Profil zu sehen — mit Stärken, Blind Spots, Vertriebstipps und einer Anleitung, wie du jeden Kundentyp erkennst und führst.</p>
+      </div>`}
+    ${renderKundenMatrix()}
+  `;
+  $("#typContent").querySelectorAll("[data-test]").forEach(b=>b.addEventListener("click",()=>startTest(b.dataset.test)));
+  requestAnimationFrame(observeReveals);
+  animateBars();
+}
+
+function renderCombined(disc,tier){
+  let out=`<div class="reveal" style="margin-top:8px">`;
+  if(disc) out+=renderProfile("disc",disc);
+  if(tier) out+=renderProfile("tier",tier);
+  out+=`</div>`;
+  return out;
+}
+
+function renderProfile(kind,res){
+  const T=TYPES[res.dom];
+  const isDisc=kind==="disc";
+  const chips = TYPE_ORDER.map(t=>`<span class="chip">${TYPES[t].disc} ${res.scores[t]}</span>`).join("");
+  const max = Math.max(...TYPE_ORDER.map(t=>res.scores[t]));
+  const bars = TYPE_ORDER.map(t=>`
+    <div class="barrow">
+      <div class="bn">${TYPES[t].emo} ${TYPES[t].tier} <span style="color:var(--ink2);font-weight:500">(${t})</span></div>
+      <div class="bt ${t}"><div data-w="${max?Math.round(res.scores[t]/max*100):0}" style="width:0"></div></div>
+      <div class="bv">${res.scores[t]}</div>
+    </div>`).join("");
+  return `
+    <div style="margin-top:26px">
+      <div style="font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);text-align:center;margin-bottom:14px">
+        ${isDisc?"Dein DISC-Ergebnis":"Dein Tier-Ergebnis"}
+      </div>
+      <div class="result-hero" style="background:var(--grad-${T.grad})">
+        <div class="emo">${T.emo}</div>
+        <div class="lab">${T.disc} · ${T.tier}</div>
+        <h2>${isDisc?T.disc+" · "+T.tier:T.tier}</h2>
+        <div class="ess">${esc(T.essenz)}</div>
+        <div class="discmix">${chips}</div>
+      </div>
+      <div class="bars"><h4>Deine Ausprägung über alle vier Typen</h4>${bars}</div>
+      <div class="res-cols">
+        <div class="res-box good"><h4>✨ Deine Stärken</h4><ul>${T.staerken.map(s=>`<li>${esc(s)}</li>`).join("")}</ul></div>
+        <div class="res-box warn"><h4>⚠️ Deine Blind Spots</h4><ul>${T.blindspots.map(s=>`<li>${esc(s)}</li>`).join("")}</ul></div>
+      </div>
+      <div class="res-box tip"><h4>🎯 Deine Vertriebstipps</h4><ul>${T.vertrieb.map(s=>`<li>${esc(s)}</li>`).join("")}</ul></div>
+    </div>`;
+}
+
+function renderKundenMatrix(){
+  const cards = TYPE_ORDER.map(t=>{
+    const T=TYPES[t];
+    return `
+    <div class="km-card">
+      <div class="km-top ${t}">
+        <span class="e">${T.emo}</span>
+        <div><div class="nm">${T.tier}</div><div class="dt">DISC · ${T.disc}</div></div>
+      </div>
+      <div class="km-body">
+        <p class="lbl">So erkennst du ihn</p>
+        <ul>${T.signale.map(s=>`<li>${esc(s)}</li>`).join("")}</ul>
+        <p class="lbl">So führst du ihn</p>
+        <ul>${T.strategie.map(s=>`<li>${esc(s)}</li>`).join("")}</ul>
+        <div class="ex">Im Rollenspiel: <b>${esc(T.persona)}</b></div>
+      </div>
+    </div>`;
+  }).join("");
+  return `
+    <div class="kunden-matrix reveal" style="margin-top:44px">
+      <h3>So liest du jeden Kunden</h3>
+      <p class="sm">Die vier Typen gelten nicht nur für dich — jeder Kunde am Telefon ist einer davon. Erkenne die Signale, wähle die passende Strategie.</p>
+      <div class="km-grid">${cards}</div>
+    </div>`;
+}
+
+function startTest(kind){
+  testState={ kind, idx:0, scores:{D:0,I:0,S:0,C:0}, questions: kind==="disc"?DISC_Q:TIER_Q };
+  renderRunner();
+}
+
+function renderRunner(){
+  const {kind,idx,questions}=testState;
+  const q=questions[idx];
+  const pct=Math.round(idx/questions.length*100);
+  const label = kind==="disc"?"DISC-Profil":"Tier-Modell";
+  $("#typContent").innerHTML=`
+    <div class="mod-hero" style="padding-bottom:0">
+      <div class="kick">${label}</div>
+    </div>
+    <div class="runner">
+      <div class="run-top">
+        <span class="run-count">Frage ${idx+1} von ${questions.length}</span>
+        <button class="run-quit" id="quitTest">Abbrechen</button>
+      </div>
+      <div class="run-bar ${kind}"><div style="width:${pct}%"></div></div>
+      <div class="run-q">${esc(q.q)}</div>
+      <div class="run-opts">
+        ${q.o.map((op,i)=>`<button class="run-opt" data-i="${i}"><span class="rdot"></span><span>${esc(op.x)}</span></button>`).join("")}
+      </div>
+    </div>`;
+  $("#quitTest").addEventListener("click",renderTyp);
+  $("#typContent").querySelectorAll(".run-opt").forEach(b=>b.addEventListener("click",()=>answer(parseInt(b.dataset.i))));
+  window.scrollTo({top:0,behavior:"auto"});
+}
+
+function answer(i){
+  const {questions,idx}=testState;
+  const t=questions[idx].o[i].t;
+  testState.scores[t]++;
+  if(idx+1>=questions.length){
+    finishTest();
+  }else{
+    testState.idx++;
+    renderRunner();
+  }
+}
+
+function finishTest(){
+  const {kind,scores}=testState;
+  const dom=dominantType(scores);
+  const res={dom,scores};
+  localStorage.setItem(LS[kind],JSON.stringify(res));
+  testState=null;
+  renderTyp();
+  // sanft zum Ergebnis scrollen
+  setTimeout(()=>{
+    const rh=$("#typContent .result-hero");
+    if(rh) rh.scrollIntoView({behavior:"smooth",block:"center"});
+  },120);
+}
+
+function animateBars(){
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    document.querySelectorAll(".bt > div[data-w]").forEach(d=>{ d.style.width=d.dataset.w+"%"; });
+  }));
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ROLLENSPIEL
+   ═══════════════════════════════════════════════════════════ */
+let rs={ stage:"setup", persona:null, difficulty:"normal", messages:[], loading:false };
+
+const CROSS = {
+  D:{D:"Zwei Löwen — Vorsicht vor dem Machtkampf. Bleib ruhig, gib ihm die Wahl statt zu kontern.",
+     I:"Als Affe bringst du Wärme — dem Löwen ist das zu viel Small Talk. Komm schneller zum Punkt.",
+     S:"Als Hase magst du keinen Druck — der Löwe macht genau das. Bleib freundlich-fest, weich nicht aus.",
+     C:"Als Eule liebst du Details — der Löwe will die Kurzfassung. Zwei Argumente, dann die Entscheidung."},
+  I:{D:"Als Löwe bist du schnell — der Affe braucht die persönliche Ebene. Gönn ihm kurz Beziehung, dann führ.",
+     I:"Zwei Affen — es wird warm und lustig, aber achtet auf den Abschluss. Nicht im Plaudern versacken.",
+     S:"Als Hase bist du geduldig — perfekt für den Affen. Gib dem Ausweichen sanft Struktur.",
+     C:"Als Eule bist du sachlich — der Affe will Gefühl. Lockere auf, bevor du Fakten bringst."},
+  S:{D:"Als Löwe drängst du — der Hase zieht sich dann zurück. Drossle das Tempo, gib Sicherheit.",
+     I:"Als Affe bist du herzlich — genau das braucht der Hase. Nur nicht zu viel auf einmal.",
+     S:"Zwei Hasen — ganz harmonisch, aber jemand muss führen. Trau dich, den nächsten Schritt zu setzen.",
+     C:"Als Eule wirkst du sachlich — dem Hasen fehlt dann Wärme. Zeig echtes Interesse am Menschen."},
+  C:{D:"Als Löwe willst du zum Abschluss — die Eule will erst alle Fakten. Gib ihr Transparenz, dann schließt sie.",
+     I:"Als Affe bist du emotional — die Eule will Belege. Untermauere deine Begeisterung mit Zahlen.",
+     S:"Als Hase gibst du Sicherheit — der Eule reicht das nicht, sie will Fakten. Werde konkret.",
+     C:"Zwei Eulen — sachlich stark, aber Vorsicht vor Detail-Verzettelung. Führt aktiv zum Abschluss."}
+};
+
+function renderRollenspiel(){
+  if(rs.stage==="chat") return renderChat();
+  if(rs.stage==="feedback") return renderFeedback();
+  renderRsSetup();
+}
+
+function renderRsSetup(){
+  const disc=getResult("disc");
+  const yourType = disc? disc.dom : null;
+  const hint = yourType
+    ? `<div class="your-type-hint reveal"><span class="e">${TYPES[yourType].emo}</span><div class="txt">Dein Typ: <b>${TYPES[yourType].tier} (${TYPES[yourType].disc})</b>. Jede Kundenkarte zeigt dir unten, worauf <b>du</b> bei genau diesem Gegenüber achten solltest.</div></div>`
+    : `<div class="your-type-hint empty reveal"><span class="e">🧭</span><div class="txt">Tipp: Mach zuerst den <b><a href="#" data-goto="typ" style="color:var(--blue);text-decoration:none">Persönlichkeitstest</a></b> — dann bekommst du bei jedem Kunden einen persönlichen Hinweis, wie du als dein Typ mit ihm umgehst.</div></div>`;
+
+  const cards = PERSONAS.map((p,i)=>{
+    const T=TYPES[p.disc];
+    const cross = yourType ? `<div class="pc-typ"><b>Für dich als ${TYPES[yourType].tier}:</b> ${esc(CROSS[yourType][p.disc])}</div>`
+                           : `<div class="pc-typ"><b>So tickt er:</b> ${esc(p.typHinweis)}</div>`;
+    return `
+    <button class="persona-card ${p.disc} reveal ${i%2?'d1':''}" data-persona="${p.id}">
+      <div class="pc-badges">
+        <span class="badge ${p.disc}">DISC · ${p.disc}</span>
+        <span class="badge ${p.disc}">${T.emo} ${T.tier}</span>
+      </div>
+      <div class="pc-label">${esc(p.label)}</div>
+      <div class="pc-name">${esc(p.name)}</div>
+      <div class="pc-desc">${esc(p.desc)}</div>
+      <div class="pc-quote">„${esc(p.opener.slice(0,72))}...“</div>
+      ${cross}
+    </button>`;
+  }).join("");
+
+  $("#rsContent").innerHTML=`
+    <div class="mod-hero">
+      <div class="kick reveal">KI-Rollenspiel</div>
+      <h2 class="reveal d1">Sechs Kunden.<br><span class="g">Ein echtes Gespräch.</span></h2>
+      <p class="reveal d2">Wähle einen Kunden und führe das Gespräch wie am Telefon. Er reagiert auf jedes deiner Worte — Einwände inklusive. Am Ende: ehrliches Coaching-Feedback.</p>
+    </div>
+    ${hint}
+    <div style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin:26px 0 12px">Schwierigkeit</div>
+    <div class="diff-row">
+      ${DIFFICULTIES.map(d=>`<button class="diff-btn ${rs.difficulty===d.id?'active':''}" data-diff="${d.id}"><strong>${d.label}</strong><span>${d.desc}</span></button>`).join("")}
+    </div>
+    <div style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin:26px 0 12px">Wähle deinen Kunden</div>
+    <div class="persona-grid">${cards}</div>
+  `;
+  $("#rsContent").querySelectorAll("[data-diff]").forEach(b=>b.addEventListener("click",()=>{
+    rs.difficulty=b.dataset.diff;
+    $("#rsContent").querySelectorAll(".diff-btn").forEach(x=>x.classList.toggle("active",x.dataset.diff===rs.difficulty));
+  }));
+  $("#rsContent").querySelectorAll("[data-persona]").forEach(b=>b.addEventListener("click",()=>startChat(b.dataset.persona)));
+  requestAnimationFrame(observeReveals);
+}
+
+function startChat(pid){
+  const p=PERSONAS.find(x=>x.id===pid);
+  rs.persona=p;
+  rs.messages=[{role:"kunde",text:p.opener}];
+  rs.stage="chat";
+  renderChat();
+}
+
+function buildCustomerSystem(persona,difficulty){
+  const diffText={
+    locker:"Schwierigkeit: AUFWÄRMEN. Bringe 1 bis 2 Einwände, aber öffne dich relativ schnell, wenn der Berater freundlich und strukturiert vorgeht.",
+    normal:"Schwierigkeit: NORMAL. Bringe nacheinander 2 bis 3 Einwände. Öffne dich nur, wenn der Berater echtes Verständnis zeigt, offene Fragen stellt und auf dein Motiv eingeht.",
+    hart:"Schwierigkeit: HART. Bleibe lange skeptisch, bringe 3 bis 4 Einwände, hake bei schwachen Antworten kritisch nach. Öffne dich nur bei wirklich guter Gesprächsführung."
+  }[difficulty];
+  return `Du spielst einen Kunden in einem telefonischen Beratungsgespräch zur Bestattungsvorsorge. Der Nutzer ist der Kundenberater, der dich anruft.
+
+DEINE ROLLE:
+${persona.prompt}
+
+Du hast das Gespräch bereits mit diesen Worten eröffnet: "${persona.opener}"
+
+${diffText}
+
+VERHALTEN:
+- Antworte kurz und gesprochen, wie am Telefon: 1 bis 3 Sätze, natürliche Umgangssprache, keine Listen.
+- Bleibe IMMER in der Rolle. Keine Meta-Kommentare, keine Erklärungen, kein Feedback.
+- Reagiere realistisch: Bei echtem Verständnis, guten offenen Fragen und konkretem Nutzen wirst du schrittweise offener. Bei Druck, Monologen, Floskeln oder ignorierten Einwänden wirst du distanzierter oder genervter.
+- Wenn der Berater über mehrere Runden wirklich gut führt, zeige Kaufbereitschaft und stimme einem nächsten Schritt oder Abschluss zu.
+- Beende das Gespräch nicht von dir aus, außer der Berater ist ausgesprochen unhöflich oder drückt massiv.`;
+}
+
+const FEEDBACK_SYSTEM = `Du bist ein erfahrener Vertriebscoach für telefonische Beratung in der Bestattungsvorsorge. Du bewertest das Gespräch eines Kundenberaters (KB) mit einem simulierten Kunden: konstruktiv, konkret und ehrlich, in deutscher Du-Form.
+
+Bewerte nach diesen Kriterien (je 1 bis 5 Punkte):
+1. "Einstieg & Empathie". Rapport, Rahmen, Tonalität
+2. "Bedarfsanalyse", offene Fragen, Motiv gefunden, aktives Zuhören
+3. "Einwandbehandlung", 4 Schritte: Annehmen, Hinterfragen, Argumentieren, Abschließen
+4. "Abschlussorientierung". Kaufsignale genutzt, Testabschluss, nächster Schritt
+
+Antworte AUSSCHLIESSLICH mit validem JSON in exakt diesem Format, ohne Markdown, ohne Backticks, ohne Text davor oder danach:
+{
+  "gesamt": <Zahl 1-10>,
+  "kategorien": [{"name": "<Kriterium>", "score": <1-5>, "kommentar": "<1 Satz>"}],
+  "staerken": ["<konkrete Stärke mit Beispiel aus dem Gespräch>", "..."],
+  "verbesserungen": ["<konkreter Verbesserungspunkt>", "..."],
+  "schluesselmoment": "<Der wichtigste Moment des Gesprächs und warum>",
+  "alternativ": {"situation": "<Zitat/Situation aus dem Gespräch>", "besser": "<wie der KB es stärker hätte formulieren können>"}
+}
+Maximal 3 Stärken und 3 Verbesserungen. Beziehe dich auf konkrete Stellen im Gespräch.`;
+
+async function callChat(system, messages, max_tokens){
+  const res = await fetch("/api/chat",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({ system, messages, max_tokens })
+  });
+  if(!res.ok) throw new Error("HTTP "+res.status);
+  const data = await res.json();
+  if(data.error) throw new Error(data.error);
+  return (data.reply||"").trim();
+}
+
+function renderChat(){
+  const p=rs.persona, T=TYPES[p.disc];
+  const diffLabel=DIFFICULTIES.find(d=>d.id===rs.difficulty).label;
+  const bubbles = rs.messages.map(m=>`
+    <div class="brow ${m.role}">
+      <div class="bubble"><div class="bwho">${m.role==="kb"?"Du":esc(p.name.split(",")[0])}</div>${esc(m.text)}</div>
+    </div>`).join("");
+  $("#rsContent").innerHTML=`
+    <div class="mod-hero" style="padding-bottom:8px"><div class="kick">Live-Gespräch</div></div>
+    <div class="chat-wrap">
+      <div class="chat-head">
+        <div class="who">
+          <div class="av ${p.disc}">${T.emo}</div>
+          <div>
+            <div class="nm">${esc(p.name)}</div>
+            <div class="st"><span class="badge ${p.disc}" style="padding:2px 8px;font-size:10px">${T.tier} · ${p.disc}</span> ${esc(p.label)} · ${diffLabel}</div>
+          </div>
+        </div>
+        <button class="pill ghost sm" id="rsQuit">Abbrechen</button>
+      </div>
+      <div class="chat-box" id="chatBox">
+        ${bubbles}
+        ${rs.loading?`<div class="brow kunde"><div class="typing"><span></span><span></span><span></span></div></div>`:""}
+      </div>
+      <div id="chatErr"></div>
+      <div class="chat-input">
+        <textarea id="chatText" rows="2" placeholder="Deine Antwort als Kundenberater..." ${rs.loading?"disabled":""}></textarea>
+        <div class="chat-actions">
+          <button class="pill primary sm" id="rsSend" ${rs.loading?"disabled":""}>Senden</button>
+          <button class="pill ghost sm" id="rsFeedback" ${rs.messages.filter(m=>m.role==="kb").length<2||rs.loading?"disabled":""}>Beenden & Feedback</button>
+        </div>
+      </div>
+    </div>`;
+  const box=$("#chatBox"); box.scrollTop=box.scrollHeight;
+  $("#rsQuit").addEventListener("click",()=>{ rs.stage="setup"; rs.messages=[]; renderRollenspiel(); });
+  $("#rsSend").addEventListener("click",sendChat);
+  $("#rsFeedback").addEventListener("click",getFeedback);
+  const ta=$("#chatText");
+  if(ta && !rs.loading){ ta.focus();
+    ta.addEventListener("keydown",e=>{ if(e.key==="Enter"&&!e.shiftKey){ e.preventDefault(); sendChat(); } });
+  }
+}
+
+async function sendChat(){
+  const ta=$("#chatText");
+  const text=ta?ta.value.trim():"";
+  if(!text||rs.loading) return;
+  rs.messages.push({role:"kb",text});
+  rs.loading=true;
+  renderChat();
+  try{
+    // apiMessages OHNE opener (Opener steckt im System-Prompt), beginnt also mit user
+    const apiMessages = rs.messages.filter(m=>m.role==="kb"||rs.messages.indexOf(m)>0)
+      .filter((m,idx)=>!(idx===0 && m.role==="kunde"))
+      .map(m=>({role:m.role==="kb"?"user":"assistant",content:m.text}));
+    const reply = await callChat(buildCustomerSystem(rs.persona,rs.difficulty), apiMessages, 400);
+    rs.messages.push({role:"kunde",text:reply});
+  }catch(e){
+    rs.loading=false;
+    renderChat();
+    $("#chatErr").innerHTML=`<div class="chat-err">Verbindung fehlgeschlagen — bitte nochmal senden. (${esc(e.message)})</div>`;
+    return;
+  }
+  rs.loading=false;
+  renderChat();
+}
+
+async function getFeedback(){
+  rs.loading=true;
+  renderChat();
+  try{
+    const transcript = rs.messages.map(m=>(m.role==="kb"?"KUNDENBERATER: ":"KUNDE: ")+m.text).join("\n");
+    const raw = await callChat(FEEDBACK_SYSTEM,[{role:"user",
+      content:`Hier das Gesprächstranskript (Kunde: ${rs.persona.name}, ${rs.persona.label}, Typ: ${TYPES[rs.persona.disc].tier}/${rs.persona.disc}, Schwierigkeit: ${rs.difficulty}):\n\n${transcript}`}],1024);
+    const clean = raw.replace(/```json|```/g,"").trim();
+    rs.feedback = JSON.parse(clean);
+    rs.stage="feedback";
+    rs.loading=false;
+    renderFeedback();
+  }catch(e){
+    rs.loading=false;
+    renderChat();
+    $("#chatErr").innerHTML=`<div class="chat-err">Feedback konnte nicht erstellt werden — bitte nochmal versuchen. (${esc(e.message)})</div>`;
+  }
+}
+
+function renderFeedback(){
+  const f=rs.feedback, p=rs.persona, T=TYPES[p.disc];
+  const cats=(f.kategorien||[]).map(k=>`
+    <div class="fb-cat">
+      <div class="ct"><span>${esc(k.name)}</span><span class="fb-dots">${[1,2,3,4,5].map(n=>`<i class="${n<=k.score?'on':''}"></i>`).join("")}</span></div>
+      <p>${esc(k.kommentar||"")}</p>
+    </div>`).join("");
+  $("#rsContent").innerHTML=`
+    <div class="mod-hero" style="padding-bottom:8px"><div class="kick">Coaching-Feedback</div></div>
+    <div class="fb">
+      <div class="fb-head">
+        <div>
+          <div class="t">Dein Coaching-Feedback</div>
+          <div class="s"><span class="badge ${p.disc}" style="padding:2px 8px;font-size:10px">${T.emo} ${T.tier}</span> ${esc(p.label)} · ${esc(p.name)}</div>
+        </div>
+        <div class="fb-score"><div class="n">${esc(f.gesamt)}</div><div class="o">von 10</div></div>
+      </div>
+      <div class="fb-cats">${cats}</div>
+      <div class="fb-two">
+        <div class="fb-box good"><h5>Das lief stark</h5><ul>${(f.staerken||[]).map(s=>`<li>${esc(s)}</li>`).join("")}</ul></div>
+        <div class="fb-box imp"><h5>Daran arbeiten</h5><ul>${(f.verbesserungen||[]).map(s=>`<li>${esc(s)}</li>`).join("")}</ul></div>
+      </div>
+      ${f.schluesselmoment?`<div class="fb-moment"><h5>SCHLÜSSELMOMENT</h5><p>${esc(f.schluesselmoment)}</p></div>`:""}
+      ${f.alternativ?`<div class="fb-alt"><h5>SO GEHT'S STÄRKER</h5><div class="sit">Situation: ${esc(f.alternativ.situation||"")}</div><div class="bet">„${esc(f.alternativ.besser||"")}“</div></div>`:""}
+      <div style="display:flex;gap:10px;margin-top:22px;flex-wrap:wrap">
+        <button class="pill primary sm" id="fbAgain">Nochmal mit ${esc(p.name.split(",")[0])}</button>
+        <button class="pill ghost sm" id="fbOther">Anderen Kunden wählen</button>
+      </div>
+    </div>`;
+  $("#fbAgain").addEventListener("click",()=>startChat(p.id));
+  $("#fbOther").addEventListener("click",()=>{ rs.stage="setup"; rs.messages=[]; renderRollenspiel(); });
+  window.scrollTo({top:0,behavior:"auto"});
+}
+
+/* ═══════════════════════════════════════════════════════════
+   QUIZ
+   ═══════════════════════════════════════════════════════════ */
+let quiz={ idx:0, selected:null, answered:false, score:0, done:false };
+
+function renderQuiz(){
+  quiz={ idx:0, selected:null, answered:false, score:0, done:false };
+  renderQuizStep();
+}
+
+function renderQuizStep(){
+  if(quiz.done) return renderQuizDone();
+  const q=QUIZ[quiz.idx];
+  const pct=Math.round((quiz.idx+(quiz.answered?1:0))/QUIZ.length*100);
+  const T=TYPES[q.typ];
+  const opts=q.optionen.map((opt,i)=>{
+    let cls="quiz-opt";
+    if(quiz.answered){
+      if(i===q.korrekt) cls+=" right";
+      else if(i===quiz.selected) cls+=" wrong";
+      else cls+=" muted";
+    }
+    return `<button class="${cls}" data-i="${i}" ${quiz.answered?"disabled":""}><span class="opt-l">${String.fromCharCode(65+i)}</span><span>${esc(opt)}</span></button>`;
+  }).join("");
+  $("#quizContent").innerHTML=`
+    <div class="mod-hero">
+      <div class="kick reveal">Einwand-Quiz</div>
+      <h2 class="reveal d1">Was ist der<br><span class="g">stärkste Move?</span></h2>
+      <p class="reveal d2">14 Situationen aus echten Gesprächen. Wähle die beste Reaktion — und lerne aus der Begründung.</p>
+    </div>
+    <div class="quiz">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span class="run-count">Frage ${quiz.idx+1} von ${QUIZ.length}</span>
+        <span class="run-count">Punkte: ${quiz.score}</span>
+      </div>
+      <div class="run-bar disc" style="margin-bottom:22px"><div style="width:${pct}%"></div></div>
+      <div class="quiz-voice">
+        <div class="qglow"></div>
+        <div class="mk">„</div>
+        <div class="qt">${esc(q.einwand)}</div>
+      </div>
+      <div class="quiz-frage">${esc(q.frage)}</div>
+      <div class="quiz-opts">${opts}</div>
+      ${quiz.answered?`
+        <div class="quiz-explain ${quiz.selected===q.korrekt?'good':'bad'}">
+          <strong>${quiz.selected===q.korrekt?"Richtig! ":"Nicht ganz. "}</strong>${esc(q.erklaerung)}
+          <div class="typtag"><span class="badge ${q.typ}" style="padding:2px 8px;font-size:10px">${T.emo} ${T.tier} · ${q.typ}</span> ${esc(q.typnote)}</div>
+        </div>
+        <div style="margin-top:18px">
+          <button class="pill grad sm" id="quizNext">${quiz.idx+1>=QUIZ.length?"Ergebnis anzeigen":"Nächste Frage →"}</button>
+        </div>`:""}
+    </div>`;
+  $("#quizContent").querySelectorAll(".quiz-opt").forEach(b=>b.addEventListener("click",()=>quizChoose(parseInt(b.dataset.i))));
+  const nx=$("#quizNext"); if(nx) nx.addEventListener("click",quizNext);
+  requestAnimationFrame(observeReveals);
+}
+
+function quizChoose(i){
+  if(quiz.answered) return;
+  quiz.selected=i; quiz.answered=true;
+  if(i===QUIZ[quiz.idx].korrekt) quiz.score++;
+  renderQuizStep();
+}
+function quizNext(){
+  if(quiz.idx+1>=QUIZ.length){ quiz.done=true; }
+  else { quiz.idx++; quiz.selected=null; quiz.answered=false; }
+  renderQuizStep();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function renderQuizDone(){
+  const pct=Math.round(quiz.score/QUIZ.length*100);
+  const msg = pct>=90?"Stark! Du bist bereit für die harten Rollenspiele."
+    : pct>=70?"Solide Basis — schau dir die Erklärungen der falschen Antworten nochmal an."
+    : "Guter Start. Geh den Leitfaden durch und versuch es dann nochmal.";
+  $("#quizContent").innerHTML=`
+    <div class="mod-hero"><div class="kick">Einwand-Quiz</div></div>
+    <div class="quiz-done">
+      <div class="big">${quiz.score}<span>/${QUIZ.length}</span></div>
+      <p>${msg}</p>
+      <div style="display:flex;gap:10px;justify-content:center;margin-top:24px;flex-wrap:wrap">
+        <button class="pill grad" id="quizRestart">Nochmal von vorn</button>
+        <button class="pill ghost" data-goto="rollenspiel">Jetzt im Rollenspiel üben →</button>
+      </div>
+    </div>`;
+  $("#quizRestart").addEventListener("click",renderQuiz);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LEITFADEN
+   ═══════════════════════════════════════════════════════════ */
+let lfOpenPhase=0, lfOpenPb=null;
+
+function renderLeitfaden(){
+  const methode=METHODE.map(m=>`
+    <div class="methode-card reveal">
+      <div class="methode-nr">${m.nr}</div>
+      <div class="methode-name">${esc(m.name)}</div>
+      <div class="methode-kurz">${esc(m.kurz)}</div>
+      <div class="methode-detail">${esc(m.detail)}</div>
+    </div>`).join("");
+
+  const phasen=PHASEN.map((p,i)=>`
+    <div class="acc-item ${lfOpenPhase===i?'open':''}">
+      <button class="acc-head" data-phase="${i}">
+        <span class="acc-step">${i+1}</span>
+        <span class="acc-title">${esc(p.titel)}</span>
+        <span class="acc-chev">+</span>
+      </button>
+      ${lfOpenPhase===i?`
+      <div class="acc-body">
+        <p class="acc-goal">${esc(p.ziel)}</p>
+        <div class="acc-cols">
+          <div><h6>So geht's</h6><ul>${p.verhalten.map(v=>`<li>${esc(v)}</li>`).join("")}</ul></div>
+          <div><h6>Typische Fehler</h6><ul class="fehler">${p.fehler.map(v=>`<li>${esc(v)}</li>`).join("")}</ul></div>
+        </div>
+        <h6 class="forms">Formulierungen, die funktionieren</h6>
+        ${p.formulierungen.map(f=>`<div class="formul">${esc(f)}</div>`).join("")}
+      </div>`:""}
+    </div>`).join("");
+
+  const playbooks=PLAYBOOKS.map((pb,i)=>{
+    const T=TYPES[pb.typ];
+    return `
+    <div class="acc-item pb ${lfOpenPb===i?'open':''}">
+      <button class="acc-head" data-pb="${i}">
+        <span class="acc-step">${i+1}</span>
+        <span class="acc-title">${esc(pb.einwand)}</span>
+        <span class="badge ${pb.typ}" style="padding:3px 9px;font-size:10px;margin-right:6px">${T.emo} ${T.tier}</span>
+        <span class="acc-chev">+</span>
+      </button>
+      ${lfOpenPb===i?`
+      <div class="pb-body">
+        ${pb.schritte.map((s,j)=>`
+          <div class="pb-step">
+            <span class="pb-nr">${j+1}</span>
+            <div><div class="pb-step-name">${esc(METHODE[j].name)}</div><div class="pb-step-txt">${esc(s)}</div></div>
+          </div>`).join("")}
+        <div class="pb-typtag"><b>Typ-Radar:</b> ${esc(pb.typnote)}</div>
+      </div>`:""}
+    </div>`;
+  }).join("");
+
+  $("#lfContent").innerHTML=`
+    <div class="mod-hero">
+      <div class="kick reveal">Der Leitfaden</div>
+      <h2 class="reveal d1">Struktur gibt<br><span class="g">Sicherheit.</span></h2>
+      <p class="reveal d2">Die Methode, der Gesprächsaufbau und Playbooks für jeden Einwand — jetzt mit Typ-Radar für jeden Kundentyp.</p>
+    </div>
+
+    <h3 class="lf-sec-title">Die 4-Schritte-Methode</h3>
+    <p class="lf-sec-sub">Jeder Einwand wird mit derselben Struktur behandelt, egal welcher. Das gibt Sicherheit im Gespräch.</p>
+    <div class="methode-grid">${methode}</div>
+
+    <h3 class="lf-sec-title">Der Gesprächsaufbau</h3>
+    <p class="lf-sec-sub">Fünf Phasen von der Begrüßung bis zum Abschluss. Klick dich durch.</p>
+    <div class="acc">${phasen}</div>
+
+    <h3 class="lf-sec-title">Einwand-Playbooks</h3>
+    <p class="lf-sec-sub">Die häufigsten Einwände, jeweils in den 4 Schritten gelöst — plus ein Typ-Radar, das dir sagt, welcher Persönlichkeitstyp typischerweise dahintersteckt.</p>
+    <div class="acc">${playbooks}</div>
+
+    <p class="lf-hinweis"><b>Hinweis:</b> Produktdetails und Formulierungen vor dem Roll-out an die internen Standards und aktuellen Angebotstexte anpassen.</p>
+  `;
+  $("#lfContent").querySelectorAll("[data-phase]").forEach(b=>b.addEventListener("click",()=>{
+    const i=parseInt(b.dataset.phase);
+    lfOpenPhase = lfOpenPhase===i?-1:i;
+    renderLeitfaden();
+  }));
+  $("#lfContent").querySelectorAll("[data-pb]").forEach(b=>b.addEventListener("click",()=>{
+    const i=parseInt(b.dataset.pb);
+    lfOpenPb = lfOpenPb===i?null:i;
+    renderLeitfaden();
+  }));
+  requestAnimationFrame(observeReveals);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════════════════════ */
+(function init(){
+  const u=getUser();
+  if(u){ doLogin(u); }
+  else { $("#nameInput").focus(); }
+})();
+</script>
+</body>
+</html>

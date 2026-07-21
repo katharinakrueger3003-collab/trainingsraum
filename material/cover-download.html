@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Cover Download</title></head>
+<body style="margin:0;background:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:Georgia,serif">
+<canvas id="c" width="800" height="1130" style="max-width:420px;display:block;border-radius:4px;box-shadow:0 8px 40px rgba(108,63,197,0.4)"></canvas>
+<button onclick="dl()" style="margin-top:20px;background:#6C3FC5;color:#fff;border:none;padding:14px 36px;font-family:Georgia,serif;font-size:16px;cursor:pointer;border-radius:3px;letter-spacing:0.5px">
+  Cover herunterladen (PNG)
+</button>
+<script>
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+const W=800,H=1130;
+
+ctx.fillStyle='#0A0A16';
+ctx.fillRect(0,0,W,H);
+
+ctx.fillStyle='#6C3FC5';
+ctx.fillRect(0,0,4,H);
+
+ctx.fillStyle='rgba(108,63,197,0.035)';
+ctx.font='bold 520px Arial';
+ctx.textAlign='left';
+ctx.fillText('30',60,780);
+
+const lx=56;
+ctx.font='13px Georgia';
+ctx.fillStyle='rgba(108,63,197,0.75)';
+ctx.fillText('SALES · TELEFONVERTRIEB · EINWANDBEHANDLUNG',lx,90);
+
+ctx.font='italic 17px Georgia';
+ctx.fillStyle='rgba(255,255,255,0.35)';
+ctx.fillText('Die',lx,165);
+
+ctx.fillStyle='#ffffff';
+ctx.font='bold 96px Arial';
+ctx.fillText('EINWAND-',lx,275);
+ctx.fillText('KONTER-',lx,378);
+ctx.fillStyle='#9B6FE8';
+ctx.fillText('BOX',lx,481);
+
+ctx.fillStyle='rgba(108,63,197,0.45)';
+ctx.fillRect(lx,510,80,2);
+
+ctx.font='italic 16px Georgia';
+ctx.fillStyle='rgba(255,255,255,0.5)';
+ctx.fillText('30 wortwörtliche Skripte · 6 Einwände · Ein System',lx,548);
+
+const props=[
+  '◆   Sofort einsetzbar — für jede Branche',
+  '◆   Psychologisch fundiert — Pause, Spiegel, Bumerang',
+  '◆   Wort für Wort ausgeschrieben'
+];
+ctx.font='italic 14px Georgia';
+ctx.fillStyle='rgba(155,111,232,0.75)';
+props.forEach((p,i)=>ctx.fillText(p,lx,598+i*26));
+
+ctx.fillStyle='rgba(108,63,197,0.2)';
+ctx.fillRect(lx,1010,W-lx*2,1);
+
+ctx.font='italic 13px Georgia';
+ctx.fillStyle='rgba(108,63,197,0.55)';
+ctx.textAlign='left';
+ctx.fillText('salesrevenuelab.bykaethe',lx,1042);
+
+ctx.fillStyle='rgba(255,255,255,0.18)';
+ctx.textAlign='right';
+ctx.fillText('€ 14,99',W-lx,1042);
+
+ctx.fillStyle='#6C3FC5';
+ctx.fillRect(0,H-3,W,3);
+
+function dl(){
+  const a=document.createElement('a');
+  a.download='einwand-konter-box-cover.png';
+  a.href=canvas.toDataURL('image/png');
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+</script>
+</body>
+</html>
