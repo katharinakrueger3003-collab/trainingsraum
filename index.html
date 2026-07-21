@@ -491,6 +491,46 @@ footer strong{color:var(--ink)}
 
 /* Typ-Matrix im Leitfaden */
 .matrix-note{max-width:820px;margin:0 auto}
+
+/* ══════════ TEAM-ÜBERSICHT ══════════ */
+.team-rollup{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:26px}
+.team-rollup .tr-box{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px 20px;text-align:center}
+.team-rollup .tr-n{font-size:32px;font-weight:800;letter-spacing:-.03em;background:var(--grad-hero);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.team-rollup .tr-l{font-size:12.5px;color:var(--ink2);margin-top:6px;line-height:1.4}
+@media(max-width:760px){.team-rollup{grid-template-columns:1fr 1fr}}
+
+.team-types{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px}
+.team-types .tt-chip{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:980px;padding:8px 16px;font-size:13.5px;font-weight:600}
+.team-types .tt-chip .e{font-size:18px}
+
+.improve-cloud{background:var(--bg2);border-radius:20px;padding:22px 24px;margin-bottom:32px}
+.improve-cloud h4{font-size:15px;font-weight:800;margin-bottom:14px;letter-spacing:-.01em}
+.improve-cloud ul{list-style:none;display:grid;gap:9px}
+.improve-cloud li{font-size:14px;line-height:1.5;padding-left:20px;position:relative}
+.improve-cloud li::before{content:"→";position:absolute;left:0;color:var(--blue)}
+.improve-cloud li .cnt{color:var(--ink2);font-size:12.5px;font-weight:600;margin-left:4px}
+
+.kb-grid{display:grid;gap:16px}
+.kb-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:24px 26px}
+.kb-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.kb-name{font-size:20px;font-weight:800;letter-spacing:-.02em}
+.kb-badges{display:flex;gap:7px;flex-wrap:wrap}
+.kb-stats{display:flex;gap:24px;margin-bottom:18px;flex-wrap:wrap}
+.kb-stat{display:flex;flex-direction:column}
+.kb-stat .n{font-size:22px;font-weight:800;letter-spacing:-.02em}
+.kb-stat .l{font-size:12px;color:var(--ink2)}
+.kb-empty{font-size:13.5px;color:var(--ink2);font-style:italic}
+.kb-rps{display:grid;gap:10px;border-top:1px solid var(--bg2);padding-top:16px}
+.kb-rp{background:var(--bg2);border-radius:14px;padding:14px 16px}
+.kb-rp-head{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13.5px;font-weight:700;margin-bottom:8px;flex-wrap:wrap}
+.kb-rp-head .date{font-weight:500;color:var(--ink2);font-size:12px}
+.kb-rp-score{color:var(--blue)}
+.kb-rp-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px;line-height:1.5}
+.kb-rp-cols .good{color:#1e7e45}
+.kb-rp-cols .imp{color:#c2681a}
+.kb-rp-cols ul{list-style:none;padding-left:0;display:grid;gap:4px}
+@media(max-width:640px){.kb-rp-cols{grid-template-columns:1fr}}
+.team-empty{text-align:center;padding:60px 0;color:var(--ink2);font-size:15px}
 </style>
 </head>
 <body>
@@ -526,6 +566,7 @@ footer strong{color:var(--ink)}
       <button data-tab="rollenspiel">Rollenspiel</button>
       <button data-tab="quiz">Quiz</button>
       <button data-tab="leitfaden">Leitfaden</button>
+      <button data-tab="team" id="navTeamBtn" style="display:none">Team</button>
     </div>
     <div class="nav-user">
       <span class="who" id="navWho"></span>
@@ -658,6 +699,11 @@ footer strong{color:var(--ink)}
   <!-- ══════════ LEITFADEN ══════════ -->
   <section class="view" id="view-leitfaden">
     <div class="wrap" id="lfContent"></div>
+  </section>
+
+  <!-- ══════════ TEAM (nur Teamlead) ══════════ -->
+  <section class="view" id="view-team">
+    <div class="wrap" id="teamContent"></div>
   </section>
 
 </main>
@@ -1051,6 +1097,23 @@ function doLogin(name){
   $("#app").style.display="block";
   $("#navWho").textContent = "Hi, "+name;
   observeReveals();
+  fetch('/api/is-admin?name='+encodeURIComponent(name))
+    .then(r=>r.json())
+    .then(d=>{ if(d.isAdmin) $("#navTeamBtn").style.display=""; })
+    .catch(()=>{});
+}
+
+// Meldet einen abgeschlossenen Test/Quiz/Rollenspiel an den Server, damit die
+// Teamleitung ihn in der Team-Übersicht sieht. localStorage bleibt zusätzlich
+// bestehen, damit der einzelne Kundenberater seinen eigenen Stand behält.
+function syncProgress(type, data){
+  const name = getUser();
+  if(!name) return;
+  fetch('/api/progress', {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({ name, type, data })
+  }).catch(()=>{});
 }
 $("#loginBtn").addEventListener("click",()=>{
   const n = $("#nameInput").value.trim();
@@ -1067,7 +1130,7 @@ $("#logoutBtn").addEventListener("click",()=>{
    NAVIGATION
    ═══════════════════════════════════════════════════════════ */
 let currentTab="home";
-const RENDERERS = { typ:renderTyp, rollenspiel:renderRollenspiel, quiz:renderQuiz, leitfaden:renderLeitfaden };
+const RENDERERS = { typ:renderTyp, rollenspiel:renderRollenspiel, quiz:renderQuiz, leitfaden:renderLeitfaden, team:renderTeam };
 
 function goTab(tab){
   currentTab=tab;
@@ -1276,6 +1339,7 @@ function finishTest(){
   const dom=dominantType(scores);
   const res={dom,scores};
   localStorage.setItem(LS[kind],JSON.stringify(res));
+  syncProgress(kind, res);
   testState=null;
   renderTyp();
   // sanft zum Ergebnis scrollen
@@ -1508,6 +1572,14 @@ async function getFeedback(){
     rs.feedback = JSON.parse(clean);
     rs.stage="feedback";
     rs.loading=false;
+    syncProgress("rollenspiel", {
+      personaId:    rs.persona.id,
+      personaName:  rs.persona.name,
+      personaLabel: rs.persona.label,
+      personaTyp:   rs.persona.disc,
+      difficulty:   rs.difficulty,
+      feedback:     rs.feedback
+    });
     renderFeedback();
   }catch(e){
     rs.loading=false;
@@ -1614,8 +1686,12 @@ function quizChoose(i){
   renderQuizStep();
 }
 function quizNext(){
-  if(quiz.idx+1>=QUIZ.length){ quiz.done=true; }
-  else { quiz.idx++; quiz.selected=null; quiz.answered=false; }
+  if(quiz.idx+1>=QUIZ.length){
+    quiz.done=true;
+    syncProgress("quiz", { score: quiz.score, total: QUIZ.length });
+  } else {
+    quiz.idx++; quiz.selected=null; quiz.answered=false;
+  }
   renderQuizStep();
   window.scrollTo({top:0,behavior:"smooth"});
 }
@@ -1723,6 +1799,137 @@ function renderLeitfaden(){
     lfOpenPb = lfOpenPb===i?null:i;
     renderLeitfaden();
   }));
+  requestAnimationFrame(observeReveals);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TEAM-ÜBERSICHT (nur Teamlead)
+   ═══════════════════════════════════════════════════════════ */
+async function renderTeam(){
+  const name = getUser();
+  $("#teamContent").innerHTML = `
+    <div class="mod-hero">
+      <div class="kick reveal">Team-Übersicht</div>
+      <h2 class="reveal d1">Wie steht dein <span class="g">Team?</span></h2>
+      <p class="reveal d2">Lädt…</p>
+    </div>`;
+  requestAnimationFrame(observeReveals);
+  try{
+    const res = await fetch('/api/progress?admin='+encodeURIComponent(name));
+    if(!res.ok) throw new Error(res.status===403 ? "Kein Zugriff für diesen Namen." : "Serverfehler beim Laden.");
+    const data = await res.json();
+    renderTeamDashboard(data);
+  }catch(e){
+    $("#teamContent").innerHTML = `
+      <div class="mod-hero">
+        <div class="kick">Team-Übersicht</div>
+        <h2>Kein Zugriff</h2>
+        <p>${esc(e.message)}</p>
+      </div>`;
+  }
+}
+
+function avgRoleplayScore(kb){
+  const scored = (kb.rollenspiele||[]).filter(r=>r.feedback && typeof r.feedback.gesamt!=="undefined");
+  if(!scored.length) return null;
+  const sum = scored.reduce((s,r)=>s+Number(r.feedback.gesamt||0),0);
+  return Math.round((sum/scored.length)*10)/10;
+}
+
+function renderTeamDashboard(data){
+  const entries = Object.values(data);
+  if(!entries.length){
+    $("#teamContent").innerHTML = `
+      <div class="mod-hero">
+        <div class="kick reveal">Team-Übersicht</div>
+        <h2 class="reveal d1">Wie steht dein <span class="g">Team?</span></h2>
+      </div>
+      <div class="team-empty reveal">Noch niemand hat sich eingeloggt und trainiert. Sobald deine Kundenberater loslegen, erscheinen ihre Ergebnisse hier.</div>`;
+    requestAnimationFrame(observeReveals);
+    return;
+  }
+
+  const quizDone = entries.filter(e=>e.quiz && e.quiz.total);
+  const avgQuiz  = quizDone.length ? Math.round(quizDone.reduce((s,e)=>s+e.quiz.score/e.quiz.total,0)/quizDone.length*100) : null;
+  const allRp    = entries.flatMap(e=>e.rollenspiele||[]);
+  const rpScored = allRp.filter(r=>r.feedback && typeof r.feedback.gesamt!=="undefined");
+  const avgRp    = rpScored.length ? Math.round(rpScored.reduce((s,r)=>s+Number(r.feedback.gesamt||0),0)/rpScored.length*10)/10 : null;
+
+  const typeCounts = {D:0,I:0,S:0,C:0};
+  entries.forEach(e=>{ if(e.disc && typeCounts[e.disc.dom]!==undefined) typeCounts[e.disc.dom]++; });
+  const typeChips = TYPE_ORDER.filter(t=>typeCounts[t]>0)
+    .map(t=>`<div class="tt-chip"><span class="e">${TYPES[t].emo}</span> ${typeCounts[t]}× ${TYPES[t].tier}</div>`).join("")
+    || `<div class="tt-chip">Noch keine DISC-Tests abgeschlossen</div>`;
+
+  const improveCount = {};
+  allRp.forEach(r=>{ ((r.feedback&&r.feedback.verbesserungen)||[]).forEach(v=>{ improveCount[v]=(improveCount[v]||0)+1; }); });
+  const improveSorted = Object.entries(improveCount).sort((a,b)=>b[1]-a[1]).slice(0,12);
+
+  const cards = entries
+    .sort((a,b)=>a.displayName.localeCompare(b.displayName,'de'))
+    .map(kb=>{
+      const discBadge = kb.disc
+        ? `<span class="badge ${kb.disc.dom}">${TYPES[kb.disc.dom].emo} ${TYPES[kb.disc.dom].tier} · ${kb.disc.dom}</span>`
+        : `<span class="badge" style="background:var(--line);color:var(--ink2)">DISC offen</span>`;
+      const tierBadge = kb.tier
+        ? `<span class="badge ${kb.tier.dom}">${TYPES[kb.tier.dom].emo} ${TYPES[kb.tier.dom].tier}-Test</span>`
+        : `<span class="badge" style="background:var(--line);color:var(--ink2)">Tier-Test offen</span>`;
+      const quizStat  = kb.quiz ? `${kb.quiz.score}/${kb.quiz.total}` : "—";
+      const rpList    = kb.rollenspiele||[];
+      const avgScore  = avgRoleplayScore(kb);
+
+      const rpHtml = rpList.length ? rpList.slice().reverse().map(r=>{
+        const f    = r.feedback||{};
+        const date = r.completedAt ? new Date(r.completedAt).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'}) : "";
+        return `
+        <div class="kb-rp">
+          <div class="kb-rp-head">
+            <span>${esc(r.personaName||"")} · ${esc(r.difficulty||"")} <span class="kb-rp-score">${typeof f.gesamt!=="undefined"?f.gesamt+"/10":""}</span></span>
+            <span class="date">${date}</span>
+          </div>
+          <div class="kb-rp-cols">
+            <div><div class="good" style="font-weight:700;margin-bottom:4px">Stark</div><ul>${(f.staerken||[]).map(s=>`<li>${esc(s)}</li>`).join("")}</ul></div>
+            <div><div class="imp" style="font-weight:700;margin-bottom:4px">Daran arbeiten</div><ul>${(f.verbesserungen||[]).map(s=>`<li>${esc(s)}</li>`).join("")}</ul></div>
+          </div>
+          ${f.schluesselmoment?`<div style="margin-top:10px;font-size:12.5px;color:var(--ink2);font-style:italic">Schlüsselmoment: ${esc(f.schluesselmoment)}</div>`:""}
+        </div>`;
+      }).join("") : `<div class="kb-empty">Noch kein Rollenspiel absolviert.</div>`;
+
+      return `
+      <div class="kb-card">
+        <div class="kb-head">
+          <div class="kb-name">${esc(kb.displayName)}</div>
+          <div class="kb-badges">${discBadge}${tierBadge}</div>
+        </div>
+        <div class="kb-stats">
+          <div class="kb-stat"><span class="n">${quizStat}</span><span class="l">Quiz</span></div>
+          <div class="kb-stat"><span class="n">${rpList.length}</span><span class="l">Rollenspiele</span></div>
+          <div class="kb-stat"><span class="n">${avgScore!==null?avgScore+"/10":"—"}</span><span class="l">Ø Feedback</span></div>
+        </div>
+        <div class="kb-rps">${rpHtml}</div>
+      </div>`;
+    }).join("");
+
+  $("#teamContent").innerHTML = `
+    <div class="mod-hero">
+      <div class="kick reveal">Team-Übersicht</div>
+      <h2 class="reveal d1">Wie steht dein <span class="g">Team?</span></h2>
+      <p class="reveal d2">Ergebnisse aller Kundenberater — als Basis für Coaching-Gespräche und Trainings.</p>
+    </div>
+    <div class="team-rollup reveal">
+      <div class="tr-box"><div class="tr-n">${entries.length}</div><div class="tr-l">Kundenberater aktiv</div></div>
+      <div class="tr-box"><div class="tr-n">${avgQuiz!==null?avgQuiz+"%":"—"}</div><div class="tr-l">Ø Quiz-Ergebnis</div></div>
+      <div class="tr-box"><div class="tr-n">${allRp.length}</div><div class="tr-l">Rollenspiele gesamt</div></div>
+      <div class="tr-box"><div class="tr-n">${avgRp!==null?avgRp+"/10":"—"}</div><div class="tr-l">Ø Coaching-Score</div></div>
+    </div>
+    <div class="team-types reveal d1">${typeChips}</div>
+    ${improveSorted.length?`
+    <div class="improve-cloud reveal d2">
+      <h4>Womit das Team am häufigsten kämpft</h4>
+      <ul>${improveSorted.map(([v,c])=>`<li>${esc(v)}${c>1?`<span class="cnt">×${c}</span>`:""}</li>`).join("")}</ul>
+    </div>`:""}
+    <div class="kb-grid">${cards}</div>
+  `;
   requestAnimationFrame(observeReveals);
 }
 
