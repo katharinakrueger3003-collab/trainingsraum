@@ -515,6 +515,11 @@ footer strong{color:var(--ink)}
 .kb-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:16px}
 .kb-name{font-size:20px;font-weight:800;letter-spacing:-.02em}
 .kb-badges{display:flex;gap:7px;flex-wrap:wrap}
+.kb-profile{background:var(--bg2);border-radius:14px;padding:14px 16px;margin-bottom:16px}
+.kb-basis{font-size:11.5px;color:var(--ink2);font-weight:600;letter-spacing:.03em;text-transform:uppercase;margin-bottom:6px}
+.kb-essenz{font-size:13.5px;line-height:1.5;margin-bottom:8px}
+.kb-fuehrung{font-size:13px;line-height:1.55;color:var(--ink)}
+.kb-fuehrung b{color:var(--blue)}
 .kb-stats{display:flex;gap:24px;margin-bottom:18px;flex-wrap:wrap}
 .kb-stat{display:flex;flex-direction:column}
 .kb-stat .n{font-size:22px;font-weight:800;letter-spacing:-.02em}
@@ -722,7 +727,8 @@ const TYPES = {
     vertrieb:["Bremse dein Tempo bewusst — der Kunde braucht länger als du","Stelle eine offene Frage, bevor du präsentierst","Halte Schweigen nach der Preisnennung aus, statt nachzuschieben"],
     signale:["Kommt schnell zum Punkt, wenig Small Talk","Fragt nach Zahlen, Rabatt, Bottom Line","Ungeduldig, unterbricht, will Kontrolle","Redet in Ergebnissen, nicht in Gefühlen"],
     strategie:["Fasse dich kurz, komm sofort zum Nutzen","Gib ihm die Entscheidung — biete Optionen statt Vorträge","Zeige Effizienz: „Aus einer Hand, alles geregelt“","Kein Druck von deiner Seite — das prallt ab"],
-    persona:"Herr Brandt & Frau Vogel"
+    persona:"Herr Brandt & Frau Vogel",
+    fuehrung:["Eigenverantwortung geben, nicht mikromanagen","Feedback direkt und kurz — nicht drumherum reden","Klare Ziele statt langer Meetings ohne Ergebnis","Herausforderungen/Wettbewerb als Motivation nutzen","Kann ungeduldig mit langsameren Kolleg:innen werden — sprich das offen an"]
   },
   I: {
     disc:"I", tier:"Affe", emo:"🐵", grad:"I",
@@ -732,7 +738,8 @@ const TYPES = {
     vertrieb:["Zügele den Redefluss — stelle Fragen und halte inne","Bring nach dem Rapport bewusst Struktur rein","Trau dich an den Abschluss, auch wenn es unbequem wird"],
     signale:["Viel Small Talk, erzählt persönliche Geschichten","Emotional, lacht, macht Witze — auch zum Ausweichen","Sucht Sympathie und Bestätigung","Springt zwischen Themen"],
     strategie:["Geh auf die persönliche Ebene, sei ein Mensch","Spiegle seine Energie, aber führe zurück zum Thema","Male das positive Bild: Entlastung, gutes Gefühl","Halte den Abschluss leicht und konkret fest"],
-    persona:"Herr Krause"
+    persona:"Herr Krause",
+    fuehrung:["Anerkennung und echten Austausch bieten","Ins Team einbinden, nicht isoliert arbeiten lassen","Sanft Struktur mitgeben, ohne die Energie zu bremsen","Nie öffentlich kritisieren — das trifft besonders hart","Verliert sich leicht im Gespräch — freundlich zum Punkt zurückführen"]
   },
   S: {
     disc:"S", tier:"Hase", emo:"🐰", grad:"S",
@@ -742,7 +749,8 @@ const TYPES = {
     vertrieb:["Trau dich, den Testabschluss aktiv zu setzen","Ein Einwand ist kein Angriff — bleib dran statt nachzugeben","Führe das Gespräch, gib die Initiative nicht ab"],
     signale:["Freundlich, ruhig, entscheidet ungern allein","„Ich muss erst mit meiner Familie sprechen“","Sucht Sicherheit, meidet Risiko und Druck","Zögert, will nichts falsch machen"],
     strategie:["Gib Sicherheit und Zeit, kein Drängen","Beziehe die Familie aktiv ein statt dagegen zu reden","Betone Entlastung und Verlässlichkeit","Führe mit ruhigen, kleinen nächsten Schritten"],
-    persona:"Frau Sommer & Herr Lehmann"
+    persona:"Frau Sommer & Herr Lehmann",
+    fuehrung:["Sicherheit geben, Änderungen mit Vorlauf ankündigen","Im 1:1 statt vor der Gruppe ansprechen","Aktiv nach ihrer Meinung fragen — sie sagt Probleme selten von sich aus","Verlässlichkeit explizit wertschätzen","Meidet Konflikte — beim Vermitteln behutsam nachhaken, was wirklich stört"]
   },
   C: {
     disc:"C", tier:"Eule", emo:"🦉", grad:"C",
@@ -752,7 +760,8 @@ const TYPES = {
     vertrieb:["Übersetze Fakten in Nutzen und Gefühl","Zwei starke Argumente schlagen zehn Details","Erlaube dir, ohne 100% Sicherheit abzuschließen"],
     signale:["Stellt kritische Detailfragen","„Was passiert mit meinem Geld?“ · Sicherheit","Reagiert allergisch auf Floskeln und Schwammiges","Vergleicht genau, will Belege"],
     strategie:["Wertschätze kritische Fragen, wiegle nie ab","Antworte konkret, transparent, überprüfbar","Nenne Zahlen, Treuhandkonto, klare Fakten","Kein Verkaufsdruck — er entscheidet über Logik"],
-    persona:"Frau Albrecht"
+    persona:"Frau Albrecht",
+    fuehrung:["Fakten und Begründungen liefern, keine Bauchentscheidungen von oben","Genug Zeit für gründliche Arbeit einplanen","Klare, präzise Anweisungen statt vager Ansagen","Qualität und Sorgfalt explizit anerkennen","Kann sich in Details verlieren — Prioritäten aktiv mitgeben"]
   }
 };
 const TYPE_ORDER = ["D","I","S","C"];
@@ -1836,6 +1845,27 @@ function avgRoleplayScore(kb){
   return Math.round((sum/scored.length)*10)/10;
 }
 
+// Fasst DISC- und Tier-Test zu EINEM Ergebnis zusammen, fair gewichtet
+// (16 vs. 12 Fragen) — sonst zählt der längere Test automatisch mehr.
+// Ist nur einer der beiden Tests gemacht, gilt dessen Ergebnis als (vorläufiges)
+// Gesamtbild; sind beide gemacht, verstärken oder korrigieren sie sich gegenseitig.
+function combinedProfile(kb){
+  const totals = {D:0,I:0,S:0,C:0};
+  let n = 0;
+  if(kb.disc){
+    const sum = TYPE_ORDER.reduce((s,t)=>s+(kb.disc.scores[t]||0),0) || 1;
+    TYPE_ORDER.forEach(t=>{ totals[t] += (kb.disc.scores[t]||0)/sum; });
+    n++;
+  }
+  if(kb.tier){
+    const sum = TYPE_ORDER.reduce((s,t)=>s+(kb.tier.scores[t]||0),0) || 1;
+    TYPE_ORDER.forEach(t=>{ totals[t] += (kb.tier.scores[t]||0)/sum; });
+    n++;
+  }
+  if(n===0) return null;
+  return { dom: dominantType(totals), testCount: n };
+}
+
 function renderTeamDashboard(data){
   const entries = Object.values(data);
   if(!entries.length){
@@ -1856,10 +1886,10 @@ function renderTeamDashboard(data){
   const avgRp    = rpScored.length ? Math.round(rpScored.reduce((s,r)=>s+Number(r.feedback.gesamt||0),0)/rpScored.length*10)/10 : null;
 
   const typeCounts = {D:0,I:0,S:0,C:0};
-  entries.forEach(e=>{ if(e.disc && typeCounts[e.disc.dom]!==undefined) typeCounts[e.disc.dom]++; });
+  entries.forEach(e=>{ const p=combinedProfile(e); if(p) typeCounts[p.dom]++; });
   const typeChips = TYPE_ORDER.filter(t=>typeCounts[t]>0)
     .map(t=>`<div class="tt-chip"><span class="e">${TYPES[t].emo}</span> ${typeCounts[t]}× ${TYPES[t].tier}</div>`).join("")
-    || `<div class="tt-chip">Noch keine DISC-Tests abgeschlossen</div>`;
+    || `<div class="tt-chip">Noch keine Persönlichkeitstests abgeschlossen</div>`;
 
   const improveCount = {};
   allRp.forEach(r=>{ ((r.feedback&&r.feedback.verbesserungen)||[]).forEach(v=>{ improveCount[v]=(improveCount[v]||0)+1; }); });
@@ -1868,15 +1898,28 @@ function renderTeamDashboard(data){
   const cards = entries
     .sort((a,b)=>a.displayName.localeCompare(b.displayName,'de'))
     .map(kb=>{
-      const discBadge = kb.disc
-        ? `<span class="badge ${kb.disc.dom}">${TYPES[kb.disc.dom].emo} ${TYPES[kb.disc.dom].tier} · ${kb.disc.dom}</span>`
-        : `<span class="badge" style="background:var(--line);color:var(--ink2)">DISC offen</span>`;
-      const tierBadge = kb.tier
-        ? `<span class="badge ${kb.tier.dom}">${TYPES[kb.tier.dom].emo} ${TYPES[kb.tier.dom].tier}-Test</span>`
-        : `<span class="badge" style="background:var(--line);color:var(--ink2)">Tier-Test offen</span>`;
+      const profile   = combinedProfile(kb);
       const quizStat  = kb.quiz ? `${kb.quiz.score}/${kb.quiz.total}` : "—";
       const rpList    = kb.rollenspiele||[];
       const avgScore  = avgRoleplayScore(kb);
+
+      let profileBadge, profileDetail;
+      if(profile){
+        const T = TYPES[profile.dom];
+        const basis = profile.testCount===2
+          ? "DISC- + Tier-Test"
+          : (kb.disc ? "DISC-Test — Tier-Test steht noch aus" : "Tier-Test — DISC-Test steht noch aus");
+        profileBadge = `<span class="badge ${profile.dom}">${T.emo} ${T.tier} · ${profile.dom}</span>`;
+        profileDetail = `
+        <div class="kb-profile">
+          <div class="kb-basis">Basiert auf ${basis}</div>
+          <div class="kb-essenz">${esc(T.essenz)}</div>
+          <div class="kb-fuehrung"><b>Als Teamlead:</b> ${T.fuehrung.map(f=>esc(f)).join(" · ")}</div>
+        </div>`;
+      } else {
+        profileBadge = `<span class="badge" style="background:var(--line);color:var(--ink2)">Noch kein Persönlichkeitstest</span>`;
+        profileDetail = "";
+      }
 
       const rpHtml = rpList.length ? rpList.slice().reverse().map(r=>{
         const f    = r.feedback||{};
@@ -1899,8 +1942,9 @@ function renderTeamDashboard(data){
       <div class="kb-card">
         <div class="kb-head">
           <div class="kb-name">${esc(kb.displayName)}</div>
-          <div class="kb-badges">${discBadge}${tierBadge}</div>
+          <div class="kb-badges">${profileBadge}</div>
         </div>
+        ${profileDetail}
         <div class="kb-stats">
           <div class="kb-stat"><span class="n">${quizStat}</span><span class="l">Quiz</span></div>
           <div class="kb-stat"><span class="n">${rpList.length}</span><span class="l">Rollenspiele</span></div>
