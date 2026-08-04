@@ -599,7 +599,7 @@ footer strong{color:var(--ink)}
       <div class="row">
         <div class="stat reveal"><div class="n">4</div><div class="l">Persönlichkeitstypen, die jeden Kunden erklären</div></div>
         <div class="stat reveal d1"><div class="n">6</div><div class="l">KI-Kunden, die auf jedes deiner Worte reagieren</div></div>
-        <div class="stat reveal d2"><div class="n">14</div><div class="l">Einwände, die du im Schlaf beherrschen wirst</div></div>
+        <div class="stat reveal d2"><div class="n">15</div><div class="l">Einwände, die du im Schlaf beherrschen wirst</div></div>
       </div>
     </div>
 
@@ -625,7 +625,7 @@ footer strong{color:var(--ink)}
         <div class="fcard c3 reveal d2" data-goto="quiz">
           <div class="ic">⚡</div>
           <h3>Einwand-Quiz</h3>
-          <p>14 knifflige Situationen. Finde in Sekunden die stärkste Reaktion — mit Begründung.</p>
+          <p>15 knifflige Situationen. Finde in Sekunden die stärkste Reaktion — mit Begründung.</p>
           <span class="go">Quiz spielen <span class="arw">→</span></span>
         </div>
         <div class="fcard c4 reveal d3" data-goto="leitfaden">
@@ -954,7 +954,7 @@ const DIFFICULTIES = [
   {id:"hart",label:"Hart",desc:"Kunde bleibt lange skeptisch, hakt nach"}
 ];
 
-/* Quiz — 14 Fragen, jeweils mit passendem Typ-Bezug */
+/* Quiz — 15 Fragen, jeweils mit passendem Typ-Bezug */
 const QUIZ = [
   {einwand:"„Das ist mir ehrlich gesagt alles zu teuer.“",frage:"Was ist die stärkste erste Reaktion?",typ:"D",
    optionen:["„Qualität hat eben ihren Preis, dafür bekommen Sie bei uns auch wirklich alles aus einer Hand.“","„Ich verstehe, dass der Betrag erstmal groß wirkt. Zu teuer im Vergleich wozu? Was hatten Sie sich denn vorgestellt?“","„Da kann ich schauen, ob wir beim Preis noch etwas machen können.“","„Andere Anbieter sind deutlich teurer als wir, das kann ich Ihnen versichern.“"],
@@ -1011,7 +1011,11 @@ const QUIZ = [
   {einwand:"„Ihr macht doch nichts anderes als ein normaler Bestatter.“",frage:"Wie differenzierst du am besten?",typ:"D",
    optionen:["„Nein, das stimmt überhaupt nicht, wir sind etwas völlig anderes.“","„Normale Bestatter sind meistens teurer und oft auch weniger seriös.“","„Stimmt, im Kern organisieren wir die Bestattung. Der Unterschied ist die Vorsorge: Sie legen heute alles fest, sichern sich die heutigen Preise, Ihr Geld ist abgesichert, und Ihre Familie muss später keine einzige Entscheidung treffen. Welcher dieser Punkte ist Ihnen am wichtigsten?“","„Wenn Sie das so sehen, können Sie natürlich auch zum Bestatter um die Ecke gehen.“"],
    korrekt:2,erklaerung:"Teilweise zustimmen entwaffnet, kein Widerspruchs-Pingpong (A). Dann die Differenzierung über die eigene Vorsorge-Leistung statt über das Schlechtreden des Wettbewerbs (B). Die Abschlussfrage am Ende macht aus der Differenzierung eine Motivfrage: Du erfährst, welcher USP zieht.",
-   typnote:"Der direkte Löwe (D) provoziert gern mit Vergleichen. Nicht ins Pingpong gehen — teilweise zustimmen, souverän differenzieren, Motivfrage anhängen."}
+   typnote:"Der direkte Löwe (D) provoziert gern mit Vergleichen. Nicht ins Pingpong gehen — teilweise zustimmen, souverän differenzieren, Motivfrage anhängen."},
+  {einwand:"„Ich will das jetzt aber noch nicht machen.“",frage:"Wie reagierst du auf diesen unspezifischen Vertagungs-Einwand?",typ:"S",
+   optionen:["„Kein Problem, melden Sie sich einfach, wenn Sie soweit sind.“","„Verstehe ich gut, das ist keine Entscheidung, die man von heute auf morgen trifft. Darf ich fragen, was Sie gerade noch zurückhält, das Thema selbst, der Zeitpunkt, oder offene Fragen? Und wie wäre es, wenn wir heute nur die wichtigsten Eckpunkte festhalten und den Rest in Ruhe klären?“","„Die meisten Kunden entscheiden sich noch am selben Tag, das sollten Sie auch tun.“","„Gut, dann schicke ich Ihnen die Unterlagen zu, und Sie melden sich, wenn Sie bereit sind.“"],
+   korrekt:1,erklaerung:"„Noch nicht jetzt“ ohne Begründung ist ein Schutzschild wie „kein Interesse mehr“, dahinter steckt fast immer ein konkreter, unausgesprochener Grund. Die Initiative abzugeben (A/D) lässt den Lead versanden, Drängen (C) erzeugt nur Widerstand. Den echten Grund erfragen UND einen kleinen, konkreten nächsten Schritt anbieten hält das Gespräch lebendig, ohne Druck aufzubauen.",
+   typnote:"Unspezifisches Zögern ohne klaren Grund ist typisch für den Hasen (S), er entscheidet nicht gern allein oder unter Zeitdruck. Sicherheit geben, den echten Grund erfragen, einen kleinen Schritt statt der großen Entscheidung anbieten."}
 ];
 
 const METHODE = [
@@ -1074,7 +1078,10 @@ const PLAYBOOKS = [
    typnote:"Nur-die-Zahl = oft ungeduldiger Löwe (D). Halte den Preis nicht zurück, das wirkt unsouverän. Rahmen nennen und mit Bedarfsfrage verknüpfen."},
   {einwand:"„Ihr macht nichts anderes als ein normaler Bestatter.“",typ:"D",
    schritte:["„Verstehe ich, von außen wirkt das erstmal so.“","„Womit vergleichen Sie uns denn gerade? Und was wäre Ihnen wichtig, das ein Bestatter vor Ort bieten müsste?“","Differenzierung über die Vorsorge, nicht übers Schlechtreden: heute in Ruhe festlegen, heutige Preise sichern, Geld abgesichert, Familie entlastet, transparent vergleichbar.","„Welcher dieser Punkte ist für Sie der entscheidende?“, und genau darauf den Abschluss bauen."],
-   typnote:"Provokante Vergleiche = oft direkter Löwe (D). Kein Pingpong, teilweise zustimmen, souverän über die eigene Leistung differenzieren."}
+   typnote:"Provokante Vergleiche = oft direkter Löwe (D). Kein Pingpong, teilweise zustimmen, souverän über die eigene Leistung differenzieren."},
+  {einwand:"„Ich will das jetzt aber noch nicht machen.“",typ:"S",
+   schritte:["„Das verstehe ich gut, das ist keine Entscheidung, die man von heute auf morgen trifft.“","„Darf ich fragen, was Sie gerade noch zurückhält? Ist es das Thema selbst, der Zeitpunkt, oder gibt es noch offene Fragen, die ich Ihnen beantworten kann?“","Je nach Antwort passend argumentieren: bei Unsicherheit den Vorteil von JETZT nennen (heutige Preise sichern, in Ruhe entscheiden statt später unter Druck), bei Überforderung einen kleineren ersten Schritt anbieten statt der sofortigen Komplettentscheidung.","„Was halten Sie davon, wenn wir heute nur die wichtigsten Eckpunkte festhalten, und Sie sich dann in Ruhe für den nächsten Schritt entscheiden? Wann passt es Ihnen, dass wir noch einmal telefonieren?“"],
+   typnote:"„Noch nicht jetzt“ ohne konkreten Grund ist oft der zögerliche Hase (S), der Zeit und Sicherheit braucht. Kein Drängen, aber auch nicht einfach loslassen: den echten Grund finden und einen kleinen, konkreten nächsten Schritt anbieten statt das Gespräch versanden zu lassen."}
 ];
 
 /* ═══════════════════════════════════════════════════════════
@@ -1659,7 +1666,7 @@ function renderQuizStep(){
     <div class="mod-hero">
       <div class="kick reveal">Einwand-Quiz</div>
       <h2 class="reveal d1">Was ist der<br><span class="g">stärkste Move?</span></h2>
-      <p class="reveal d2">14 Situationen aus echten Gesprächen. Wähle die beste Reaktion — und lerne aus der Begründung.</p>
+      <p class="reveal d2">15 Situationen aus echten Gesprächen. Wähle die beste Reaktion — und lerne aus der Begründung.</p>
     </div>
     <div class="quiz">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
