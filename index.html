@@ -362,6 +362,22 @@ footer strong{color:var(--ink)}
 .pc-typ{font-size:12.5px;color:var(--ink2);margin-top:12px;line-height:1.5;padding-top:12px;border-top:1px solid var(--bg2)}
 .pc-typ b{color:var(--ink)}
 
+/* Blinde Tier-Auswahl fürs Rollenspiel */
+.tier-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.tier-tile{text-align:center;border:none;border-radius:24px;padding:34px 22px;color:#fff;cursor:pointer;
+  transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s;box-shadow:0 12px 34px rgba(0,0,0,.12)}
+.tier-tile:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 26px 55px rgba(0,0,0,.2)}
+.tier-tile.D{background:var(--grad-D)}.tier-tile.I{background:var(--grad-I)}
+.tier-tile.S{background:var(--grad-S)}.tier-tile.C{background:var(--grad-C)}
+.tt-emo{font-size:48px;margin-bottom:10px}
+.tt-name{font-size:22px;font-weight:800;letter-spacing:-.02em}
+.tt-sub{font-size:12px;opacity:.85;margin-top:2px;font-weight:600;letter-spacing:.04em}
+.tt-n{font-size:12px;opacity:.8;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.3)}
+
+/* Auflösung im Feedback */
+.fb-reveal{background:var(--bg2);border-radius:14px;padding:13px 16px;font-size:13.5px;line-height:1.5;margin-bottom:18px}
+.fb-reveal .lbl{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--blue);margin-right:6px}
+
 /* Chat */
 .chat-wrap{max-width:720px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:26px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.1)}
 .chat-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--line);
@@ -598,7 +614,7 @@ footer strong{color:var(--ink)}
     <div class="stats wrap">
       <div class="row">
         <div class="stat reveal"><div class="n">4</div><div class="l">Persönlichkeitstypen, die jeden Kunden erklären</div></div>
-        <div class="stat reveal d1"><div class="n">6</div><div class="l">KI-Kunden, die auf jedes deiner Worte reagieren</div></div>
+        <div class="stat reveal d1"><div class="n">11</div><div class="l">KI-Kunden, die auf jedes deiner Worte reagieren</div></div>
         <div class="stat reveal d2"><div class="n">15</div><div class="l">Einwände, die du im Schlaf beherrschen wirst</div></div>
       </div>
     </div>
@@ -619,7 +635,7 @@ footer strong{color:var(--ink)}
         <div class="fcard c2 reveal d1" data-goto="rollenspiel">
           <div class="ic">🎭</div>
           <h3>KI-Rollenspiel</h3>
-          <p>Sechs echte Kundentypen am Telefon. Führe das Gespräch, kassiere ehrliches Coaching-Feedback.</p>
+          <p>Elf echte Kundensituationen am Telefon, blind zugewiesen. Führe das Gespräch, kassiere ehrliches Coaching-Feedback.</p>
           <span class="go">Gespräch führen <span class="arw">→</span></span>
         </div>
         <div class="fcard c3 reveal d2" data-goto="quiz">
@@ -916,12 +932,12 @@ const TIER_Q = [
 
 /* Personas — mit DISC & Tier */
 const PERSONAS = [
-  {id:"brandt",name:"Herr Brandt, 68",label:"Der Preisfokussierte",disc:"D",
+  {id:"brandt",name:"Herr Brandt, 68",label:"Der Preisfokussierte",disc:"D",lostGrund:"Preis - Allgemein",
    desc:"Vergleicht Preise, findet alles zu teuer, will verhandeln.",
    typHinweis:"Klassischer Löwe: dominant, ergebnisorientiert, will die Kontrolle behalten. Verhandeln ist sein Spiel.",
    opener:"Ja, guten Tag... Also, ich sag's gleich vorweg: Ich hab mir das mit den Preisen angeschaut, und das ist mir ehrlich gesagt alles zu teuer.",
    prompt:"Du bist Herr Brandt, 68, Rentner, ehemaliger Handwerksmeister. Du hast eine Anfrage zur Bestattungsvorsorge gestellt, bist aber stark preisfokussiert. Du vergleichst, fragst nach Rabatten, sagst Dinge wie 'beim Bestatter um die Ecke krieg ich das günstiger'. Dein eigentliches Motiv (das du nicht sofort zeigst): Du willst deine Frau finanziell absichern und nichts dem Zufall überlassen. Du öffnest dich, wenn der Berater dein Motiv findet und Nutzen statt Preis verkauft."},
-  {id:"sommer",name:"Frau Sommer, 74",label:"Die Familienmensch",disc:"S",
+  {id:"sommer",name:"Frau Sommer, 74",label:"Die Familienmensch",disc:"S",lostGrund:"Keine Entscheidung - Kunde unentschlossen",
    desc:"Will erst mit den Kindern sprechen, entscheidet ungern allein.",
    typHinweis:"Ein Hase: harmoniebedürftig, konfliktscheu, entscheidet nicht gern allein. Braucht Sicherheit.",
    opener:"Guten Tag. Ich hatte da ja angefragt... aber wissen Sie, eigentlich wollte ich das alles erst einmal mit meinen Kindern besprechen.",
@@ -936,16 +952,41 @@ const PERSONAS = [
    typHinweis:"Eine Eule: analytisch, kritisch, ehemalige Buchhalterin. Will Fakten, keine Floskeln.",
    opener:"Guten Tag. Ich habe da einige Fragen. Vor allem: Was passiert eigentlich mit meinem Geld, wenn ich da jetzt einzahle? Man liest ja so einiges.",
    prompt:"Du bist Frau Albrecht, 71, ehemalige Buchhalterin, sehr genau und kritisch. Haupteinwände: 'Was passiert mit meinem Geld?', 'Was ist, wenn Ihre Firma pleitegeht?', 'Wir haben eigentlich schon alles geregelt' (bei Nachfrage stellt sich heraus: nur eine Sterbegeldversicherung, sonst nichts Schriftliches). Du stellst Detailfragen und reagierst allergisch auf schwammige Antworten und Verkaufsfloskeln. Du öffnest dich, wenn der Berater transparent, konkret und ohne Druck erklärt und deine kritischen Fragen wertschätzt statt abzuwehren."},
-  {id:"lehmann",name:"Herr Lehmann, 66",label:"Der Abgekühlte",disc:"S",
+  {id:"lehmann",name:"Herr Lehmann, 66",label:"Der Abgekühlte",disc:"S",lostGrund:"Preis - Allgemein",
    desc:"Hat ein Angebot erhalten, blockt jetzt ab: kein Interesse mehr.",
    typHinweis:"Ein Hase im Rückzug: konfliktscheu, hat sich nach Preis-Schock und Gegenwind der Frau zurückgezogen.",
    opener:"Ach, Sie sind das... Ja, hören Sie, ich hab mir das überlegt. Ich hab da eigentlich kein Interesse mehr.",
    prompt:"Du bist Herr Lehmann, 66. Du hast vor zwei Wochen ein Angebot zur Bestattungsvorsorge erhalten, dich aber nicht mehr gemeldet. Jetzt ruft der Berater nach (Follow-up-Call) und du blockst ab: 'Kein Interesse mehr', 'Hat sich erledigt'. Der wahre Grund (zeigst du nicht sofort): Der Gesamtbetrag im Angebot hat dich erschreckt, und deine Frau meinte, das brauche man nicht. Du wirst abweisend bei Druck oder wenn der Berater das alte Angebot einfach verteidigt. Du öffnest dich, wenn er ohne Druck und ehrlich interessiert nach dem Grund fragt, dein Preis-Erschrecken ernst nimmt und Optionen aufzeigt (anderer Leistungsumfang, Ratenzahlung, Einbindung deiner Frau)."},
-  {id:"vogel",name:"Frau Vogel, 69",label:"Die Preisanfragerin",disc:"D",
+  {id:"vogel",name:"Frau Vogel, 69",label:"Die Preisanfragerin",disc:"D",lostGrund:"Wettbewerb - Preis",
    desc:"Will nur eine Zahl hören und vergleicht mehrere Anbieter.",
    typHinweis:"Ein Löwe: pragmatisch, direkt, ungeduldig. Will Ergebnisse (eine Zahl), keine Vorträge.",
    opener:"Guten Tag. Also, ich will gar nicht lange reden, ich wollte eigentlich nur mal wissen, was so etwas bei Ihnen kostet.",
-   prompt:"Du bist Frau Vogel, 69, pragmatisch und direkt. Du willst am Telefon nur eine konkrete Zahl und vergleichst mehrere Anbieter. Später im Gespräch bringst du den Einwand: 'Ihr macht doch nichts anderes als ein normaler Bestatter.' Dein verdecktes Motiv: Dein Mann ist kürzlich schwer erkrankt, du willst vorbereitet sein, das erzählst du aber nicht von selbst, nur wenn der Berater einfühlsam und gut fragt. Du reagierst genervt, wenn der Berater den Preis zurückhält, ausweicht oder einen Vortrag hält. Du öffnest dich, wenn er transparent sofort einen Preisrahmen nennt UND danach gute Fragen stellt, statt nur zu präsentieren."}
+   prompt:"Du bist Frau Vogel, 69, pragmatisch und direkt. Du willst am Telefon nur eine konkrete Zahl und vergleichst mehrere Anbieter. Später im Gespräch bringst du den Einwand: 'Ihr macht doch nichts anderes als ein normaler Bestatter.' Dein verdecktes Motiv: Dein Mann ist kürzlich schwer erkrankt, du willst vorbereitet sein, das erzählst du aber nicht von selbst, nur wenn der Berater einfühlsam und gut fragt. Du reagierst genervt, wenn der Berater den Preis zurückhält, ausweicht oder einen Vortrag hält. Du öffnest dich, wenn er transparent sofort einen Preisrahmen nennt UND danach gute Fragen stellt, statt nur zu präsentieren."},
+  {id:"kaiser",name:"Herr Kaiser, 63",label:"Der Ratenrechner",disc:"S",lostGrund:"Preis - Ratenhöhe",
+   desc:"Nicht der Gesamtpreis stört ihn, sondern die monatliche Rate.",
+   typHinweis:"Ein Hase: sicherheitsbedürftig, rechnet genau nach, hat Angst vor einer dauerhaften Verpflichtung, die sein Budget sprengt.",
+   opener:"Guten Tag. Also, das Prinzip verstehe ich schon, aber diese monatliche Rate, ich weiß ehrlich nicht, ob ich mir das dauerhaft leisten kann.",
+   prompt:"Du bist Herr Kaiser, 63, ehemaliger Maschinenschlosser, jetzt in Rente. Du lebst von einer kleinen Rente und rechnest sehr genau. Dein Einwand ist NICHT der Gesamtpreis, sondern speziell die monatliche RATE, du hast Angst vor einer dauerhaften Verpflichtung, die dein knappes Budget sprengen könnte. Du fragst nach Alternativen zur Ratenhöhe (längere Laufzeit, geringere Rate, Einmalzahlung). Dein eigentliches Motiv: Du willst unbedingt vorsorgen, weil du deiner Tochter nichts außer Kosten hinterlassen willst, aber die Sorge um die monatliche Belastung ist echt, keine Ausrede. Du öffnest dich, wenn der Berater konkrete Rechenbeispiele oder Alternativen zur Ratenhöhe anbietet, statt nur den Gesamtnutzen zu wiederholen."},
+  {id:"berger",name:"Frau Berger, 68",label:"Die Leistungsvergleicherin",disc:"C",lostGrund:"Wettbewerb - Service",
+   desc:"Vergleicht nicht den Preis, sondern die Leistungen mit einem anderen Anbieter.",
+   typHinweis:"Eine Eule: sehr gründlich, vergleicht Leistungslisten im Detail, will genau wissen, was enthalten ist.",
+   opener:"Guten Tag. Ich hab mir noch einen anderen Anbieter angeschaut, und ehrlich gesagt bietet der einiges mehr an Leistungen.",
+   prompt:"Du bist Frau Berger, 68, ehemalige Verwaltungsangestellte, sehr gründlich. Du vergleichst nicht den Preis, sondern die LEISTUNGEN und den Service verschiedener Anbieter (was ist enthalten, wie gut ist die Betreuung, welche Extras gibt es). Dein Haupteinwand: 'Der andere Anbieter bietet mehr Leistungen.' Du hast eine konkrete Liste im Kopf und fragst gezielt nach, was GENAU im Vergleich enthalten ist. Du reagierst genervt auf vage Antworten oder Marketing-Floskeln wie 'wir sind einfach besser'. Du öffnest dich, wenn der Berater konkret und ehrlich die eigenen Leistungen erklärt, auch wo man vielleicht weniger bietet, aber warum das für dich trotzdem passt, statt pauschal zu behaupten, überlegen zu sein."},
+  {id:"neumann",name:"Frau Neumann, 52",label:"Die aktuell Verhinderte",disc:"I",lostGrund:"Aktuell keine Vorsorge möglich",
+   desc:"Wollte eigentlich vorsorgen, aber ihre Lebenssituation hat sich verschlechtert.",
+   typHinweis:"Ein Affe: emotional, redet viel, wirkt aber gestresst und ausweichend, sobald das Thema Geld kommt.",
+   opener:"Ja hallo... Entschuldigung, ich bin gerade etwas... ist das jetzt ein guter Zeitpunkt? Also, ich hatte ja angefragt, aber ehrlich weiß ich nicht, ob das gerade das Richtige ist.",
+   prompt:"Du bist Frau Neumann, 52, alleinerziehend. Du hast dich vor einiger Zeit informiert, aber deine Lebenssituation hat sich seitdem verschlechtert: Nach einer Trennung beziehst du aktuell Bürgergeld und hast schlicht kein Geld für eine monatliche Rate übrig, auch nicht für eine kleine. Du erwähnst das NICHT von dir aus, du bist ausweichend, vage, wechselst das Thema, wirkst gestresst und abgelenkt. WICHTIG FÜR DIE SIMULATION: Du öffnest dich nur, wenn der Berater wirklich einfühlsam und mit offenen, nicht-drängenden Fragen nachfragt, wie es dir gerade geht bzw. was sich seit der Anfrage verändert hat, OHNE dich zu bedrängen weiterzumachen. Sobald du deine echte Situation erklärt hast: Wenn der Berater das mit Verständnis aufnimmt, NICHT weiter zu einem Abschluss drängt, sondern anbietet, sich zu einem späteren, besseren Zeitpunkt zu melden oder dir sagt, dass es völlig in Ordnung ist, jetzt nicht weiterzumachen, dann reagierst du erleichtert und dankbar, das ist das gute Ende dieses Gesprächs. Wenn der Berater dagegen trotzdem drängt, nachdem du deine Situation erklärt hast, wirst du zunehmend unwohl und abweisend. Fragt der Berater nicht gut genug nach, bleibst du bis zum Schluss vage."},
+  {id:"winter",name:"Herr Winter, 70",label:"Der Zurückgehaltene",disc:"S",lostGrund:"Familie/Angehörige raten ab",
+   desc:"Hätte Interesse, aber seine Tochter hat ihm aktiv abgeraten.",
+   typHinweis:"Ein Hase: harmoniebedürftig, will nicht gegen den Rat seiner Tochter handeln, das belastet ihn sichtlich.",
+   opener:"Ja, hallo... also ich muss ehrlich sagen, ich hab mit meiner Tochter gesprochen, und die meinte, das soll ich lieber nicht machen.",
+   prompt:"Du bist Herr Winter, 70, verwitwet. Du hattest ernsthaftes Interesse an der Vorsorge, aber deine Tochter hat dir aktiv abgeraten ('Das brauchst du nicht', 'Das ist doch Geldverschwendung', oder Misstrauen gegenüber Vorsorgeanbietern allgemein). Du bist hin- und hergerissen: du selbst würdest gerne vorsorgen, willst aber nicht gegen den Rat deiner Tochter handeln, das belastet dich sichtlich. Dein Haupteinwand: 'Meine Tochter rät mir davon ab.' Du reagierst gereizt und defensiv, wenn der Berater deine Tochter direkt kritisiert oder gegen sie argumentiert, das verschließt dich sofort. Du öffnest dich, wenn der Berater neugierig und respektvoll nach dem GRUND fragt, warum deine Tochter abrät, und dir hilft, das Thema so aufzubereiten, dass du es mit ihr klären kannst (z.B. ein gemeinsames Gespräch, transparente Unterlagen zum Zeigen), statt dich zu einer Entscheidung GEGEN deine Tochter zu drängen."},
+  {id:"roth",name:"Frau Roth, 59",label:"Die Unüberzeugte",disc:"D",lostGrund:"Nicht überzeugt vom Produkt/Service",
+   desc:"Grundsätzlich offen für Vorsorge, aber vom konkreten Angebot nicht überzeugt.",
+   typHinweis:"Ein Löwe: direkt, ungeduldig mit vagen Antworten, will klare Argumente statt Worthülsen.",
+   opener:"Also ich hab mir das jetzt angeschaut, und ehrlich, das überzeugt mich einfach nicht.",
+   prompt:"Du bist Frau Roth, 59, direkt und selbstbewusst. Du bist grundsätzlich offen für das Thema Vorsorge, aber vom KONKRETEN Angebot nicht überzeugt, du findest unklar, was genau du bekommst, oder zweifelst am Mehrwert gegenüber einer einfachen Rücklage auf dem Sparbuch. Dein Haupteinwand: 'Das überzeugt mich nicht' bzw. 'Das brauche ich eigentlich nicht.' Du bist ungeduldig mit vagen Antworten und Worthülsen, willst konkrete, greifbare Argumente, warum Vorsorge (und speziell dieses Angebot) besser ist als Geld einfach zurückzulegen. Du öffnest dich, wenn der Berater konkret und mit klaren Fakten den Unterschied zeigt (Preisbindung heute, Organisation im Ernstfall, kein Zugriff/keine Versuchung wie beim Sparbuch), statt nur allgemein zu beteuern, dass es 'gut' sei."}
 ];
 
 const DIFFICULTIES = [
@@ -1401,50 +1442,51 @@ function renderRollenspiel(){
   renderRsSetup();
 }
 
+// Personas nach DISC-/Tier-Typ gruppiert — Basis für die blinde Auswahl.
+function personasByType(t){ return PERSONAS.filter(p=>p.disc===t); }
+
 function renderRsSetup(){
   const disc=getResult("disc");
   const yourType = disc? disc.dom : null;
   const hint = yourType
-    ? `<div class="your-type-hint reveal"><span class="e">${TYPES[yourType].emo}</span><div class="txt">Dein Typ: <b>${TYPES[yourType].tier} (${TYPES[yourType].disc})</b>. Jede Kundenkarte zeigt dir unten, worauf <b>du</b> bei genau diesem Gegenüber achten solltest.</div></div>`
-    : `<div class="your-type-hint empty reveal"><span class="e">🧭</span><div class="txt">Tipp: Mach zuerst den <b><a href="#" data-goto="typ" style="color:var(--blue);text-decoration:none">Persönlichkeitstest</a></b> — dann bekommst du bei jedem Kunden einen persönlichen Hinweis, wie du als dein Typ mit ihm umgehst.</div></div>`;
+    ? `<div class="your-type-hint reveal"><span class="e">${TYPES[yourType].emo}</span><div class="txt">Dein Typ: <b>${TYPES[yourType].tier} (${TYPES[yourType].disc})</b>. Du siehst gleich nur das Tier deines Kunden, nicht wer es ist — denk beim Telefonieren in Typen, genau wie im echten Gespräch.</div></div>`
+    : `<div class="your-type-hint empty reveal"><span class="e">🧭</span><div class="txt">Tipp: Mach zuerst den <b><a href="#" data-goto="typ" style="color:var(--blue);text-decoration:none">Persönlichkeitstest</a></b> — dann bekommst du nach jedem Rollenspiel einen persönlichen Hinweis, wie du als dein Typ mit dem jeweiligen Kunden umgehst.</div></div>`;
 
-  const cards = PERSONAS.map((p,i)=>{
-    const T=TYPES[p.disc];
-    const cross = yourType ? `<div class="pc-typ"><b>Für dich als ${TYPES[yourType].tier}:</b> ${esc(CROSS[yourType][p.disc])}</div>`
-                           : `<div class="pc-typ"><b>So tickt er:</b> ${esc(p.typHinweis)}</div>`;
+  const tiles = TYPE_ORDER.map((t,i)=>{
+    const T=TYPES[t];
+    const n = personasByType(t).length;
     return `
-    <button class="persona-card ${p.disc} reveal ${i%2?'d1':''}" data-persona="${p.id}">
-      <div class="pc-badges">
-        <span class="badge ${p.disc}">DISC · ${p.disc}</span>
-        <span class="badge ${p.disc}">${T.emo} ${T.tier}</span>
-      </div>
-      <div class="pc-label">${esc(p.label)}</div>
-      <div class="pc-name">${esc(p.name)}</div>
-      <div class="pc-desc">${esc(p.desc)}</div>
-      <div class="pc-quote">„${esc(p.opener.slice(0,72))}...“</div>
-      ${cross}
+    <button class="tier-tile ${t} reveal ${i%2?'d1':''}" data-tier="${t}">
+      <div class="tt-emo">${T.emo}</div>
+      <div class="tt-name">${T.tier}</div>
+      <div class="tt-sub">DISC · ${t}</div>
+      <div class="tt-n">${n} mögliche ${n===1?'Situation':'Situationen'} — zufällig</div>
     </button>`;
   }).join("");
 
   $("#rsContent").innerHTML=`
     <div class="mod-hero">
       <div class="kick reveal">KI-Rollenspiel</div>
-      <h2 class="reveal d1">Sechs Kunden.<br><span class="g">Ein echtes Gespräch.</span></h2>
-      <p class="reveal d2">Wähle einen Kunden und führe das Gespräch wie am Telefon. Er reagiert auf jedes deiner Worte — Einwände inklusive. Am Ende: ehrliches Coaching-Feedback.</p>
+      <h2 class="reveal d1">Ein Kunde.<br><span class="g">Unbekannt bis zum ersten Satz.</span></h2>
+      <p class="reveal d2">Du siehst nur das Tier — wie am echten Telefon weißt du nicht, welcher Einwand kommt. Führe das Gespräch, finde die Situation heraus. Am Ende: ehrliches Coaching-Feedback und die Auflösung, wer es war.</p>
     </div>
     ${hint}
     <div style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin:26px 0 12px">Schwierigkeit</div>
     <div class="diff-row">
       ${DIFFICULTIES.map(d=>`<button class="diff-btn ${rs.difficulty===d.id?'active':''}" data-diff="${d.id}"><strong>${d.label}</strong><span>${d.desc}</span></button>`).join("")}
     </div>
-    <div style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin:26px 0 12px">Wähle deinen Kunden</div>
-    <div class="persona-grid">${cards}</div>
+    <div style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin:26px 0 12px">Wähle das Tier deines Kunden</div>
+    <div class="tier-grid">${tiles}</div>
   `;
   $("#rsContent").querySelectorAll("[data-diff]").forEach(b=>b.addEventListener("click",()=>{
     rs.difficulty=b.dataset.diff;
     $("#rsContent").querySelectorAll(".diff-btn").forEach(x=>x.classList.toggle("active",x.dataset.diff===rs.difficulty));
   }));
-  $("#rsContent").querySelectorAll("[data-persona]").forEach(b=>b.addEventListener("click",()=>startChat(b.dataset.persona)));
+  $("#rsContent").querySelectorAll("[data-tier]").forEach(b=>b.addEventListener("click",()=>{
+    const pool = personasByType(b.dataset.tier);
+    const chosen = pool[Math.floor(Math.random()*pool.length)];
+    startChat(chosen.id);
+  }));
   requestAnimationFrame(observeReveals);
 }
 
@@ -1481,11 +1523,13 @@ VERHALTEN:
 
 const FEEDBACK_SYSTEM = `Du bist ein erfahrener Vertriebscoach für telefonische Beratung in der Bestattungsvorsorge. Du bewertest das Gespräch eines Kundenberaters (KB) mit einem simulierten Kunden: konstruktiv, konkret und ehrlich, in deutscher Du-Form.
 
+WICHTIGES BEWERTUNGSPRINZIP: Ziel ist nicht "jeder Kunde muss gewonnen werden", sondern dass der KB die Situation professionell diagnostiziert und mit guten, offenen Fragen herausfindet, was der Kunde wirklich braucht — auch wenn das Ergebnis "kein Abschluss" ist. Stellt sich im Gespräch heraus, dass die Vorsorge für den Kunden aktuell nicht passt oder er kein geeigneter Kunde ist (z.B. akute finanzielle Notlage), UND der KB das durch einfühlsame Fragen selbst herausgefunden und das Gespräch respektvoll und ohne Druck beendet oder fair vertagt hat, ist das ein STARKES Ergebnis, keine Schwäche, bewerte das entsprechend positiv bei "Bedarfsanalyse" und "Abschlussorientierung" (hier zählt der saubere, druckfreie Ausstieg oder eine faire Vertagung als richtiger Abschluss, nicht ein erzwungener Verkauf). Bewerte dagegen NEGATIV, wenn der KB in einer solchen Situation trotzdem drängt, die Signale überhört oder Druck aufbaut. Das Thema ist emotional und heikel, Drückerkolonnen-Verhalten ist in jedem Fall ein K.-o.-Kriterium, unabhängig vom Ergebnis.
+
 Bewerte nach diesen Kriterien (je 1 bis 5 Punkte):
 1. "Einstieg & Empathie". Rapport, Rahmen, Tonalität
-2. "Bedarfsanalyse", offene Fragen, Motiv gefunden, aktives Zuhören
-3. "Einwandbehandlung", 4 Schritte: Annehmen, Hinterfragen, Argumentieren, Abschließen
-4. "Abschlussorientierung". Kaufsignale genutzt, Testabschluss, nächster Schritt
+2. "Bedarfsanalyse", offene Fragen, Motiv bzw. echte Situation gefunden, aktives Zuhören
+3. "Einwandbehandlung", 4 Schritte: Annehmen, Hinterfragen, Argumentieren, Abschließen — oder sauberes Erkennen einer Nicht-Passung
+4. "Abschlussorientierung". Kaufsignale genutzt, Testabschluss, nächster Schritt — oder fairer, druckfreier Ausstieg/Vertagung, wenn das die richtige Situation ist
 
 Antworte AUSSCHLIESSLICH mit validem JSON in exakt diesem Format, ohne Markdown, ohne Backticks, ohne Text davor oder danach:
 {
@@ -1515,7 +1559,7 @@ function renderChat(){
   const diffLabel=DIFFICULTIES.find(d=>d.id===rs.difficulty).label;
   const bubbles = rs.messages.map(m=>`
     <div class="brow ${m.role}">
-      <div class="bubble"><div class="bwho">${m.role==="kb"?"Du":esc(p.name.split(",")[0])}</div>${esc(m.text)}</div>
+      <div class="bubble"><div class="bwho">${m.role==="kb"?"Du":"Kunde"}</div>${esc(m.text)}</div>
     </div>`).join("");
   $("#rsContent").innerHTML=`
     <div class="mod-hero" style="padding-bottom:8px"><div class="kick">Live-Gespräch</div></div>
@@ -1524,8 +1568,8 @@ function renderChat(){
         <div class="who">
           <div class="av ${p.disc}">${T.emo}</div>
           <div>
-            <div class="nm">${esc(p.name)}</div>
-            <div class="st"><span class="badge ${p.disc}" style="padding:2px 8px;font-size:10px">${T.tier} · ${p.disc}</span> ${esc(p.label)} · ${diffLabel}</div>
+            <div class="nm">${T.tier} am Telefon</div>
+            <div class="st"><span class="badge ${p.disc}" style="padding:2px 8px;font-size:10px">${T.tier} · ${p.disc}</span> Wer es ist, erfährst du am Ende · ${diffLabel}</div>
           </div>
         </div>
         <button class="pill ghost sm" id="rsQuit">Abbrechen</button>
@@ -1583,7 +1627,7 @@ async function getFeedback(){
   try{
     const transcript = rs.messages.map(m=>(m.role==="kb"?"KUNDENBERATER: ":"KUNDE: ")+m.text).join("\n");
     const raw = await callChat(FEEDBACK_SYSTEM,[{role:"user",
-      content:`Hier das Gesprächstranskript (Kunde: ${rs.persona.name}, ${rs.persona.label}, Typ: ${TYPES[rs.persona.disc].tier}/${rs.persona.disc}, Schwierigkeit: ${rs.difficulty}):\n\n${transcript}`}],1024);
+      content:`Hier das Gesprächstranskript (Kunde: ${rs.persona.name}, ${rs.persona.label}, Typ: ${TYPES[rs.persona.disc].tier}/${rs.persona.disc}, Schwierigkeit: ${rs.difficulty}):\n\n${transcript}`}],1500);
     const clean = raw.replace(/```json|```/g,"").trim();
     rs.feedback = JSON.parse(clean);
     rs.stage="feedback";
@@ -1614,10 +1658,14 @@ function renderFeedback(){
   $("#rsContent").innerHTML=`
     <div class="mod-hero" style="padding-bottom:8px"><div class="kick">Coaching-Feedback</div></div>
     <div class="fb">
+      <div class="fb-reveal">
+        <span class="lbl">Auflösung</span> Du hast mit <b>${esc(p.name)}</b> gesprochen — ${esc(p.label)}.
+        ${p.lostGrund?`<span class="badge" style="background:var(--line);color:var(--ink);margin-left:6px">Lost-Grund: ${esc(p.lostGrund)}</span>`:""}
+      </div>
       <div class="fb-head">
         <div>
           <div class="t">Dein Coaching-Feedback</div>
-          <div class="s"><span class="badge ${p.disc}" style="padding:2px 8px;font-size:10px">${T.emo} ${T.tier}</span> ${esc(p.label)} · ${esc(p.name)}</div>
+          <div class="s"><span class="badge ${p.disc}" style="padding:2px 8px;font-size:10px">${T.emo} ${T.tier}</span> ${esc(p.desc)}</div>
         </div>
         <div class="fb-score"><div class="n">${esc(f.gesamt)}</div><div class="o">von 10</div></div>
       </div>
@@ -1630,7 +1678,7 @@ function renderFeedback(){
       ${f.alternativ?`<div class="fb-alt"><h5>SO GEHT'S STÄRKER</h5><div class="sit">Situation: ${esc(f.alternativ.situation||"")}</div><div class="bet">„${esc(f.alternativ.besser||"")}“</div></div>`:""}
       <div style="display:flex;gap:10px;margin-top:22px;flex-wrap:wrap">
         <button class="pill primary sm" id="fbAgain">Nochmal mit ${esc(p.name.split(",")[0])}</button>
-        <button class="pill ghost sm" id="fbOther">Anderen Kunden wählen</button>
+        <button class="pill ghost sm" id="fbOther">Nächstes Gespräch (zufällig)</button>
       </div>
     </div>`;
   $("#fbAgain").addEventListener("click",()=>startChat(p.id));
