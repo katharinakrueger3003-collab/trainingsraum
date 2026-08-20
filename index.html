@@ -26,7 +26,7 @@
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;overflow-x:hidden}
 body{
   font-family:var(--font);
   background:var(--bg);
@@ -405,6 +405,43 @@ footer strong{color:var(--ink)}
 .chat-input textarea:focus{border-color:var(--blue)}
 .chat-actions{display:flex;gap:10px;margin-top:10px;justify-content:flex-end}
 .chat-err{color:#c0392b;font-size:13px;padding:8px 22px;background:#fdecea}
+
+/* ══════════ PREQUALIFYING-KARTE (Salesforce-Nachbau) ══════════ */
+.pq-card{border:1px solid #c9d5e3;border-radius:10px;background:#fff;overflow:hidden;
+  box-shadow:0 1px 3px rgba(20,40,70,.07)}
+.pq-head{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid #e3e9f1;background:#fbfcfe}
+.pq-ic{width:26px;height:26px;border-radius:6px;background:var(--blue);color:#fff;display:flex;
+  align-items:center;justify-content:center;font-size:14px;flex:0 0 auto}
+.pq-head .t{font-size:15px;font-weight:800;letter-spacing:-.01em}
+.pq-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 34px;padding:14px 16px 4px}
+.pq-f{padding:7px 0 8px;border-bottom:1px solid #e6ebf2;min-width:0}
+.pq-f .l{font-size:11.5px;color:#6b7a8d;margin-bottom:3px}
+.pq-f .v{font-size:14px;line-height:1.45;color:var(--ink);word-wrap:break-word}
+.pq-f .v.leer{color:#9aa7b6;font-style:italic}
+.pq-full{grid-column:1 / -1}
+.pq-foot{padding:10px 16px 14px}
+.pq-foot .l{font-size:11.5px;color:#6b7a8d;margin-bottom:3px}
+.pq-foot .v{font-size:14px;color:var(--blue);word-break:break-all}
+@media(max-width:720px){.pq-grid{grid-template-columns:1fr;gap:0}}
+
+/* Briefing-Ansicht vor dem Anruf */
+.brief-top{display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+.brief-av{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex:0 0 auto}
+.brief-av.D{background:var(--grad-D)}.brief-av.I{background:var(--grad-I)}
+.brief-av.S{background:var(--grad-S)}.brief-av.C{background:var(--grad-C)}
+.brief-meta .nm{font-size:19px;font-weight:800;letter-spacing:-.02em}
+.brief-meta .st{font-size:13px;color:var(--ink2);margin-top:3px}
+.brief-hint{margin:16px 0 0;padding:12px 16px;border-radius:12px;background:var(--bg2);
+  border:1px solid var(--line);font-size:13.5px;line-height:1.55;color:var(--ink2)}
+.brief-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+
+/* Eingeklappte Karte im laufenden Gespräch */
+.pq-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:10px 22px;background:#fbfcfe;border:0;border-bottom:1px solid #e3e9f1;
+  font-size:12.5px;font-weight:700;color:var(--ink2);letter-spacing:.02em;text-align:left}
+.pq-toggle:hover{background:#f4f7fb}
+.pq-toggle .chev{font-size:15px;color:var(--blue)}
+.pq-inline{padding:12px 22px 4px;border-bottom:1px solid #e3e9f1;background:#fbfcfe}
 
 /* ══════════ PRODUKTWISSEN (Leitfaden) ══════════ */
 .pw-h4{font-size:15px;font-weight:800;letter-spacing:-.01em;margin:30px 0 12px;color:var(--ink)}
@@ -1052,6 +1089,85 @@ const PERSONAS = [
    prompt:"Du bist Herr Hoffmann, 73, ehemaliger Vermessungstechniker, sehr ordentlich und gründlich. Am Telefon willst du eigentlich nur wissen, was eine Bestattung kostet. Dein zweiter und wichtigerer Einwand: 'Ich habe zu Hause ein Vorsorgeheft ausgefüllt, da steht alles drin' — du hältst das Thema damit für erledigt. Was du NICHT von selbst erzählst: Du hast das Heft vor drei Jahren angelegt, nachdem die Beerdigung deines Bruders im Chaos endete und niemand wusste, was er sich gewünscht hätte. In dem Heft stehen ausschließlich deine Wünsche. Es gibt keinen Vertrag mit einem Bestatter, es ist kein Geld reserviert, und deine Tochter weiß nicht einmal, dass das Heft existiert oder wo es liegt. Du reagierst sofort abweisend und knapp, wenn der Berater dein Heft kleinredet, es für wertlos erklärt oder dagegen argumentiert — du hast dir damit Mühe gegeben. Du öffnest dich, wenn der Berater deine Vorarbeit ausdrücklich anerkennt und dann sachlich und präzise nachfragt, was genau darin steht, wer davon weiß und wie die Kosten gedeckt sind. Erkennst du die Lücke selbst (Wünsche notiert, aber nichts verbindlich vereinbart und nichts finanziell abgesichert), wirst du sehr aufmerksam und stellst detaillierte Rückfragen zu Ablauf und Absicherung. Bei Verkaufsfloskeln, Pauschalaussagen oder Druck wirst du wieder einsilbig und willst das Gespräch beenden."}
 ];
 
+/* Prequalifying-Daten pro Persona — dieselben Felder, die der Kundenberater vor
+   dem Anruf in Salesforce sieht. Regel: Sie zeigen die RICHTUNG der Anfrage,
+   nie den Grund. Das verdeckte Motiv bleibt bis zum Feedback unsichtbar. */
+const PREQUALIFYING = {
+  brandt:{stand:"Ich vergleiche noch Anbieter",fokus:"Kosten",quelle:"Empfehlung",entscheider:"Ich entscheide alleine",
+    fuer:"Mich",geburtsjahr:"1958",budget:"Weniger als 5.000 €",beruf:"Rentner",
+    finanzierung:"Einmalzahlung",bestattungsart:"Erdbestattung",anfrage:"vor 6 Tagen",
+    input:"Ich hätte gern eine Übersicht, was das bei Ihnen kostet. Zwei Angebote habe ich schon vorliegen.",
+    lp:"magazin.november.de/kosten-bestattung"},
+
+  sommer:{stand:"Ich weiß was ich möchte aber habe noch nichts abgeschlossen",fokus:"Organisatorischer Ablauf",quelle:"Zeitungsanzeige",
+    entscheider:"Ich entscheide gemeinsam mit meinen Kindern",fuer:"Mich",geburtsjahr:"1952",budget:"5.000 – 10.000 €",
+    beruf:"Rentnerin",finanzierung:"Noch unklar",bestattungsart:"Feuerbestattung, Urnengrab",anfrage:"vor 4 Tagen",
+    input:"Meine Kinder sollen sich später um nichts kümmern müssen. Ich möchte wissen, wie so etwas abläuft.",
+    lp:"magazin.november.de/ratgeber"},
+
+  krause:{stand:"Ich informiere mich erst einmal",fokus:"Allgemeine Informationen",quelle:"Online-Werbung",
+    entscheider:"Ich entscheide gemeinsam mit meiner Frau",fuer:"Mich",geburtsjahr:"1969",budget:"",
+    beruf:"Angestellt",finanzierung:"Noch unklar",bestattungsart:"Noch unentschlossen",anfrage:"vor 2 Tagen",
+    input:"Meine Frau meinte, ich soll mich da mal informieren. Schicken Sie mir gern erst mal etwas zu.",
+    lp:"magazin.november.de/warteliste"},
+
+  albrecht:{stand:"Ich habe schon etwas geregelt",fokus:"Finanzielle Absicherung",quelle:"Suchmaschine",
+    entscheider:"Ich entscheide alleine",fuer:"Mich",geburtsjahr:"1955",budget:"5.000 – 10.000 €",
+    beruf:"Rentnerin",finanzierung:"Einmalzahlung",bestattungsart:"Feuerbestattung, Urnengrab",anfrage:"vor 9 Tagen",
+    input:"Ich habe einige Fragen zur Sicherheit des Geldes. Was passiert damit, bis es gebraucht wird?",
+    lp:"magazin.november.de/treuhandkonto"},
+
+  lehmann:{stand:"Ich habe bereits ein Angebot vorliegen",fokus:"Kosten",quelle:"Online-Werbung",
+    entscheider:"Ich entscheide gemeinsam mit meiner Frau",fuer:"Mich und meine Frau",geburtsjahr:"1960",budget:"10.000 – 15.000 €",
+    beruf:"Rentner",finanzierung:"Noch unklar",bestattungsart:"Erdbestattung, Wahlgrab",anfrage:"vor 3 Wochen",
+    input:"Wir hatten ein Angebot angefragt. Ich melde mich, wenn ich es in Ruhe durchgesehen habe.",
+    lp:"magazin.november.de/angebot"},
+
+  vogel:{stand:"Ich vergleiche noch Anbieter",fokus:"Kosten",quelle:"Suchmaschine",
+    entscheider:"Ich entscheide alleine",fuer:"Mich und meinen Mann",geburtsjahr:"1957",budget:"",
+    beruf:"Rentnerin",finanzierung:"Einmalzahlung",bestattungsart:"Feuerbestattung",anfrage:"vor 2 Tagen",
+    input:"Bitte nur ganz kurz: Was kostet so etwas bei Ihnen? Ich schaue mir gerade mehrere Anbieter an.",
+    lp:"magazin.november.de/preise"},
+
+  kaiser:{stand:"Ich weiß was ich möchte aber habe noch nichts abgeschlossen",fokus:"Finanzierung",quelle:"Online-Werbung",
+    entscheider:"Ich entscheide alleine",fuer:"Mich",geburtsjahr:"1963",budget:"Weniger als 5.000 €",
+    beruf:"Rentner",finanzierung:"In kleinen monatlichen Raten zu attraktiven Finanzierungskonditionen",
+    bestattungsart:"Waldbestattung",anfrage:"vor 5 Tagen",
+    input:"Mich interessiert vor allem, wie hoch die monatliche Rate wäre und über welchen Zeitraum man zahlt.",
+    lp:"magazin.november.de/raten"},
+
+  berger:{stand:"Ich vergleiche noch Anbieter",fokus:"Leistungsumfang",quelle:"Magazin-Artikel",
+    entscheider:"Ich entscheide alleine",fuer:"Mich",geburtsjahr:"1958",budget:"10.000 – 15.000 €",
+    beruf:"Rentnerin",finanzierung:"Einmalzahlung",bestattungsart:"Feuerbestattung, Kolumbarium",anfrage:"vor 8 Tagen",
+    input:"Ich hätte gern eine genaue Aufstellung, welche Leistungen bei Ihnen enthalten sind.",
+    lp:"magazin.november.de/leistungen"},
+
+  neumann:{stand:"Ich informiere mich erst einmal",fokus:"Finanzierung",quelle:"Online-Werbung",
+    entscheider:"Ich entscheide alleine",fuer:"Mich",geburtsjahr:"1974",budget:"Weniger als 5.000 €",
+    beruf:"Angestellt",finanzierung:"In kleinen monatlichen Raten zu attraktiven Finanzierungskonditionen",
+    bestattungsart:"Feuerbestattung",anfrage:"vor 5 Monaten",
+    input:"Ich möchte für später vorsorgen, damit meine Tochter damit nicht belastet wird.",
+    lp:"magazin.november.de/warteliste"},
+
+  winter:{stand:"Ich weiß was ich möchte aber habe noch nichts abgeschlossen",fokus:"Organisatorischer Ablauf",quelle:"Empfehlung",
+    entscheider:"Ich entscheide gemeinsam mit meiner Tochter",fuer:"Mich",geburtsjahr:"1956",budget:"5.000 – 10.000 €",
+    beruf:"Rentner",finanzierung:"Einmalzahlung",bestattungsart:"Erdbestattung",anfrage:"vor 10 Tagen",
+    input:"Ich möchte neben meiner Frau beigesetzt werden. Ansprechpartnerin im Eintrittsfall wäre meine Tochter.",
+    lp:"magazin.november.de/ratgeber"},
+
+  roth:{stand:"Ich informiere mich erst einmal",fokus:"Leistungsumfang",quelle:"Online-Werbung",
+    entscheider:"Ich entscheide alleine",fuer:"Mich",geburtsjahr:"1967",budget:"5.000 – 10.000 €",
+    beruf:"Selbstständig",finanzierung:"Noch unklar",bestattungsart:"Feuerbestattung, anonymes Urnengrab",anfrage:"vor 3 Tagen",
+    input:"Ich würde gern verstehen, was mir eine Vorsorge bringt, das ich nicht auch selbst zurücklegen kann.",
+    lp:"magazin.november.de/vorsorge-sinnvoll"},
+
+  hoffmann:{stand:"Ich habe schon etwas geregelt",fokus:"Kosten",quelle:"Suchmaschine",
+    entscheider:"Ich entscheide alleine",fuer:"Mich",geburtsjahr:"1953",budget:"",
+    beruf:"Rentner",finanzierung:"Noch unklar",bestattungsart:"Feuerbestattung, Urnengrab",anfrage:"vor 7 Tagen",
+    input:"Meine Wünsche habe ich bereits schriftlich festgehalten. Mich interessiert eigentlich nur noch der Preis.",
+    lp:"magazin.november.de/preise"}
+};
+
 const DIFFICULTIES = [
   {id:"locker",label:"Aufwärmen",desc:"Kunde öffnet sich schnell, 1–2 Einwände"},
   {id:"normal",label:"Normal",desc:"Realistisches Gespräch, mehrere Einwände"},
@@ -1612,7 +1728,7 @@ function animateBars(){
 /* ═══════════════════════════════════════════════════════════
    ROLLENSPIEL
    ═══════════════════════════════════════════════════════════ */
-let rs={ stage:"setup", persona:null, difficulty:"normal", messages:[], loading:false, runId:null };
+let rs={ stage:"setup", persona:null, difficulty:"normal", messages:[], loading:false, runId:null, pqOpen:false };
 
 const CROSS = {
   D:{D:"Zwei Löwen — Vorsicht vor dem Machtkampf. Bleib ruhig, gib ihm die Wahl statt zu kontern.",
@@ -1634,6 +1750,7 @@ const CROSS = {
 };
 
 function renderRollenspiel(){
+  if(rs.stage==="briefing") return renderBriefing();
   if(rs.stage==="chat") return renderChat();
   if(rs.stage==="feedback") return renderFeedback();
   renderRsSetup();
@@ -1682,7 +1799,7 @@ function renderRsSetup(){
   $("#rsContent").querySelectorAll("[data-tier]").forEach(b=>b.addEventListener("click",()=>{
     const pool = personasByType(b.dataset.tier);
     const chosen = pool[Math.floor(Math.random()*pool.length)];
-    startChat(chosen.id);
+    showBriefing(chosen.id);
   }));
   requestAnimationFrame(observeReveals);
 }
@@ -1712,14 +1829,75 @@ function saveRoleplay(status, extra={}, opts={}){
   }, opts);
 }
 
-function startChat(pid){
+function showBriefing(pid){
   const p=PERSONAS.find(x=>x.id===pid);
   rs.persona=p;
   rs.runId=newRunId();
-  rs.messages=[{role:"kunde",text:p.opener}];
+  rs.messages=[];
+  rs.pqOpen=false;
+  rs.stage="briefing";
+  renderBriefing();
+}
+
+function beginCall(){
+  rs.messages=[{role:"kunde",text:rs.persona.opener}];
   rs.stage="chat";
   renderChat();
 }
+/* Baut die Prequalifying-Karte. kompakt=true lässt Kopfzeile und Rahmen weg,
+   damit sie im laufenden Gespräch eingeklappt untergebracht werden kann. */
+function pqFelder(pq){
+  const f=(l,v)=>`<div class="pq-f"><div class="l">${esc(l)}</div><div class="v${v?"":" leer"}">${v?esc(v):"—"}</div></div>`;
+  return `
+    <div class="pq-grid">
+      ${f("Stand der Planung",pq.stand)}
+      ${f("Fokusthemen",pq.fokus)}
+      ${f("Aufmerksam durch",pq.quelle)}
+      ${f("Entscheidungsträger",pq.entscheider)}
+      ${f("Vorsorge für",pq.fuer)}
+      ${f("Geburtsjahr",pq.geburtsjahr)}
+      ${f("Angedachtes Budget",pq.budget)}
+      ${f("Beruf",pq.beruf)}
+      ${f("Finanzierungswunsch",pq.finanzierung)}
+      ${f("Bestattungsart",pq.bestattungsart)}
+      <div class="pq-f pq-full"><div class="l">Kundeninput (Online-Termin)</div><div class="v">${esc(pq.input)}</div></div>
+      <div class="pq-f pq-full"><div class="l">Anfrage eingegangen</div><div class="v">${esc(pq.anfrage)}</div></div>
+    </div>
+    <div class="pq-foot"><div class="l">Landing Page URL</div><div class="v">${esc(pq.lp)}</div></div>`;
+}
+
+function renderPqCard(pq){
+  return `
+    <div class="pq-card">
+      <div class="pq-head"><div class="pq-ic">✦</div><div class="t">Prequalifying</div></div>
+      ${pqFelder(pq)}
+    </div>`;
+}
+
+/* Briefing: was der KB vor dem Wählen auf dem Schirm hat. */
+function renderBriefing(){
+  const p=rs.persona, T=TYPES[p.disc], pq=PREQUALIFYING[p.id];
+  const diffLabel=DIFFICULTIES.find(d=>d.id===rs.difficulty).label;
+  $("#rsContent").innerHTML=`
+    <div class="mod-hero" style="padding-bottom:8px"><div class="kick">Vor dem Anruf</div></div>
+    <div class="brief-top">
+      <div class="brief-av ${p.disc}">${T.emo}</div>
+      <div class="brief-meta">
+        <div class="nm">${T.tier} am Telefon</div>
+        <div class="st">Diese Daten stehen dir im CRM zur Verfügung · Schwierigkeit: ${esc(diffLabel)}</div>
+      </div>
+    </div>
+    ${pq?renderPqCard(pq):`<div class="brief-hint">Für diesen Kunden liegen keine Prequalifying-Daten vor.</div>`}
+    <div class="brief-hint">Wer genau anruft und was ihn wirklich umtreibt, erfährst du erst im Gespräch — die Karte zeigt nur, was der Kunde selbst angegeben hat.</div>
+    <div class="brief-actions">
+      <button class="pill grad" id="briefCall">Anruf starten</button>
+      <button class="pill ghost" id="briefBack">Anderen Kunden</button>
+    </div>`;
+  $("#briefCall").addEventListener("click",beginCall);
+  $("#briefBack").addEventListener("click",()=>{ rs.stage="setup"; rs.persona=null; rs.runId=null; renderRollenspiel(); });
+  window.scrollTo({top:0,behavior:"auto"});
+}
+
 
 function buildCustomerSystem(persona,difficulty){
   const diffText={
@@ -1808,6 +1986,12 @@ function renderChat(){
         </div>
         <button class="pill ghost sm" id="rsQuit">Abbrechen</button>
       </div>
+      ${PREQUALIFYING[p.id]?`
+      <button class="pq-toggle" id="pqToggle">
+        <span>Prequalifying ${rs.pqOpen?"ausblenden":"einblenden"}</span>
+        <span class="chev">${rs.pqOpen?"−":"+"}</span>
+      </button>
+      ${rs.pqOpen?`<div class="pq-inline">${pqFelder(PREQUALIFYING[p.id])}</div>`:""}`:""}
       <div class="chat-box" id="chatBox">
         ${bubbles}
         ${rs.loading?`<div class="brow kunde"><div class="typing"><span></span><span></span><span></span></div></div>`:""}
@@ -1822,6 +2006,8 @@ function renderChat(){
       </div>
     </div>`;
   const box=$("#chatBox"); box.scrollTop=box.scrollHeight;
+  const pqBtn=$("#pqToggle");
+  if(pqBtn) pqBtn.addEventListener("click",()=>{ rs.pqOpen=!rs.pqOpen; renderChat(); });
   $("#rsQuit").addEventListener("click",()=>{
     if(rs.messages.filter(m=>m.role==="kb").length) saveRoleplay("abgebrochen");
     rs.stage="setup"; rs.messages=[]; rs.runId=null; renderRollenspiel();
@@ -1914,7 +2100,7 @@ function renderFeedback(){
         <button class="pill ghost sm" id="fbOther">Nächstes Gespräch (zufällig)</button>
       </div>
     </div>`;
-  $("#fbAgain").addEventListener("click",()=>startChat(p.id));
+  $("#fbAgain").addEventListener("click",()=>showBriefing(p.id));
   $("#fbOther").addEventListener("click",()=>{ rs.stage="setup"; rs.messages=[]; renderRollenspiel(); });
   window.scrollTo({top:0,behavior:"auto"});
 }
