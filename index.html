@@ -332,13 +332,6 @@ footer strong{color:var(--ink)}
 @media(max-width:760px){.km-grid{grid-template-columns:1fr}}
 
 /* ══════════ ROLLENSPIEL ══════════ */
-.diff-row{display:flex;gap:12px;margin:0 0 24px;flex-wrap:wrap}
-.diff-btn{flex:1;min-width:150px;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:16px 18px;transition:all .18s}
-.diff-btn:hover{border-color:var(--blue)}
-.diff-btn strong{display:block;font-size:15px;margin-bottom:3px}
-.diff-btn span{font-size:12.5px;color:var(--ink2);line-height:1.4}
-.diff-btn.active{border-color:var(--blue);background:#EEF5F4;box-shadow:0 0 0 3px rgba(65,120,118,.14)}
-
 .your-type-hint{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#f5f5f7,#eef1f8);
   border:1px solid var(--line);border-radius:18px;padding:16px 20px;margin-bottom:24px}
 .your-type-hint .e{font-size:32px}
@@ -361,18 +354,6 @@ footer strong{color:var(--ink)}
 .pc-quote{font-size:13.5px;font-style:italic;color:var(--ink);background:var(--bg2);border-radius:12px;padding:11px 14px;line-height:1.45}
 .pc-typ{font-size:12.5px;color:var(--ink2);margin-top:12px;line-height:1.5;padding-top:12px;border-top:1px solid var(--bg2)}
 .pc-typ b{color:var(--ink)}
-
-/* Blinde Tier-Auswahl fürs Rollenspiel */
-.tier-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
-.tier-tile{text-align:center;border:none;border-radius:24px;padding:34px 22px;color:#fff;cursor:pointer;
-  transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s;box-shadow:0 12px 34px rgba(0,0,0,.12)}
-.tier-tile:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 26px 55px rgba(0,0,0,.2)}
-.tier-tile.D{background:var(--grad-D)}.tier-tile.I{background:var(--grad-I)}
-.tier-tile.S{background:var(--grad-S)}.tier-tile.C{background:var(--grad-C)}
-.tt-emo{font-size:48px;margin-bottom:10px}
-.tt-name{font-size:22px;font-weight:800;letter-spacing:-.02em}
-.tt-sub{font-size:12px;opacity:.85;margin-top:2px;font-weight:600;letter-spacing:.04em}
-.tt-n{font-size:12px;opacity:.8;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.3)}
 
 /* Auflösung im Feedback */
 .fb-reveal{background:var(--bg2);border-radius:14px;padding:13px 16px;font-size:13.5px;line-height:1.5;margin-bottom:18px}
@@ -405,6 +386,54 @@ footer strong{color:var(--ink)}
 .chat-input textarea:focus{border-color:var(--blue)}
 .chat-actions{display:flex;gap:10px;margin-top:10px;justify-content:flex-end}
 .chat-err{color:#c0392b;font-size:13px;padding:8px 22px;background:#fdecea}
+
+/* ══════════ SESSION: START, FORTSCHRITT, AUSWERTUNG ══════════ */
+.sess-card{max-width:680px;margin:26px auto 0;padding:26px;border-radius:22px;background:var(--bg2);
+  border:1px solid var(--line);text-align:center}
+.sess-card-head{font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin-bottom:14px}
+.sess-typen{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:18px}
+.sess-typ{padding:6px 13px;border-radius:980px;font-size:13px;font-weight:700;color:#fff}
+.sess-typ.D{background:var(--grad-D)}.sess-typ.I{background:var(--grad-I)}
+.sess-typ.S{background:var(--grad-S)}.sess-typ.C{background:var(--grad-C)}
+.sess-liste{list-style:none;padding:0;margin:0 auto 22px;max-width:460px;display:grid;gap:9px;text-align:left}
+.sess-liste li{position:relative;padding-left:22px;font-size:14px;line-height:1.5;color:var(--ink2)}
+.sess-liste li::before{content:"→";position:absolute;left:0;color:var(--blue);font-weight:700}
+
+.sess-bar{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.sess-txt{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)}
+.sess-dots{display:flex;gap:6px}
+.sess-dot{width:26px;height:5px;border-radius:980px;background:var(--line)}
+.sess-dot.fertig{background:var(--blue)}
+.sess-dot.aktiv{background:var(--blue);opacity:.45}
+
+.sess-aus{max-width:760px;margin:0 auto}
+.sess-aus-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;
+  padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:18px}
+.sess-aus-head .t{font-size:21px;font-weight:800;letter-spacing:-.02em}
+.sess-aus-head .s{font-size:13.5px;color:var(--ink2);margin-top:4px;max-width:420px}
+.sess-aus-score{text-align:right;flex:0 0 auto}
+.sess-aus-score .n{font-size:38px;font-weight:800;letter-spacing:-.03em;line-height:1;color:var(--blue)}
+.sess-aus-score .o{font-size:11.5px;color:var(--ink2);margin-top:3px}
+.sess-zeilen{display:grid;gap:8px}
+.sess-zeile{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid var(--line);
+  border-radius:14px;background:var(--bg)}
+.sess-emo{font-size:22px;flex:0 0 auto}
+.sess-wer{flex:1;min-width:0}
+.sess-wer b{display:block;font-size:14.5px;letter-spacing:-.01em}
+.sess-wer span{display:block;font-size:12.5px;color:var(--ink2);margin-top:1px}
+.sess-score{font-size:16px;font-weight:800;color:var(--blue);flex:0 0 auto}
+.sess-typ-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}
+.sess-typ-kachel{border:1px solid var(--line);border-radius:14px;padding:14px 10px;text-align:center;background:var(--bg)}
+.sess-typ-kachel .e{display:block;font-size:20px}
+.sess-typ-kachel .n{display:block;font-size:22px;font-weight:800;letter-spacing:-.02em;margin:4px 0 1px}
+.sess-typ-kachel .l{display:block;font-size:11.5px;color:var(--ink2)}
+.sess-fakten{margin-top:16px;padding:13px 16px;border-radius:14px;background:#fbeceb;border:1px solid #f0cdca;
+  font-size:13.5px;line-height:1.55;color:var(--ink)}
+.sess-themen{margin-top:16px;padding:18px;border-radius:16px;background:var(--bg2);border:1px solid var(--line)}
+.sess-themen h5{font-size:13px;color:var(--blue);margin-bottom:10px;letter-spacing:.02em}
+.sess-themen ul{padding-left:18px;font-size:13.5px;line-height:1.5;display:grid;gap:7px}
+.sess-themen .cnt{margin-left:6px;font-size:11px;font-weight:700;color:var(--ink2)}
+@media(max-width:640px){.sess-typ-grid{grid-template-columns:repeat(2,1fr)}}
 
 /* ══════════ PREQUALIFYING-KARTE (Salesforce-Nachbau) ══════════ */
 .pq-card{border:1px solid #c9d5e3;border-radius:10px;background:#fff;overflow:hidden;
@@ -523,6 +552,9 @@ footer strong{color:var(--ink)}
 .fb-box.good h5{color:#1e7e45}.fb-box.imp h5{color:#c2681a}
 .fb-box ul{padding-left:18px;font-size:14px;line-height:1.5;display:grid;gap:7px}
 .fb-moment{background:var(--bg2);border-radius:16px;padding:18px;margin-bottom:12px}
+.fb-cross{background:#f2f6f6;border:1px solid #d5e3e2;border-radius:16px;padding:18px;margin-bottom:12px}
+.fb-cross h5{font-size:13px;color:var(--blue);margin-bottom:7px;letter-spacing:.02em}
+.fb-cross p{font-size:14px;line-height:1.55}
 .fb-moment h5,.fb-alt h5{font-size:13px;color:var(--blue);margin-bottom:7px;letter-spacing:.02em}
 .fb-moment p{font-size:14px;line-height:1.55}
 .fb-alt{background:linear-gradient(135deg,#f5f5f7,#eef1f8);border-radius:16px;padding:18px}
@@ -1728,7 +1760,7 @@ function animateBars(){
 /* ═══════════════════════════════════════════════════════════
    ROLLENSPIEL
    ═══════════════════════════════════════════════════════════ */
-let rs={ stage:"setup", persona:null, difficulty:"normal", messages:[], loading:false, runId:null, pqOpen:false };
+let rs={ stage:"setup", persona:null, difficulty:"normal", messages:[], loading:false, runId:null, pqOpen:false, session:null };
 
 const CROSS = {
   D:{D:"Zwei Löwen — Vorsicht vor dem Machtkampf. Bleib ruhig, gib ihm die Wahl statt zu kontern.",
@@ -1750,6 +1782,7 @@ const CROSS = {
 };
 
 function renderRollenspiel(){
+  if(rs.stage==="auswertung") return renderSessionAuswertung();
   if(rs.stage==="briefing") return renderBriefing();
   if(rs.stage==="chat") return renderChat();
   if(rs.stage==="feedback") return renderFeedback();
@@ -1759,49 +1792,156 @@ function renderRollenspiel(){
 // Personas nach DISC-/Tier-Typ gruppiert — Basis für die blinde Auswahl.
 function personasByType(t){ return PERSONAS.filter(p=>p.disc===t); }
 
+/* Personas mit emotional heiklem Ausgang — die kommen nie als erstes Gespräch
+   einer Session, damit niemand kalt in den schwersten Fall läuft. */
+const SCHWERE_PERSONAS = ["lehmann","neumann","winter"];
+
+function mische(arr){
+  const a=arr.slice();
+  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+
+/* Baut den Plan einer Session: vier Gespräche, je einer pro Kundentyp, in
+   zufälliger Reihenfolge, mit zufälliger Persona und zufälliger Schwierigkeit.
+   Ein Typ pro Runde stellt sicher, dass jede Session ein vollständiger
+   Querschnitt ist — bei reinem Zufall kämen sonst vier Hasen hintereinander
+   und die Auswertung hätte für drei Typen keine Daten. */
+function baueSessionPlan(){
+  return mische(TYPE_ORDER).map((typ,i)=>{
+    let pool = personasByType(typ);
+    if(i===0){
+      const sanft = pool.filter(p=>!SCHWERE_PERSONAS.includes(p.id));
+      if(sanft.length) pool = sanft;
+    }
+    const persona = pool[Math.floor(Math.random()*pool.length)];
+    const stufen = i===0 ? ["locker","normal"] : DIFFICULTIES.map(d=>d.id);
+    return { personaId:persona.id, difficulty:stufen[Math.floor(Math.random()*stufen.length)] };
+  });
+}
+
+function starteSession(){
+  rs.session = { id:newRunId(), plan:baueSessionPlan(), idx:0, ergebnisse:[] };
+  oeffneAktuellesGespraech();
+}
+
+function oeffneAktuellesGespraech(){
+  const schritt = rs.session.plan[rs.session.idx];
+  rs.difficulty = schritt.difficulty;
+  showBriefing(schritt.personaId);
+}
+
+function naechstesGespraech(){
+  rs.session.idx++;
+  if(rs.session.idx >= rs.session.plan.length){ renderSessionAuswertung(); return; }
+  oeffneAktuellesGespraech();
+}
+
+function beendeSession(){
+  rs.session=null; rs.persona=null; rs.runId=null; rs.messages=[]; rs.stage="setup";
+  renderRollenspiel();
+}
+
+/* Fortschrittsleiste — in Briefing, Gespräch und Feedback dieselbe. */
+function sessionLeiste(){
+  if(!rs.session) return "";
+  const punkte = rs.session.plan.map((_,i)=>{
+    const zustand = i<rs.session.idx ? "fertig" : (i===rs.session.idx ? "aktiv" : "");
+    return `<span class="sess-dot ${zustand}"></span>`;
+  }).join("");
+  return `<div class="sess-bar"><span class="sess-txt">Gespräch ${rs.session.idx+1} von ${rs.session.plan.length}</span><span class="sess-dots">${punkte}</span></div>`;
+}
+
 function renderRsSetup(){
   const disc=getResult("disc");
   const yourType = disc? disc.dom : null;
   const hint = yourType
-    ? `<div class="your-type-hint reveal"><span class="e">${TYPES[yourType].emo}</span><div class="txt">Dein Typ: <b>${TYPES[yourType].tier} (${TYPES[yourType].disc})</b>. Du siehst gleich nur das Tier deines Kunden, nicht wer es ist — denk beim Telefonieren in Typen, genau wie im echten Gespräch.</div></div>`
+    ? `<div class="your-type-hint reveal"><span class="e">${TYPES[yourType].emo}</span><div class="txt">Dein Typ: <b>${TYPES[yourType].tier} (${TYPES[yourType].disc})</b>. Du siehst vor jedem Anruf nur das Tier deines Kunden, nicht wer es ist — denk beim Telefonieren in Typen, genau wie im echten Gespräch.</div></div>`
     : `<div class="your-type-hint empty reveal"><span class="e">🧭</span><div class="txt">Tipp: Mach zuerst den <b><a href="#" data-goto="typ" style="color:var(--blue);text-decoration:none">Persönlichkeitstest</a></b> — dann bekommst du nach jedem Rollenspiel einen persönlichen Hinweis, wie du als dein Typ mit dem jeweiligen Kunden umgehst.</div></div>`;
 
-  const tiles = TYPE_ORDER.map((t,i)=>{
-    const T=TYPES[t];
-    const n = personasByType(t).length;
-    return `
-    <button class="tier-tile ${t} reveal ${i%2?'d1':''}" data-tier="${t}">
-      <div class="tt-emo">${T.emo}</div>
-      <div class="tt-name">${T.tier}</div>
-      <div class="tt-sub">DISC · ${t}</div>
-      <div class="tt-n">${n} mögliche ${n===1?'Situation':'Situationen'} — zufällig</div>
-    </button>`;
-  }).join("");
+  const typen = TYPE_ORDER.map(t=>`<span class="sess-typ ${t}">${TYPES[t].emo} ${TYPES[t].tier}</span>`).join("");
 
   $("#rsContent").innerHTML=`
     <div class="mod-hero">
       <div class="kick reveal">KI-Rollenspiel</div>
-      <h2 class="reveal d1">Ein Kunde.<br><span class="g">Unbekannt bis zum ersten Satz.</span></h2>
-      <p class="reveal d2">Du siehst nur das Tier — wie am echten Telefon weißt du nicht, welcher Einwand kommt. Führe das Gespräch, finde die Situation heraus. Am Ende: ehrliches Coaching-Feedback und die Auflösung, wer es war.</p>
+      <h2 class="reveal d1">Vier Kunden.<br><span class="g">Keiner davon angekündigt.</span></h2>
+      <p class="reveal d2">Eine Session sind vier Gespräche am Stück — je ein Kundentyp, zufällige Reihenfolge, zufällige Schwierigkeit. Du suchst dir nichts aus, genau wie am echten Telefon. Nach jedem Gespräch bekommst du sofort dein Coaching-Feedback.</p>
     </div>
     ${hint}
-    <div style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin:26px 0 12px">Schwierigkeit</div>
-    <div class="diff-row">
-      ${DIFFICULTIES.map(d=>`<button class="diff-btn ${rs.difficulty===d.id?'active':''}" data-diff="${d.id}"><strong>${d.label}</strong><span>${d.desc}</span></button>`).join("")}
+    <div class="sess-card reveal">
+      <div class="sess-card-head">Was dich erwartet</div>
+      <div class="sess-typen">${typen}</div>
+      <ul class="sess-liste">
+        <li>Vier Gespräche, in jedem ein anderer Kundentyp</li>
+        <li>Vor jedem Anruf siehst du die Prequalifying-Daten aus dem CRM</li>
+        <li>Wer anruft und was ihn wirklich umtreibt, erfährst du erst im Gespräch</li>
+        <li>Das erste Gespräch ist nie der härteste Fall</li>
+      </ul>
+      <button class="pill grad" id="sessStart">Session starten</button>
     </div>
-    <div style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin:26px 0 12px">Wähle das Tier deines Kunden</div>
-    <div class="tier-grid">${tiles}</div>
   `;
-  $("#rsContent").querySelectorAll("[data-diff]").forEach(b=>b.addEventListener("click",()=>{
-    rs.difficulty=b.dataset.diff;
-    $("#rsContent").querySelectorAll(".diff-btn").forEach(x=>x.classList.toggle("active",x.dataset.diff===rs.difficulty));
-  }));
-  $("#rsContent").querySelectorAll("[data-tier]").forEach(b=>b.addEventListener("click",()=>{
-    const pool = personasByType(b.dataset.tier);
-    const chosen = pool[Math.floor(Math.random()*pool.length)];
-    showBriefing(chosen.id);
-  }));
+  $("#sessStart").addEventListener("click",starteSession);
   requestAnimationFrame(observeReveals);
+}
+
+/* Auswertung nach vier Gesprächen. */
+function renderSessionAuswertung(){
+  rs.stage="auswertung";
+  const erg = rs.session.ergebnisse;
+  const bewertet = erg.filter(e=>typeof e.gesamt!=="undefined");
+  const schnitt = bewertet.length ? Math.round(bewertet.reduce((s,e)=>s+Number(e.gesamt),0)/bewertet.length*10)/10 : null;
+
+  const zeilen = rs.session.plan.map((schritt,i)=>{
+    const p = PERSONAS.find(x=>x.id===schritt.personaId);
+    const T = TYPES[p.disc];
+    const e = erg.find(x=>x.idx===i);
+    const label = DIFFICULTIES.find(d=>d.id===schritt.difficulty).label;
+    return `
+      <div class="sess-zeile">
+        <span class="sess-emo">${T.emo}</span>
+        <div class="sess-wer"><b>${esc(p.name)}</b><span>${esc(p.label)} · ${esc(label)}</span></div>
+        <span class="sess-score">${e&&typeof e.gesamt!=="undefined"?e.gesamt+"/10":"—"}</span>
+      </div>`;
+  }).join("");
+
+  const proTyp = TYPE_ORDER.map(t=>{
+    const treffer = rs.session.plan.map((s,i)=>({s,i}))
+      .filter(o=>PERSONAS.find(x=>x.id===o.s.personaId).disc===t)
+      .map(o=>erg.find(x=>x.idx===o.i))
+      .filter(e=>e&&typeof e.gesamt!=="undefined");
+    if(!treffer.length) return "";
+    const d = Math.round(treffer.reduce((s,e)=>s+Number(e.gesamt),0)/treffer.length*10)/10;
+    return `<div class="sess-typ-kachel ${t}"><span class="e">${TYPES[t].emo}</span><span class="n">${d}</span><span class="l">${TYPES[t].tier}</span></div>`;
+  }).join("");
+
+  const themen = {};
+  erg.forEach(e=>(e.verbesserungen||[]).forEach(v=>{ themen[v]=(themen[v]||0)+1; }));
+  const themenListe = Object.entries(themen).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  const fakten = erg.reduce((s,e)=>s+((e.faktencheck||[]).length),0);
+
+  $("#rsContent").innerHTML=`
+    <div class="mod-hero" style="padding-bottom:8px"><div class="kick">Session abgeschlossen</div></div>
+    <div class="sess-aus">
+      <div class="sess-aus-head">
+        <div><div class="t">Deine vier Gespräche</div><div class="s">Ein Kunde je Typ — so siehst du, wo du dich leicht tust und wo nicht.</div></div>
+        <div class="sess-aus-score"><div class="n">${schnitt!==null?schnitt:"—"}</div><div class="o">Ø von 10</div></div>
+      </div>
+      <div class="sess-zeilen">${zeilen}</div>
+      ${proTyp?`<div class="sess-typ-grid">${proTyp}</div>`:""}
+      ${fakten?`<div class="sess-fakten">In dieser Session gab es <b>${fakten} fachliche ${fakten===1?"Beanstandung":"Beanstandungen"}</b> im Faktencheck. Schau dir dazu im Leitfaden den Abschnitt Produktwissen an.</div>`:""}
+      ${themenListe.length?`
+      <div class="sess-themen">
+        <h5>Woran du in dieser Session am häufigsten hängen geblieben bist</h5>
+        <ul>${themenListe.map(x=>`<li>${esc(x[0])}${x[1]>1?`<span class="cnt">×${x[1]}</span>`:""}</li>`).join("")}</ul>
+      </div>`:""}
+      <div class="brief-actions">
+        <button class="pill grad" id="sessNeu">Neue Session starten</button>
+        <button class="pill ghost" id="sessEnde">Für heute fertig</button>
+      </div>
+    </div>`;
+  $("#sessNeu").addEventListener("click",starteSession);
+  $("#sessEnde").addEventListener("click",beendeSession);
+  window.scrollTo({top:0,behavior:"auto"});
 }
 
 function newRunId(){
@@ -1823,6 +1963,9 @@ function saveRoleplay(status, extra={}, opts={}){
     personaLabel: rs.persona.label,
     personaTyp:   rs.persona.disc,
     difficulty:   rs.difficulty,
+    sessionId:    rs.session ? rs.session.id : null,
+    sessionIdx:   rs.session ? rs.session.idx : null,
+    sessionLen:   rs.session ? rs.session.plan.length : null,
     runden:       rs.messages.filter(m=>m.role==="kb").length,
     verlauf:      rs.messages.map(m=>({rolle:m.role, text:m.text})),
     ...extra
@@ -1880,6 +2023,7 @@ function renderBriefing(){
   const diffLabel=DIFFICULTIES.find(d=>d.id===rs.difficulty).label;
   $("#rsContent").innerHTML=`
     <div class="mod-hero" style="padding-bottom:8px"><div class="kick">Vor dem Anruf</div></div>
+    ${sessionLeiste()}
     <div class="brief-top">
       <div class="brief-av ${p.disc}">${T.emo}</div>
       <div class="brief-meta">
@@ -1891,10 +2035,10 @@ function renderBriefing(){
     <div class="brief-hint">Wer genau anruft und was ihn wirklich umtreibt, erfährst du erst im Gespräch — die Karte zeigt nur, was der Kunde selbst angegeben hat.</div>
     <div class="brief-actions">
       <button class="pill grad" id="briefCall">Anruf starten</button>
-      <button class="pill ghost" id="briefBack">Anderen Kunden</button>
+      <button class="pill ghost" id="briefBack">${rs.session?"Session abbrechen":"Zurück"}</button>
     </div>`;
   $("#briefCall").addEventListener("click",beginCall);
-  $("#briefBack").addEventListener("click",()=>{ rs.stage="setup"; rs.persona=null; rs.runId=null; renderRollenspiel(); });
+  $("#briefBack").addEventListener("click",beendeSession);
   window.scrollTo({top:0,behavior:"auto"});
 }
 
@@ -1975,6 +2119,7 @@ function renderChat(){
     </div>`).join("");
   $("#rsContent").innerHTML=`
     <div class="mod-hero" style="padding-bottom:8px"><div class="kick">Live-Gespräch</div></div>
+    ${sessionLeiste()}
     <div class="chat-wrap">
       <div class="chat-head">
         <div class="who">
@@ -1984,7 +2129,7 @@ function renderChat(){
             <div class="st"><span class="badge ${p.disc}" style="padding:2px 8px;font-size:10px">${T.tier} · ${p.disc}</span> Wer es ist, erfährst du am Ende · ${diffLabel}</div>
           </div>
         </div>
-        <button class="pill ghost sm" id="rsQuit">Abbrechen</button>
+        <button class="pill ghost sm" id="rsQuit">${rs.session?"Session abbrechen":"Abbrechen"}</button>
       </div>
       ${PREQUALIFYING[p.id]?`
       <button class="pq-toggle" id="pqToggle">
@@ -2010,7 +2155,7 @@ function renderChat(){
   if(pqBtn) pqBtn.addEventListener("click",()=>{ rs.pqOpen=!rs.pqOpen; renderChat(); });
   $("#rsQuit").addEventListener("click",()=>{
     if(rs.messages.filter(m=>m.role==="kb").length) saveRoleplay("abgebrochen");
-    rs.stage="setup"; rs.messages=[]; rs.runId=null; renderRollenspiel();
+    beendeSession();
   });
   $("#rsSend").addEventListener("click",sendChat);
   $("#rsFeedback").addEventListener("click",getFeedback);
@@ -2059,6 +2204,15 @@ async function getFeedback(){
     rs.stage="feedback";
     rs.loading=false;
     saveRoleplay("abgeschlossen", { feedback: rs.feedback }, {notify:true});
+    if(rs.session){
+      rs.session.ergebnisse = rs.session.ergebnisse.filter(e=>e.idx!==rs.session.idx);
+      rs.session.ergebnisse.push({
+        idx:            rs.session.idx,
+        gesamt:         rs.feedback.gesamt,
+        verbesserungen: rs.feedback.verbesserungen || [],
+        faktencheck:    rs.feedback.faktencheck || []
+      });
+    }
     renderFeedback();
   }catch(e){
     rs.loading=false;
@@ -2069,6 +2223,12 @@ async function getFeedback(){
 
 function renderFeedback(){
   const f=rs.feedback, p=rs.persona, T=TYPES[p.disc];
+  // Hinweis, wie der eigene Typ auf diesen Kundentyp trifft — nutzt die
+  // bereits vorhandene CROSS-Matrix, die bisher ungenutzt herumlag.
+  const meinTyp=(getResult("disc")||{}).dom;
+  const crossHinweis = meinTyp && CROSS[meinTyp] && CROSS[meinTyp][p.disc]
+    ? `<div class="fb-cross"><h5>DU ALS ${esc(TYPES[meinTyp].tier)} GEGEN ${esc(T.tier)}</h5><p>${esc(CROSS[meinTyp][p.disc])}</p></div>`
+    : "";
   const cats=(f.kategorien||[]).map(k=>`
     <div class="fb-cat">
       <div class="ct"><span>${esc(k.name)}</span><span class="fb-dots">${[1,2,3,4,5].map(n=>`<i class="${n<=k.score?'on':''}"></i>`).join("")}</span></div>
@@ -2095,13 +2255,18 @@ function renderFeedback(){
       ${(f.faktencheck||[]).length?`<div class="fb-fakt"><h5>FAKTENCHECK</h5><ul>${f.faktencheck.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:""}
       ${f.schluesselmoment?`<div class="fb-moment"><h5>SCHLÜSSELMOMENT</h5><p>${esc(f.schluesselmoment)}</p></div>`:""}
       ${f.alternativ?`<div class="fb-alt"><h5>SO GEHT'S STÄRKER</h5><div class="sit">Situation: ${esc(f.alternativ.situation||"")}</div><div class="bet">„${esc(f.alternativ.besser||"")}“</div></div>`:""}
+      ${crossHinweis}
       <div style="display:flex;gap:10px;margin-top:22px;flex-wrap:wrap">
-        <button class="pill primary sm" id="fbAgain">Nochmal mit ${esc(p.name.split(",")[0])}</button>
-        <button class="pill ghost sm" id="fbOther">Nächstes Gespräch (zufällig)</button>
+        ${rs.session
+          ? (rs.session.idx+1 >= rs.session.plan.length
+              ? `<button class="pill grad sm" id="fbNext">Session auswerten</button>`
+              : `<button class="pill grad sm" id="fbNext">Nächster Kunde (${rs.session.idx+2} von ${rs.session.plan.length})</button>`)
+          : `<button class="pill grad sm" id="fbNext">Neue Session starten</button>`}
+        <button class="pill ghost sm" id="fbStop">${rs.session?"Session abbrechen":"Zurück"}</button>
       </div>
     </div>`;
-  $("#fbAgain").addEventListener("click",()=>showBriefing(p.id));
-  $("#fbOther").addEventListener("click",()=>{ rs.stage="setup"; rs.messages=[]; renderRollenspiel(); });
+  $("#fbNext").addEventListener("click",()=>{ if(rs.session) naechstesGespraech(); else starteSession(); });
+  $("#fbStop").addEventListener("click",beendeSession);
   window.scrollTo({top:0,behavior:"auto"});
 }
 
