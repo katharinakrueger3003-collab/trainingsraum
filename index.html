@@ -406,6 +406,28 @@ footer strong{color:var(--ink)}
 .chat-actions{display:flex;gap:10px;margin-top:10px;justify-content:flex-end}
 .chat-err{color:#c0392b;font-size:13px;padding:8px 22px;background:#fdecea}
 
+/* ══════════ SPEICHER-RÜCKMELDUNG (Toast) ══════════ */
+#toast{
+  position:fixed;left:50%;bottom:26px;transform:translate(-50%,18px);z-index:300;
+  max-width:min(600px,calc(100vw - 32px));padding:13px 20px;border-radius:14px;
+  font-size:13.5px;font-weight:600;line-height:1.45;letter-spacing:-0.005em;
+  box-shadow:0 14px 40px rgba(0,0,0,.20);opacity:0;pointer-events:none;
+  transition:opacity .26s ease,transform .26s ease;
+}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+#toast.ok{background:var(--blue-d);color:#EAF3F2}
+#toast.err{background:#4A2320;color:#FBE3E0}
+.kb-open{
+  margin:10px 0 2px;padding:8px 12px;border-radius:10px;background:#FBF3E2;
+  border:1px solid #E8D6AE;color:#7A5A18;font-size:12.5px;font-weight:600;
+}
+.kb-rp-status{
+  display:inline-block;margin-left:6px;padding:1px 8px;border-radius:980px;
+  font-size:10px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;
+  background:var(--line);color:var(--ink2);vertical-align:1px;
+}
+.kb-rp-status.offen{background:#F1DFB4;color:#7A5A18}
+
 /* Feedback */
 .fb{max-width:720px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:26px;padding:30px;box-shadow:0 20px 60px rgba(0,0,0,.08)}
 .fb-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:24px}
@@ -1158,19 +1180,80 @@ function doLogin(name){
     .then(r=>r.json())
     .then(d=>{ if(d.isAdmin) $("#navTeamBtn").style.display=""; })
     .catch(()=>{});
+  flushPending();
 }
 
 // Meldet einen abgeschlossenen Test/Quiz/Rollenspiel an den Server, damit die
 // Teamleitung ihn in der Team-Übersicht sieht. localStorage bleibt zusätzlich
 // bestehen, damit der einzelne Kundenberater seinen eigenen Stand behält.
-function syncProgress(type, data){
-  const name = getUser();
-  if(!name) return;
-  fetch('/api/progress', {
+const PENDING_KEY = "trainingsraum_pending";
+
+// Kurze Rückmeldung am unteren Bildschirmrand — damit ein fehlgeschlagenes
+// Speichern nicht mehr unbemerkt bleibt.
+let toastTimer = null;
+function toast(msg, kind="ok"){
+  let el = $("#toast");
+  if(!el){ el = document.createElement("div"); el.id = "toast"; document.body.appendChild(el); }
+  el.textContent = msg;
+  el.className = "show " + kind;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>{ el.className = ""; }, kind==="err" ? 8000 : 3000);
+}
+
+function loadPending(){ try{ return JSON.parse(localStorage.getItem(PENDING_KEY)) || []; }catch{ return []; } }
+function savePending(q){ try{ localStorage.setItem(PENDING_KEY, JSON.stringify(q.slice(-40))); }catch{} }
+
+async function postProgress(payload){
+  const res = await fetch('/api/progress', {
     method:"POST",
     headers:{"Content-Type":"application/json"},
-    body: JSON.stringify({ name, type, data })
-  }).catch(()=>{});
+    body: JSON.stringify(payload)
+  });
+  if(!res.ok){
+    let msg = "Server antwortete mit " + res.status;
+    try{ const d = await res.json(); if(d && d.error) msg = d.error; }catch{}
+    throw new Error(msg);
+  }
+  return true;
+}
+
+// Holt beim nächsten Seitenaufruf nach, was vorher nicht gespeichert werden konnte.
+async function flushPending(){
+  const queue = loadPending();
+  if(!queue.length) return;
+  const rest = [];
+  for(const p of queue){
+    try{ await postProgress(p); }catch{ rest.push(p); }
+  }
+  savePending(rest);
+  const ok = queue.length - rest.length;
+  if(ok > 0) toast(ok===1 ? "Ein zuvor nicht gespeichertes Ergebnis wurde nachgetragen." : ok + " zuvor nicht gespeicherte Ergebnisse wurden nachgetragen.", "ok");
+}
+
+// Meldet einen Zwischenstand oder ein Ergebnis an den Server. Schlägt das fehl,
+// wandert der Eintrag in die Warteschlange und der Berater bekommt es zu sehen.
+function syncProgress(type, data, opts={}){
+  const name = getUser();
+  if(!name) return Promise.resolve(false);
+  const payload = { name, type, data };
+  return postProgress(payload)
+    .then(()=>{ if(opts.notify) toast("Ergebnis gespeichert.", "ok"); return true; })
+    .catch(err=>{
+      // Veralteten Stand desselben Durchlaufs ersetzen statt stapeln.
+      const rid = data && data.runId;
+      const neuFertig = !data || data.abgeschlossen !== false;
+      const queue = loadPending().filter(p=>{
+        if(p.type !== type) return true;
+        if(type === "rollenspiel") return !(p.data && p.data.runId === rid);
+        // Ein fertiges Ergebnis darf nie von einem späteren Zwischenstand verdrängt werden.
+        const altFertig = !p.data || p.data.abgeschlossen !== false;
+        return altFertig && !neuFertig;
+      });
+      queue.push(payload);
+      savePending(queue);
+      toast("Ergebnis konnte nicht gespeichert werden — es wird beim nächsten Aufruf automatisch nachgeholt. (" + err.message + ")", "err");
+      return false;
+    });
 }
 $("#loginBtn").addEventListener("click",()=>{
   const n = $("#nameInput").value.trim();
@@ -1387,6 +1470,15 @@ function answer(i){
     finishTest();
   }else{
     testState.idx++;
+    // Zwischenstand sichern — ein abgebrochener Test ist damit sichtbar,
+    // statt spurlos zu verschwinden.
+    syncProgress(testState.kind, {
+      dom: dominantType(testState.scores),
+      scores: {...testState.scores},
+      beantwortet: idx+1,
+      gesamt: questions.length,
+      abgeschlossen: false
+    });
     renderRunner();
   }
 }
@@ -1396,7 +1488,7 @@ function finishTest(){
   const dom=dominantType(scores);
   const res={dom,scores};
   localStorage.setItem(LS[kind],JSON.stringify(res));
-  syncProgress(kind, res);
+  syncProgress(kind, {...res, beantwortet: (kind==="disc"?DISC_Q:TIER_Q).length, abgeschlossen: true}, {notify:true});
   testState=null;
   renderTyp();
   // sanft zum Ergebnis scrollen
@@ -1415,7 +1507,7 @@ function animateBars(){
 /* ═══════════════════════════════════════════════════════════
    ROLLENSPIEL
    ═══════════════════════════════════════════════════════════ */
-let rs={ stage:"setup", persona:null, difficulty:"normal", messages:[], loading:false };
+let rs={ stage:"setup", persona:null, difficulty:"normal", messages:[], loading:false, runId:null };
 
 const CROSS = {
   D:{D:"Zwei Löwen — Vorsicht vor dem Machtkampf. Bleib ruhig, gib ihm die Wahl statt zu kontern.",
@@ -1490,9 +1582,35 @@ function renderRsSetup(){
   requestAnimationFrame(observeReveals);
 }
 
+function newRunId(){
+  try{ return crypto.randomUUID(); }
+  catch{ return "r"+Date.now()+Math.random().toString(36).slice(2,8); }
+}
+
+// Sichert das Rollenspiel unter einer festen runId. Wird während des Gesprächs
+// mehrfach aufgerufen — der Server aktualisiert denselben Durchlauf, statt ihn
+// zu duplizieren. Dadurch ist das Gespräch auch dann gespeichert, wenn das
+// KI-Feedback am Ende scheitert.
+function saveRoleplay(status, extra={}, opts={}){
+  if(!rs.persona || !rs.runId) return Promise.resolve(false);
+  return syncProgress("rollenspiel", {
+    runId:        rs.runId,
+    status:       status,
+    personaId:    rs.persona.id,
+    personaName:  rs.persona.name,
+    personaLabel: rs.persona.label,
+    personaTyp:   rs.persona.disc,
+    difficulty:   rs.difficulty,
+    runden:       rs.messages.filter(m=>m.role==="kb").length,
+    verlauf:      rs.messages.map(m=>({rolle:m.role, text:m.text})),
+    ...extra
+  }, opts);
+}
+
 function startChat(pid){
   const p=PERSONAS.find(x=>x.id===pid);
   rs.persona=p;
+  rs.runId=newRunId();
   rs.messages=[{role:"kunde",text:p.opener}];
   rs.stage="chat";
   renderChat();
@@ -1588,7 +1706,10 @@ function renderChat(){
       </div>
     </div>`;
   const box=$("#chatBox"); box.scrollTop=box.scrollHeight;
-  $("#rsQuit").addEventListener("click",()=>{ rs.stage="setup"; rs.messages=[]; renderRollenspiel(); });
+  $("#rsQuit").addEventListener("click",()=>{
+    if(rs.messages.filter(m=>m.role==="kb").length) saveRoleplay("abgebrochen");
+    rs.stage="setup"; rs.messages=[]; rs.runId=null; renderRollenspiel();
+  });
   $("#rsSend").addEventListener("click",sendChat);
   $("#rsFeedback").addEventListener("click",getFeedback);
   const ta=$("#chatText");
@@ -1618,6 +1739,9 @@ async function sendChat(){
     return;
   }
   rs.loading=false;
+  // Nach jedem Schlagabtausch sichern: Bricht das Gespräch später ab oder
+  // scheitert das Feedback, ist der Verlauf trotzdem da.
+  saveRoleplay("laufend");
   renderChat();
 }
 
@@ -1632,14 +1756,7 @@ async function getFeedback(){
     rs.feedback = JSON.parse(clean);
     rs.stage="feedback";
     rs.loading=false;
-    syncProgress("rollenspiel", {
-      personaId:    rs.persona.id,
-      personaName:  rs.persona.name,
-      personaLabel: rs.persona.label,
-      personaTyp:   rs.persona.disc,
-      difficulty:   rs.difficulty,
-      feedback:     rs.feedback
-    });
+    saveRoleplay("abgeschlossen", { feedback: rs.feedback }, {notify:true});
     renderFeedback();
   }catch(e){
     rs.loading=false;
@@ -1747,12 +1864,15 @@ function quizChoose(i){
   if(quiz.answered) return;
   quiz.selected=i; quiz.answered=true;
   if(i===QUIZ[quiz.idx].korrekt) quiz.score++;
+  if(quiz.idx+1 < QUIZ.length){
+    syncProgress("quiz", { score: quiz.score, total: QUIZ.length, beantwortet: quiz.idx+1, abgeschlossen: false });
+  }
   renderQuizStep();
 }
 function quizNext(){
   if(quiz.idx+1>=QUIZ.length){
     quiz.done=true;
-    syncProgress("quiz", { score: quiz.score, total: QUIZ.length });
+    syncProgress("quiz", { score: quiz.score, total: QUIZ.length, beantwortet: QUIZ.length, abgeschlossen: true }, {notify:true});
   } else {
     quiz.idx++; quiz.selected=null; quiz.answered=false;
   }
@@ -1921,6 +2041,23 @@ function combinedProfile(kb){
   return { dom: dominantType(totals), testCount: n };
 }
 
+// Alte Einträge (vor der Statusführung) haben kein status-Feld und gelten als
+// abgeschlossen, weil sie damals nur beim Feedback geschrieben wurden.
+function rpFertig(r){ return !r.status || r.status === "abgeschlossen"; }
+
+// Angefangene, aber nie beendete Durchläufe — genau das, was vorher unsichtbar war.
+function offeneLaeufe(kb){
+  const out = [];
+  if(kb.discLauf) out.push(`DISC-Test (Frage ${kb.discLauf.beantwortet||"?"} von ${kb.discLauf.gesamt||"?"})`);
+  if(kb.tierLauf) out.push(`Tier-Test (Frage ${kb.tierLauf.beantwortet||"?"} von ${kb.tierLauf.gesamt||"?"})`);
+  if(kb.quizLauf) out.push(`Quiz (Frage ${kb.quizLauf.beantwortet||"?"} von ${kb.quizLauf.total||"?"})`);
+  (kb.rollenspiele||[]).filter(r=>!rpFertig(r)).forEach(r=>{
+    const rd = r.runden||0;
+    out.push(`Rollenspiel mit ${r.personaName||"unbekannt"} (${rd} ${rd===1?"Runde":"Runden"}, ${r.status==="abgebrochen"?"abgebrochen":"ohne Feedback beendet"})`);
+  });
+  return out;
+}
+
 function renderTeamDashboard(data){
   const entries = Object.values(data);
   if(!entries.length){
@@ -1956,7 +2093,9 @@ function renderTeamDashboard(data){
       const profile   = combinedProfile(kb);
       const quizStat  = kb.quiz ? `${kb.quiz.score}/${kb.quiz.total}` : "—";
       const rpList    = kb.rollenspiele||[];
+      const rpDone    = rpList.filter(rpFertig);
       const avgScore  = avgRoleplayScore(kb);
+      const offen     = offeneLaeufe(kb);
 
       let profileBadge, profileDetail;
       if(profile){
@@ -1982,14 +2121,15 @@ function renderTeamDashboard(data){
         return `
         <div class="kb-rp">
           <div class="kb-rp-head">
-            <span>${esc(r.personaName||"")} · ${esc(r.difficulty||"")} <span class="kb-rp-score">${typeof f.gesamt!=="undefined"?f.gesamt+"/10":""}</span></span>
+            <span>${esc(r.personaName||"")} · ${esc(r.difficulty||"")} <span class="kb-rp-score">${typeof f.gesamt!=="undefined"?f.gesamt+"/10":""}</span>${rpFertig(r)?"":`<span class="kb-rp-status offen">${r.status==="abgebrochen"?"abgebrochen":"ohne Feedback"}</span>`}</span>
             <span class="date">${date}</span>
           </div>
-          <div class="kb-rp-cols">
+          ${rpFertig(r)?`<div class="kb-rp-cols">
             <div><div class="good" style="font-weight:700;margin-bottom:4px">Stark</div><ul>${(f.staerken||[]).map(s=>`<li>${esc(s)}</li>`).join("")}</ul></div>
             <div><div class="imp" style="font-weight:700;margin-bottom:4px">Daran arbeiten</div><ul>${(f.verbesserungen||[]).map(s=>`<li>${esc(s)}</li>`).join("")}</ul></div>
-          </div>
+          </div>`:""}
           ${f.schluesselmoment?`<div style="margin-top:10px;font-size:12.5px;color:var(--ink2);font-style:italic">Schlüsselmoment: ${esc(f.schluesselmoment)}</div>`:""}
+          ${rpFertig(r)?"":`<div style="font-size:12.5px;color:var(--ink2)">${r.runden||0} ${(r.runden||0)===1?"Beraterbeitrag":"Beraterbeiträge"} geführt, kein Coaching-Feedback erzeugt.</div>`}
         </div>`;
       }).join("") : `<div class="kb-empty">Noch kein Rollenspiel absolviert.</div>`;
 
@@ -2000,9 +2140,10 @@ function renderTeamDashboard(data){
           <div class="kb-badges">${profileBadge}</div>
         </div>
         ${profileDetail}
+        ${offen.length?`<div class="kb-open"><b>Angefangen, nicht beendet:</b> ${offen.map(o=>esc(o)).join(" · ")}</div>`:""}
         <div class="kb-stats">
           <div class="kb-stat"><span class="n">${quizStat}</span><span class="l">Quiz</span></div>
-          <div class="kb-stat"><span class="n">${rpList.length}</span><span class="l">Rollenspiele</span></div>
+          <div class="kb-stat"><span class="n">${rpDone.length}</span><span class="l">Rollenspiele</span></div>
           <div class="kb-stat"><span class="n">${avgScore!==null?avgScore+"/10":"—"}</span><span class="l">Ø Feedback</span></div>
         </div>
         <div class="kb-rps">${rpHtml}</div>
@@ -2018,7 +2159,7 @@ function renderTeamDashboard(data){
     <div class="team-rollup reveal">
       <div class="tr-box"><div class="tr-n">${entries.length}</div><div class="tr-l">Kundenberater aktiv</div></div>
       <div class="tr-box"><div class="tr-n">${avgQuiz!==null?avgQuiz+"%":"—"}</div><div class="tr-l">Ø Quiz-Ergebnis</div></div>
-      <div class="tr-box"><div class="tr-n">${allRp.length}</div><div class="tr-l">Rollenspiele gesamt</div></div>
+      <div class="tr-box"><div class="tr-n">${allRp.filter(rpFertig).length}</div><div class="tr-l">Rollenspiele gesamt</div></div>
       <div class="tr-box"><div class="tr-n">${avgRp!==null?avgRp+"/10":"—"}</div><div class="tr-l">Ø Coaching-Score</div></div>
     </div>
     <div class="team-types reveal d1">${typeChips}</div>
