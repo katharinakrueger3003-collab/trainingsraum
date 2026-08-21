@@ -111,7 +111,12 @@ button{font-family:inherit;cursor:pointer}
 #nav .nav-user .out{background:none;border:none;color:var(--blue);font-size:12.5px;font-weight:500}
 #nav .nav-user .out:hover{text-decoration:underline}
 @media(max-width:700px){
-  #nav .nav-links button{padding:7px 8px;font-size:11.5px}
+  /* Sechs Navigationspunkte passen auf einem Telefon nicht mehr nebeneinander.
+     Statt sie abzuschneiden, wird die Leiste seitlich scrollbar. */
+  #nav .nav-in{gap:6px;padding:0 14px}
+  #nav .nav-links{overflow-x:auto;min-width:0;scrollbar-width:none;-ms-overflow-style:none}
+  #nav .nav-links::-webkit-scrollbar{display:none}
+  #nav .nav-links button{padding:7px 8px;font-size:11.5px;flex:0 0 auto;white-space:nowrap}
   #nav .brand span{display:none}
   #nav .nav-user .who{display:none}
 }
@@ -386,6 +391,86 @@ footer strong{color:var(--ink)}
 .chat-input textarea:focus{border-color:var(--blue)}
 .chat-actions{display:flex;gap:10px;margin-top:10px;justify-content:flex-end}
 .chat-err{color:#c0392b;font-size:13px;padding:8px 22px;background:#fdecea}
+
+/* ══════════ LERNKURVE ══════════ */
+.lk{max-width:860px;margin:0 auto}
+.lk-h4{font-size:15px;font-weight:800;letter-spacing:-.01em;margin:32px 0 12px}
+.lk-leer{max-width:640px;margin:0 auto;padding:34px;border:1px dashed var(--line);border-radius:20px;
+  text-align:center;color:var(--ink2);font-size:14.5px;line-height:1.6}
+.lk-hinweis{margin-top:12px;padding:12px 16px;border-radius:12px;background:var(--bg2);border:1px solid var(--line);
+  font-size:13px;line-height:1.55;color:var(--ink2)}
+.lk-hinweis.leise{background:transparent;border:0;padding:8px 0 0;font-size:12.5px}
+
+.lk-kacheln{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.lk-kachel{border:1px solid var(--line);border-radius:16px;padding:16px 12px;text-align:center;background:var(--bg)}
+.lk-kachel .n{display:block;font-size:28px;font-weight:800;letter-spacing:-.03em;color:var(--blue);line-height:1}
+.lk-kachel .l{display:block;font-size:11.5px;color:var(--ink2);margin-top:6px;line-height:1.35}
+.lk-zuletzt{margin-top:10px;font-size:12.5px;color:var(--ink2);text-align:center}
+
+.lk-verlauf{display:flex;align-items:flex-end;gap:6px;padding:14px 16px 10px;border:1px solid var(--line);
+  border-radius:16px;background:var(--bg);overflow-x:auto;min-height:150px}
+.lk-balken{flex:1 0 26px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:5px}
+.lk-balken .wert{font-size:11px;font-weight:700;color:var(--ink2)}
+.lk-balken .saeule{display:block;width:100%;max-width:34px;border-radius:6px 6px 3px 3px;min-height:4px}
+.lk-balken.locker .saeule{background:#9CB49C}
+.lk-balken.normal .saeule{background:var(--blue)}
+.lk-balken.hart .saeule{background:#B5651D}
+.lk-legende{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-top:9px;font-size:12px;color:var(--ink2)}
+.lk-legende span{display:flex;align-items:center;gap:6px}
+.lk-legende i{width:11px;height:11px;border-radius:3px;display:inline-block}
+.lk-legende i.locker{background:#9CB49C}.lk-legende i.normal{background:var(--blue)}.lk-legende i.hart{background:#B5651D}
+.lk-legende-hinweis{margin-left:auto;font-style:italic}
+
+.lk-trend{display:flex;gap:16px;align-items:flex-start;margin-top:14px;padding:16px 18px;border-radius:16px;
+  background:var(--bg2);border:1px solid var(--line)}
+.lk-trend-zahl{font-size:32px;font-weight:800;letter-spacing:-.03em;line-height:1;flex:0 0 auto;color:var(--ink2)}
+.lk-trend.hoch .lk-trend-zahl{color:#1e7e45}
+.lk-trend.runter .lk-trend-zahl{color:#b4433c}
+.lk-trend-txt{font-size:13.5px;line-height:1.55}
+.lk-mix{display:block;margin-top:6px;font-size:12.5px;color:var(--ink2)}
+
+.lk-kats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.lk-kat{border:1px solid var(--line);border-radius:16px;padding:14px 16px;background:var(--bg)}
+.lk-kat-kopf{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:13.5px;font-weight:700;margin-bottom:9px}
+.lk-delta{font-size:14px;font-weight:800;color:var(--ink2);flex:0 0 auto}
+.lk-delta.hoch{color:#1e7e45}.lk-delta.runter{color:#b4433c}
+.lk-kat-bar{height:7px;border-radius:980px;background:var(--line);margin-bottom:5px;overflow:hidden}
+.lk-kat-bar span{display:block;height:100%;border-radius:980px}
+.lk-kat-bar .frueher{background:#c9cdc4}
+.lk-kat-bar .zuletzt{background:var(--blue)}
+.lk-kat-fuss{font-size:11.5px;color:var(--ink2);margin-top:6px}
+
+.lk-typen{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.lk-typ{border:1px solid var(--line);border-radius:16px;padding:14px 10px;text-align:center;background:var(--bg)}
+.lk-typ.leer{opacity:.5}
+.lk-typ .e{display:block;font-size:22px}
+.lk-typ .n{display:block;font-size:24px;font-weight:800;letter-spacing:-.02em;margin:3px 0 1px;color:var(--blue)}
+.lk-typ .l{display:block;font-size:12px;font-weight:700}
+.lk-typ .c{display:block;font-size:11px;color:var(--ink2);margin-top:3px}
+
+.lk-themen{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.lk-themen-box{border-radius:16px;padding:18px}
+.lk-themen-box.gut{background:#e9f7ef;border:1px solid #bfe4ce}
+.lk-themen-box.offen{background:#fdf0e6;border:1px solid #f0d6bb}
+.lk-themen-box h5{font-size:13.5px;margin-bottom:3px}
+.lk-themen-box.gut h5{color:#1e7e45}.lk-themen-box.offen h5{color:#c2681a}
+.lk-themen-sub{font-size:12px;color:var(--ink2);margin-bottom:10px;line-height:1.45}
+.lk-themen-box ul{padding-left:18px;font-size:13.5px;line-height:1.5;display:grid;gap:7px}
+.lk-themen-box .cnt{display:block;font-size:11.5px;color:var(--ink2)}
+.lk-themen-leer{font-size:13px;color:var(--ink2);font-style:italic}
+
+.lk-fakten{padding:14px 16px;border-radius:14px;background:#fbeceb;border:1px solid #f0cdca;font-size:13.5px;line-height:1.55}
+.lk-fakten.sauber{background:#e9f7ef;border-color:#bfe4ce}
+
+.lk-aufklapp{margin-top:14px;width:100%;padding:10px 14px;border-radius:12px;border:1px solid var(--line);
+  background:var(--bg2);font-size:13px;font-weight:700;color:var(--ink);text-align:left}
+.lk-aufklapp:hover{border-color:var(--blue)}
+.kb-card .lk{margin-top:14px;padding-top:6px;border-top:1px solid var(--line)}
+
+@media(max-width:820px){
+  .lk-kacheln,.lk-typen{grid-template-columns:repeat(2,1fr)}
+  .lk-kats,.lk-themen{grid-template-columns:1fr}
+}
 
 /* ══════════ SESSION: START, FORTSCHRITT, AUSWERTUNG ══════════ */
 .sess-card{max-width:680px;margin:26px auto 0;padding:26px;border-radius:22px;background:var(--bg2);
@@ -714,6 +799,7 @@ footer strong{color:var(--ink)}
       <button data-tab="leitfaden">Leitfaden</button>
       <button data-tab="rollenspiel">Rollenspiel</button>
       <button data-tab="quiz">Quiz</button>
+      <button data-tab="fortschritt">Fortschritt</button>
       <button data-tab="team" id="navTeamBtn" style="display:none">Team</button>
     </div>
     <div class="nav-user">
@@ -847,6 +933,11 @@ footer strong{color:var(--ink)}
   <!-- ══════════ LEITFADEN ══════════ -->
   <section class="view" id="view-leitfaden">
     <div class="wrap" id="lfContent"></div>
+  </section>
+
+  <!-- ══════════ FORTSCHRITT ══════════ -->
+  <section class="view" id="view-fortschritt">
+    <div class="wrap" id="fsContent"></div>
   </section>
 
   <!-- ══════════ TEAM (nur Teamlead) ══════════ -->
@@ -1523,7 +1614,7 @@ $("#logoutBtn").addEventListener("click",()=>{
    NAVIGATION
    ═══════════════════════════════════════════════════════════ */
 let currentTab="home";
-const RENDERERS = { typ:renderTyp, rollenspiel:renderRollenspiel, quiz:renderQuiz, leitfaden:renderLeitfaden, team:renderTeam };
+const RENDERERS = { typ:renderTyp, rollenspiel:renderRollenspiel, quiz:renderQuiz, leitfaden:renderLeitfaden, fortschritt:renderFortschritt, team:renderTeam };
 
 function goTab(tab){
   currentTab=tab;
@@ -2493,6 +2584,291 @@ function renderLeitfaden(){
   requestAnimationFrame(observeReveals);
 }
 
+
+/* ═══════════════════════════════════════════════════════════
+   LERNKURVE — wertet die gespeicherten Gespräche eines Beraters aus
+   ═══════════════════════════════════════════════════════════ */
+
+// Alte Einträge (vor der Statusführung) haben kein status-Feld und gelten als
+// abgeschlossen, weil sie damals nur beim Feedback geschrieben wurden.
+function rpFertig(r){ return !r.status || r.status === "abgeschlossen"; }
+
+/* Ab so vielen abgeschlossenen Gesprächen wagen wir eine Aussage über
+   Entwicklung. Darunter zeigen wir bewusst keine Kurve, sondern sagen das. */
+const LERN_MINDESTZAHL = 6;
+/* Die letzten n Gespräche gelten als "zuletzt". */
+const LERN_FENSTER = 3;
+
+/* Die Verbesserungspunkte kommen als Freitext von der KI und wiederholen sich
+   nie wörtlich. Deshalb ordnen wir sie über Stichwörter festen Coaching-Themen
+   zu — grob, aber nachvollziehbar und für ein Coaching-Gespräch gut genug. */
+const LERN_THEMEN = [
+  {name:"Motiv spiegeln und zusammenfassen", muster:/zusammen(ge)?fass|spiegel|paraphras|bestätigen lassen/i},
+  {name:"Offene Fragen und Bedarfsanalyse", muster:/offene frage|w-frage|nachgefragt|nachfrag|bedarfsanalyse|motiv|\banlass/i},
+  {name:"Preise und Zahlen greifbar machen", muster:/preis|\brate|zahl|kosten|betrag|euro|rechenbeispiel/i},
+  {name:"Abschluss und nächster Schritt",    muster:/abschluss|nächste[rn]? schritt|folgetermin|termin|verbindlich|testabschluss|kaufsignal/i},
+  {name:"Einwand annehmen statt kontern",    muster:/einwand|widerspr|rechtfertig|verteidig|gegenargument|entkräft/i},
+  {name:"Kürzer reden, nicht dozieren",      muster:/monolog|zu viel|zu lang|vortrag|ausschweif|redeanteil/i},
+  {name:"Floskeln und Fachsprache vermeiden",muster:/floskel|fachbegriff|jargon|worthüls|\bvage|schwammig|allgemein bleib/i},
+  {name:"Empathie und Tonalität",            muster:/empathie|einfühl|tonalität|wertschätz|verständnis zeig|behutsam/i},
+  {name:"Struktur und Gesprächsführung",     muster:/struktur|gesprächsführung|rahmen setz|roter faden|führung übernehm/i}
+];
+
+function lernThema(text){
+  const treffer = LERN_THEMEN.find(t=>t.muster.test(text));
+  return treffer ? treffer.name : "Sonstiges";
+}
+
+function isoWoche(iso){
+  const d=new Date(iso);
+  const t=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));
+  const tag=t.getUTCDay()||7;
+  t.setUTCDate(t.getUTCDate()+4-tag);
+  const start=new Date(Date.UTC(t.getUTCFullYear(),0,1));
+  return t.getUTCFullYear()+"-W"+String(Math.ceil(((t-start)/86400000+1)/7)).padStart(2,"0");
+}
+
+/* Wie viele Wochen am Stück wurde trainiert, bis zur letzten aktiven Woche. */
+function wochenAmStueck(daten){
+  const wochen=[...new Set(daten.map(g=>isoWoche(g.completedAt)))].sort();
+  if(!wochen.length) return 0;
+  let zahl=1;
+  for(let i=wochen.length-1;i>0;i--){
+    const a=wochen[i-1], b=wochen[i];
+    const naechste=(w)=>{ const d=new Date(w.slice(0,4)+"-01-04T00:00:00Z");
+      d.setUTCDate(d.getUTCDate()+(parseInt(w.slice(6))-1)*7+7); return isoWoche(d.toISOString()); };
+    if(naechste(a)===b) zahl++; else break;
+  }
+  return zahl;
+}
+
+function schnitt(werte){
+  if(!werte.length) return null;
+  return Math.round(werte.reduce((s,v)=>s+Number(v),0)/werte.length*10)/10;
+}
+
+/* Kernauswertung. Erwartet den gespeicherten Datensatz eines Beraters. */
+function lernkurve(kb){
+  const alle = (kb.rollenspiele||[])
+    .filter(r=>rpFertig(r) && r.feedback && typeof r.feedback.gesamt!=="undefined" && r.completedAt)
+    .sort((a,b)=>new Date(a.completedAt)-new Date(b.completedAt));
+
+  const sessions = {};
+  (kb.rollenspiele||[]).forEach(r=>{ if(r.sessionId){ (sessions[r.sessionId]=sessions[r.sessionId]||[]).push(r); } });
+  const sessionsKomplett = Object.values(sessions)
+    .filter(g=>g.length && g[0].sessionLen && g.filter(rpFertig).length>=g[0].sessionLen).length;
+
+  const zeitpunkte = [
+    kb.disc&&kb.disc.completedAt, kb.tier&&kb.tier.completedAt, kb.quiz&&kb.quiz.completedAt,
+    ...(kb.rollenspiele||[]).map(r=>r.completedAt)
+  ].filter(Boolean).sort();
+
+  const genugDaten = alle.length >= LERN_MINDESTZAHL;
+  const fenster = Math.min(LERN_FENSTER, Math.floor(alle.length/2));
+  const frueher = genugDaten ? alle.slice(0, alle.length-fenster) : [];
+  const zuletzt = genugDaten ? alle.slice(alle.length-fenster) : [];
+
+  // Kategorien im Vorher-Nachher
+  const katNamen = [...new Set(alle.flatMap(r=>(r.feedback.kategorien||[]).map(k=>k.name)))];
+  const kategorien = genugDaten ? katNamen.map(name=>{
+    const holen = (menge)=>menge.map(r=>(r.feedback.kategorien||[]).find(k=>k.name===name))
+      .filter(Boolean).map(k=>Number(k.score));
+    return { name, frueher: schnitt(holen(frueher)), zuletzt: schnitt(holen(zuletzt)) };
+  }).filter(k=>k.frueher!==null && k.zuletzt!==null) : [];
+
+  // Stärke nach Kundentyp
+  const proTyp = TYPE_ORDER.map(t=>{
+    const treffer = alle.filter(r=>r.personaTyp===t);
+    return { typ:t, anzahl:treffer.length, schnitt:schnitt(treffer.map(r=>r.feedback.gesamt)) };
+  });
+
+  // Coaching-Themen: was ist verschwunden, was bleibt
+  const zaehle = (menge)=>{
+    const z={};
+    menge.forEach(r=>(r.feedback.verbesserungen||[]).forEach(v=>{ const th=lernThema(v); z[th]=(z[th]||0)+1; }));
+    return z;
+  };
+  const zFrueher = zaehle(frueher), zZuletzt = zaehle(zuletzt);
+  const themen = [...new Set([...Object.keys(zFrueher),...Object.keys(zZuletzt)])].map(name=>({
+    name, frueher:zFrueher[name]||0, zuletzt:zZuletzt[name]||0
+  }));
+  const abgehakt   = themen.filter(t=>t.frueher>0 && t.zuletzt===0).sort((a,b)=>b.frueher-a.frueher);
+  const hartnaeckig= themen.filter(t=>t.zuletzt>0).sort((a,b)=>(b.zuletzt+b.frueher)-(a.zuletzt+a.frueher));
+
+  // Faktencheck
+  const faktenGesamt = alle.reduce((s,r)=>s+((r.feedback.faktencheck||[]).length),0);
+  const faktenFrueher = frueher.reduce((s,r)=>s+((r.feedback.faktencheck||[]).length),0);
+  const faktenZuletzt = zuletzt.reduce((s,r)=>s+((r.feedback.faktencheck||[]).length),0);
+
+  const mix = (menge)=>DIFFICULTIES.map(d=>({
+    label:d.label, anzahl:menge.filter(r=>r.difficulty===d.id).length
+  })).filter(x=>x.anzahl);
+
+  return {
+    alle, genugDaten, fenster,
+    anzahl: alle.length,
+    sessionsKomplett,
+    letzteAktivitaet: zeitpunkte.length ? zeitpunkte[zeitpunkte.length-1] : null,
+    wochen: wochenAmStueck(alle),
+    gesamtschnitt: schnitt(alle.map(r=>r.feedback.gesamt)),
+    schnittFrueher: genugDaten ? schnitt(frueher.map(r=>r.feedback.gesamt)) : null,
+    schnittZuletzt: genugDaten ? schnitt(zuletzt.map(r=>r.feedback.gesamt)) : null,
+    mixFrueher: mix(frueher), mixZuletzt: mix(zuletzt),
+    kategorien, proTyp, abgehakt, hartnaeckig,
+    faktenGesamt, faktenFrueher, faktenZuletzt,
+    quiz: kb.quiz || null
+  };
+}
+
+function datumKurz(iso){
+  return new Date(iso).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'});
+}
+
+/* Baut die komplette Lernkurve als HTML. eigene=true ändert nur die Ansprache. */
+function renderLernkurveHTML(kb, eigene){
+  const k = lernkurve(kb);
+  const du = eigene ? "du" : "er/sie";
+
+  if(!k.anzahl){
+    return `<div class="lk-leer">${eigene
+      ? "Sobald du dein erstes Rollenspiel mit Coaching-Feedback abgeschlossen hast, entsteht hier deine Lernkurve."
+      : "Noch kein abgeschlossenes Rollenspiel — sobald Feedback vorliegt, erscheint hier die Lernkurve."}</div>`;
+  }
+
+  /* 1 · Nutzung */
+  const kacheln = `
+    <div class="lk-kacheln">
+      <div class="lk-kachel"><span class="n">${k.anzahl}</span><span class="l">Gespräche mit Feedback</span></div>
+      <div class="lk-kachel"><span class="n">${k.sessionsKomplett}</span><span class="l">Sessions komplett</span></div>
+      <div class="lk-kachel"><span class="n">${k.gesamtschnitt}</span><span class="l">Ø Coaching-Score</span></div>
+      <div class="lk-kachel"><span class="n">${k.wochen}</span><span class="l">${k.wochen===1?"Woche":"Wochen"} am Stück</span></div>
+    </div>
+    <div class="lk-zuletzt">Letzte Aktivität: <b>${k.letzteAktivitaet?datumKurz(k.letzteAktivitaet):"—"}</b></div>`;
+
+  /* 2 · Score-Verlauf */
+  const maxH = 96;
+  const balken = k.alle.map(r=>{
+    const s = Number(r.feedback.gesamt);
+    return `<div class="lk-balken ${esc(r.difficulty||"normal")}" title="${esc(r.personaName||"")} · ${esc(r.difficulty||"")} · ${s}/10 · ${datumKurz(r.completedAt)}">
+      <span class="wert">${s}</span>
+      <span class="saeule" style="height:${Math.round(s/10*maxH)}px"></span>
+    </div>`;
+  }).join("");
+  const verlauf = `
+    <h4 class="lk-h4">Coaching-Score im Verlauf</h4>
+    <div class="lk-verlauf">${balken}</div>
+    <div class="lk-legende">
+      <span><i class="locker"></i>Aufwärmen</span><span><i class="normal"></i>Normal</span><span><i class="hart"></i>Hart</span>
+      <span class="lk-legende-hinweis">Älteste links, neueste rechts</span>
+    </div>`;
+
+  /* Trend-Aussage nur mit genug Daten */
+  const mixText = (m)=>m.map(x=>x.anzahl+"× "+x.label).join(", ") || "—";
+  const diff = k.genugDaten ? Math.round((k.schnittZuletzt-k.schnittFrueher)*10)/10 : null;
+  const trend = k.genugDaten ? `
+    <div class="lk-trend ${diff>0?"hoch":diff<0?"runter":""}">
+      <div class="lk-trend-zahl">${diff>0?"+":""}${diff}</div>
+      <div class="lk-trend-txt">
+        <b>Die letzten ${k.fenster} Gespräche gegen alles davor.</b>
+        Ø ${k.schnittFrueher} → Ø ${k.schnittZuletzt}.
+        <span class="lk-mix">Schwierigkeit früher: ${esc(mixText(k.mixFrueher))} · zuletzt: ${esc(mixText(k.mixZuletzt))}.
+        Der Score hängt davon ab — lies die Zahl als Hinweis, nicht als Messwert.</span>
+      </div>
+    </div>` : `
+    <div class="lk-hinweis">Noch keine Aussage über Entwicklung möglich. Dafür braucht es mindestens ${LERN_MINDESTZAHL} abgeschlossene Gespräche, aktuell ${k.anzahl}. Bis dahin zeigen wir lieber nichts als eine Scheinkurve.</div>`;
+
+  /* 3 · Kategorien vorher/nachher */
+  const kategorien = k.kategorien.length ? `
+    <h4 class="lk-h4">Worin ${eigene?"du":"sich"} ${eigene?"besser wirst":"etwas tut"}</h4>
+    <div class="lk-kats">
+      ${k.kategorien.map(c=>{
+        const delta = Math.round((c.zuletzt-c.frueher)*10)/10;
+        return `
+        <div class="lk-kat">
+          <div class="lk-kat-kopf"><span>${esc(c.name)}</span><span class="lk-delta ${delta>0?"hoch":delta<0?"runter":""}">${delta>0?"+":""}${delta}</span></div>
+          <div class="lk-kat-bar"><span class="frueher" style="width:${c.frueher/5*100}%"></span></div>
+          <div class="lk-kat-bar"><span class="zuletzt" style="width:${c.zuletzt/5*100}%"></span></div>
+          <div class="lk-kat-fuss">früher ${c.frueher} → zuletzt ${c.zuletzt} (von 5)</div>
+        </div>`;
+      }).join("")}
+    </div>` : "";
+
+  /* 4 · Stärke nach Kundentyp */
+  const typen = `
+    <h4 class="lk-h4">Stärke nach Kundentyp</h4>
+    <div class="lk-typen">
+      ${k.proTyp.map(t=>`
+        <div class="lk-typ ${t.typ} ${t.anzahl?"":"leer"}">
+          <span class="e">${TYPES[t.typ].emo}</span>
+          <span class="n">${t.schnitt!==null?t.schnitt:"—"}</span>
+          <span class="l">${TYPES[t.typ].tier}</span>
+          <span class="c">${t.anzahl} ${t.anzahl===1?"Gespräch":"Gespräche"}</span>
+        </div>`).join("")}
+    </div>
+    <div class="lk-hinweis leise">Große Unterschiede zwischen den Typen deuten auf ein Anpassungsthema hin, nicht auf mangelndes Verkaufskönnen.</div>`;
+
+  /* 5 · Coaching-Themen */
+  const themen = (k.abgehakt.length||k.hartnaeckig.length) ? `
+    <h4 class="lk-h4">Coaching-Themen</h4>
+    <div class="lk-themen">
+      <div class="lk-themen-box gut">
+        <h5>Abgehakt</h5>
+        <p class="lk-themen-sub">Kam früher vor, in den letzten ${k.fenster} Gesprächen nicht mehr.</p>
+        ${k.abgehakt.length?`<ul>${k.abgehakt.map(t=>`<li>${esc(t.name)}<span class="cnt">früher ${t.frueher}×</span></li>`).join("")}</ul>`:`<div class="lk-themen-leer">Noch nichts dauerhaft abgelegt.</div>`}
+      </div>
+      <div class="lk-themen-box offen">
+        <h5>Hartnäckig</h5>
+        <p class="lk-themen-sub">Taucht in den letzten ${k.fenster} Gesprächen weiterhin auf.</p>
+        ${k.hartnaeckig.length?`<ul>${k.hartnaeckig.map(t=>`<li>${esc(t.name)}<span class="cnt">${t.zuletzt}× zuletzt${t.frueher?", "+t.frueher+"× davor":""}</span></li>`).join("")}</ul>`:`<div class="lk-themen-leer">Aktuell nichts Wiederkehrendes.</div>`}
+      </div>
+    </div>
+    <div class="lk-hinweis leise">Die Freitext-Hinweise der KI werden über Stichwörter zu Themen zusammengefasst. Das ist grob, aber unabhängig von der Notengebung.</div>` : "";
+
+  /* 6 · Faktencheck */
+  const fakten = `
+    <h4 class="lk-h4">Fachliche Richtigkeit</h4>
+    <div class="lk-fakten ${k.faktenGesamt?"":"sauber"}">
+      ${k.faktenGesamt
+        ? `<b>${k.faktenGesamt} ${k.faktenGesamt===1?"Beanstandung":"Beanstandungen"}</b> in ${k.anzahl} Gesprächen.${
+            k.genugDaten?` Davon ${k.faktenFrueher} früher und ${k.faktenZuletzt} in den letzten ${k.fenster} Gesprächen.`:""}`
+        : `Keine einzige fachliche Beanstandung in ${k.anzahl} ${k.anzahl===1?"Gespräch":"Gesprächen"}. ${eigene?"Sauber.":"Sauber gearbeitet."}`}
+    </div>`;
+
+  return kacheln + verlauf + trend + kategorien + typen + themen + fakten;
+}
+
+/* Eigene Fortschrittsseite */
+async function renderFortschritt(){
+  const name = getUser();
+  $("#fsContent").innerHTML = `
+    <div class="mod-hero">
+      <div class="kick reveal">Dein Fortschritt</div>
+      <h2 class="reveal d1">Wirst du <span class="g">besser?</span></h2>
+      <p class="reveal d2">Lädt…</p>
+    </div>`;
+  requestAnimationFrame(observeReveals);
+  try{
+    const res = await fetch('/api/fortschritt?name='+encodeURIComponent(name));
+    if(!res.ok) throw new Error("Fortschritt konnte nicht geladen werden.");
+    const kb = await res.json();
+    $("#fsContent").innerHTML = `
+      <div class="mod-hero">
+        <div class="kick reveal">Dein Fortschritt</div>
+        <h2 class="reveal d1">Wirst du <span class="g">besser?</span></h2>
+        <p class="reveal d2">Alles, was aus deinen Rollenspielen ablesbar ist — ehrlich, auch wenn es mal nach unten zeigt.</p>
+      </div>
+      <div class="lk">${renderLernkurveHTML(kb, true)}</div>`;
+    requestAnimationFrame(observeReveals);
+  }catch(e){
+    $("#fsContent").innerHTML = `
+      <div class="mod-hero">
+        <div class="kick">Dein Fortschritt</div>
+        <h2>Konnte nicht geladen werden</h2>
+        <p>${esc(e.message)}</p>
+      </div>`;
+  }
+}
+
 /* ═══════════════════════════════════════════════════════════
    TEAM-ÜBERSICHT (nur Teamlead)
    ═══════════════════════════════════════════════════════════ */
@@ -2548,9 +2924,6 @@ function combinedProfile(kb){
   return { dom: dominantType(totals), testCount: n };
 }
 
-// Alte Einträge (vor der Statusführung) haben kein status-Feld und gelten als
-// abgeschlossen, weil sie damals nur beim Feedback geschrieben wurden.
-function rpFertig(r){ return !r.status || r.status === "abgeschlossen"; }
 
 // Angefangene, aber nie beendete Durchläufe — genau das, was vorher unsichtbar war.
 function offeneLaeufe(kb){
@@ -2654,6 +3027,7 @@ function renderTeamDashboard(data){
           <div class="kb-stat"><span class="n">${avgScore!==null?avgScore+"/10":"—"}</span><span class="l">Ø Feedback</span></div>
         </div>
         <div class="kb-rps">${rpHtml}</div>
+        ${(kb.rollenspiele||[]).some(rpFertig)?`<button class="lk-aufklapp" data-lk="${esc(kb.displayName)}">Lernkurve von ${esc(kb.displayName)} anzeigen</button><div class="lk" id="lk-${esc(kb.displayName)}" hidden></div>`:""}
       </div>`;
     }).join("");
 
@@ -2677,6 +3051,19 @@ function renderTeamDashboard(data){
     </div>`:""}
     <div class="kb-grid">${cards}</div>
   `;
+  $("#teamContent").querySelectorAll("[data-lk]").forEach(b=>b.addEventListener("click",()=>{
+    const kb = entries.find(e=>e.displayName===b.dataset.lk);
+    const ziel = document.getElementById("lk-"+b.dataset.lk);
+    if(!kb || !ziel) return;
+    if(ziel.hidden){
+      if(!ziel.innerHTML) ziel.innerHTML = renderLernkurveHTML(kb, false);
+      ziel.hidden = false;
+      b.textContent = "Lernkurve ausblenden";
+    } else {
+      ziel.hidden = true;
+      b.textContent = "Lernkurve von "+kb.displayName+" anzeigen";
+    }
+  }));
   requestAnimationFrame(observeReveals);
 }
 

@@ -126,6 +126,21 @@ app.post('/api/progress', async (req, res) => {
   }
 });
 
+// Der eigene Fortschritt eines Kundenberaters — Grundlage für seine Lernkurve.
+// Es gilt dasselbe Vertrauensmodell wie beim Login: Wer einen Namen eintippt,
+// sieht dessen Stand. Fremde Datensätze werden nicht mitgeliefert.
+app.get('/api/fortschritt', async (req, res) => {
+  const key = String(req.query.name || '').trim().toLowerCase();
+  if (!key) return res.status(400).json({ error: 'name erforderlich' });
+  try {
+    const store = await loadProgress();
+    res.json(store[key] || {});
+  } catch (e) {
+    console.error(`[fortschritt] Laden für "${key}" fehlgeschlagen:`, e.message);
+    res.status(500).json({ error: e.message });
+  }
+});
+
 // Team-Übersicht — nur für Namen aus ADMIN_NAMES.
 app.get('/api/progress', async (req, res) => {
   if (!isAdminName(req.query.admin)) return res.status(403).json({ error: 'Kein Zugriff' });
