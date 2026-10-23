@@ -21,6 +21,28 @@ Ausführliche Projektbeschreibung (Funktionen, Technik, Umzugstabelle, Datenschu
 - Festgestellt: Upstash hat die Datenbank `trainingsraum` (whole-chimp, AWS eu-central-1) wegen Inaktivität gelöscht. Sie steht in der Upstash-Konsole unter „Inactive“ mit Status DELETED und der Option „Restore or Delete“.
 - Neue leere Datenbank `trainingsraum` angelegt (Endpoint `balanced-spaniel-236244.upstash.io`, AWS eu-central-1, Free). Wiederherstellung der alten Daten und Umstellen der Zugangsdaten auf Render wurden bewusst **nicht** mehr durchgeführt, weil das Projekt jetzt gestoppt wird.
 - Diese Übergabe geschrieben.
+- Dokument für die interne Klärung erstellt: „Trainingsraum – Projektstand und Migration“, https://claude.ai/artifact/6a72JtMgzXSHJf8WLLVmke (Inhalte und Zweck, Technik, Migration, Ideen für die Weiterentwicklung).
+- Stand gesichert (siehe unten).
+
+### Sicherung vom 23.10.2026
+
+**GitHub:** Branch `aufraeumen/totes-persona-css` inklusive dieser Übergabe gepusht (Commit 7650e57). `main` ist unverändert, Render wurde dadurch nicht neu ausgerollt.
+
+**ZIP auf OneDrive:** `OneDrive - Everlife GmbH\Desktop\November\Käthe\Trainingsraum_Sicherung\Trainingsraum_Sicherung_2026-10-23.zip` (4,1 MB)
+
+| Inhalt | Was drin ist |
+|---|---|
+| `Trainingsraum\` | Kompletter Code: `index.html`, `server\`, `material\` (Einwand-Konter-Box), `UEBERGABE.md`, `package.json`, `package-lock.json`, `render.yaml` |
+| `Trainingsraum_Git-Historie.bundle` | Vollständige Git-Historie aller Branches in einer Datei (von Git als vollständig geprüft) |
+| `Vorversionen_und_Material\` | `trainingsraum.jsx`, `trainingsraum (1).jsx`, `trainingsraum (2).jsx`, `Einwand Konter Box Komplett.pdf`, `einwand-konter-box-cover.png` (aus Downloads) |
+
+Bewusst **nicht** enthalten: `.env` (privater API-Schlüssel) und `node_modules` (wird mit `npm install` neu erzeugt). Berater-Ergebnisse gibt es keine zu sichern: Die Datenbank ist gelöscht, und die alten Ergebnisse müssen laut Entscheidung vom 23.10. nicht mitziehen.
+
+Die Git-Historie aus dem Bundle wiederherstellen, auch ohne Zugriff auf das private GitHub-Konto:
+
+```
+git clone Trainingsraum_Git-Historie.bundle trainingsraum
+```
 
 ## 2. Aktueller Stand
 
@@ -31,7 +53,7 @@ Ausführliche Projektbeschreibung (Funktionen, Technik, Umzugstabelle, Datenschu
 
 **Was nicht funktioniert**
 - Speicher: `/api/health` antwortet mit `{"ok":false,"speicher":"upstash","error":"fetch failed"}`. Render zeigt noch auf die gelöschte Upstash-Datenbank. Ergebnisse können weder gespeichert noch geladen werden, Team-Übersicht und Lernkurven sind leer bzw. schlagen fehl.
-- Die bisherigen Berater-Ergebnisse liegen **nur** noch im Backup der gelöschten Upstash-Datenbank. Lokal gibt es keine Kopie (`data/` ist leer).
+- Die bisherigen Berater-Ergebnisse liegen nur noch im Backup der gelöschten Upstash-Datenbank; sie werden nicht übernommen (Entscheidung 23.10.).
 
 **Code-Stand**
 - Live auf Render läuft `main` (Commit 032b75b, Merge der Lernkurve).
@@ -51,7 +73,7 @@ Ausführliche Projektbeschreibung (Funktionen, Technik, Umzugstabelle, Datenschu
 
 ## 3. Offene Fragen
 
-1. **Alte Ergebnisse:** Sollen die bisherigen Berater-Ergebnisse mit umziehen? Wenn ja, müssen sie aus dem Upstash-Backup gerettet werden, solange Upstash die gelöschte Datenbank noch zur Wiederherstellung anbietet (Frist unbekannt).
+1. ~~**Alte Ergebnisse:** Sollen die bisherigen Berater-Ergebnisse mit umziehen?~~ Entschieden 23.10.: Nein, der Neustart beginnt leer.
 2. **Ziel-Infrastruktur:** Welche Firmen-Cloud genau (eigenes Render-/Upstash-Firmenkonto oder interne Infrastruktur, z. B. Azure)? Davon hängt ab, ob Server und Speicher angepasst werden müssen.
 3. **Speicher in der Firma:** Upstash beibehalten oder durch einen firmeneigenen Speicher ersetzen? Der Server spricht aktuell die Upstash-REST-API an (`server/index.js`, Funktionen `loadProgress`/`saveProgress`).
 4. **KI-Konto:** Wer stellt den Anthropic-API-Schlüssel über ein Firmenkonto mit Vertrag zur Auftragsverarbeitung aus?
@@ -62,7 +84,7 @@ Ausführliche Projektbeschreibung (Funktionen, Technik, Umzugstabelle, Datenschu
 
 ## 4. Nächste Schritte
 
-1. **Daten sichern (falls gewünscht):** In der Upstash-Konsole bei der gelöschten DB „Restore or Delete“ → **Restore** in die neue DB `balanced-spaniel-236244`. Danach den Schlüssel `trainingsraum:progress` über den Data Browser als JSON exportieren und sicher ablegen.
+1. ~~**Daten sichern**~~ Erledigt 23.10.: Code, Historie und Material gesichert (siehe „Sicherung vom 23.10.2026“); alte Ergebnisse werden nicht übernommen.
 2. **Code übertragen:** GitHub-Repository per „Transfer“ in die Firmen-Organisation übertragen (Historie bleibt erhalten) oder dort neu anlegen und pushen. Vorher entscheiden, ob `aufraeumen/totes-persona-css` nach `main` gemergt wird.
 3. **Hosting neu aufsetzen:** In der Firmen-Cloud einen Node-Dienst anlegen (`npm install`, `npm start`), an das neue Repository koppeln und die vier Umgebungsvariablen setzen. `render.yaml` dient als Vorlage.
 4. **Speicher anlegen:** Neue Datenbank im Firmenkonto, gesicherte Daten einspielen, Zugangsdaten beim neuen Hoster hinterlegen. Danach `/api/health` prüfen: Erwartet wird `{"ok":true, ...}`.
